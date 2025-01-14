@@ -7,8 +7,9 @@ namespace Codeinsight.FileManager
     {
         static void Main(string[] args)
         {
-            IFileServices fileServices = new FileServices();
-            fileServices.FileImplimentatiionTask();
+            IFileProcessor fileProcessor = new FileProcessor();
+            IFileServices fileServices = new FileServices(fileProcessor);
+            fileServices.FileImplimentationTask();
         }
     }
 }

@@ -1,41 +1,55 @@
 ﻿using Codeinsight.FileManager.Contracts;
+using Codeinsight.FileManager.Services;
 
 namespace Codeinsight.FileManager.Services
 {
-    internal class FileServices : IFileServices
+   internal class FileServices : IFileServices
     {
-        IFileProcessor fileProcess = new FileProcessor();
-
-        //private const string filePath = "E:\\C#\\FileHandler\\Codeinsight.FileManager\\Codeinsight.FileManager\\Contracts\\Text.csv";
-        //private const string beforeMoveddestinationPath = "E:\\C#\\FileHandler\\FileHandler\\Services\\copyText.csv";
-        //private const string afterMovedsourcePath = "E:\\C#\\FileHandler\\FileHandler\\Contracts\\copyText.csv";
-
-        //public string FilePath { get => filePath; }
-        //public string BeforeMoveddestinationPath { get => beforeMoveddestinationPath; }
-        //public string AfterMovedsourcePath { get => afterMovedsourcePath; }
-    
-        public void FileImplimentatiionTask()
+        private IFileProcessor fileProcess { get; set; }
+        // Constructor accepting IFileProcessor
+        public FileServices(IFileProcessor fileProcessor)
         {
-            const string FilePath = "E:\\C#\\FileHandler\\Codeinsight.FileManager\\Codeinsight.FileManager\\Contracts\\Text.csv";
-            const string BeforeMoveddestinationPath = "E:\\C#\\FileHandler\\FileHandler\\Services\\copyText.csv";
-            const string AfterMovedsourcePath = "E:\\C#\\FileHandler\\FileHandler\\Contracts\\copyText.csv";
+            fileProcess = fileProcessor;
+        }
 
-            string ReadContent = fileProcess.ReadFile(FilePath);
-            Console.WriteLine(ReadContent);
+        public void FileImplimentationTask()
+        {
+            try
+            {
+                string  filePath = FilePath.filePathValue;
+                string beforeMoveddestinationPath = FilePath.beforeMovedDestinationPathValue;
+                string afterMoveddestinationPath = FilePath.afterMovedSourcePathValue;
 
-            //Method 1
-            // Console.WriteLine("Enter Something Here to Add...");
-            //string? userInput = Console.ReadLine();
-            //string writContent = fileProcess.WriteFile(FilePath, userInput ?? string.Empty);
+                // Read file content
+                string readContent = fileProcess.ReadFile(filePath);
+                Console.WriteLine("File Content:");
+                Console.WriteLine(readContent);
 
-            //Method 2
-            fileProcess.WriteFile(FilePath, "Hello Abhishek twice, 332");
+                // Write content to the file (uncomment one method as needed)
+                // Console.WriteLine("Enter something to write into the file:");
+                // string? userInput = Console.ReadLine();
+                // fileProcess.WriteFile(FilePath, userInput ?? string.Empty);
 
-            fileProcess.DeleteFile(BeforeMoveddestinationPath);
+                // Method 2
+                // fileProcess.WriteFile(FilePath, "Hello Abhishek twice, 332");
 
-            fileProcess.CopyFile(FilePath, BeforeMoveddestinationPath);
+                // Copy file to another location
+                // fileProcess.CopyFile(FilePath, beforeMoveddestinationPath);
+                // Console.WriteLine($"File copied to {beforeMoveddestinationPath}");
 
-            fileProcess.MoveFile(BeforeMoveddestinationPath, AfterMovedsourcePath);
+                // Delete a file (if required)
+                // fileProcess.DeleteFile(beforeMoveddestinationPath);
+                // Console.WriteLine($"File deleted at {beforeMoveddestinationPath}");
+
+                // Move file to a new location
+                // fileProcess.MoveFile(BeforeMovedDestinationPath, afterMoveddestinationPath);
+                // Console.WriteLine($"File moved to {afterMoveddestinationPath}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred: {ex.Message}");
+            }
         }
     }
 }
+
