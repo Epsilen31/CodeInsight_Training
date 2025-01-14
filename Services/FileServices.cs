@@ -1,54 +1,63 @@
 ﻿using Codeinsight.FileManager.Contracts;
-using Codeinsight.FileManager.Services;
+using System;
 
 namespace Codeinsight.FileManager.Services
 {
-   internal class FileServices : IFileServices
+    internal class FileServices : IFileServices
     {
-        private IFileProcessor fileProcess { get; set; }
+        private IFileProcessor FileProcess { get; set; }
+
         // Constructor accepting IFileProcessor
         public FileServices(IFileProcessor fileProcessor)
         {
-            fileProcess = fileProcessor;
+            FileProcess = fileProcessor;
         }
 
-        public void FileImplimentationTask()
+        public void PerformFileOperations()
         {
             try
             {
-                string  filePath = FilePath.filePathValue;
+                string filePath = FilePath.filePathValue;
                 string beforeMoveddestinationPath = FilePath.beforeMovedDestinationPathValue;
                 string afterMoveddestinationPath = FilePath.afterMovedSourcePathValue;
 
-                // Read file content
-                string readContent = fileProcess.ReadFile(filePath);
-                Console.WriteLine("File Content:");
-                Console.WriteLine(readContent);
-
-                // Write content to the file (uncomment one method as needed)
-                // Console.WriteLine("Enter something to write into the file:");
-                // string? userInput = Console.ReadLine();
-                // fileProcess.WriteFile(FilePath, userInput ?? string.Empty);
-
-                // Method 2
-                // fileProcess.WriteFile(FilePath, "Hello Abhishek twice, 332");
-
-                // Copy file to another location
-                // fileProcess.CopyFile(FilePath, beforeMoveddestinationPath);
-                // Console.WriteLine($"File copied to {beforeMoveddestinationPath}");
-
-                // Delete a file (if required)
-                // fileProcess.DeleteFile(beforeMoveddestinationPath);
-                // Console.WriteLine($"File deleted at {beforeMoveddestinationPath}");
-
-                // Move file to a new location
-                // fileProcess.MoveFile(BeforeMovedDestinationPath, afterMoveddestinationPath);
-                // Console.WriteLine($"File moved to {afterMoveddestinationPath}");
+                ReadFile(filePath);
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"An error occurred: {ex.Message}");
             }
+        }
+
+        public void ReadFile(string filePath)
+        {
+            string content = FileProcess.ReadFile(filePath);
+            Console.WriteLine("File Content:");
+            Console.WriteLine(content);
+        }
+
+        public void WriteToFile(string filePath, string content)
+        {
+            FileProcess.WriteFile(filePath, content);
+            Console.WriteLine("Content written to file.");
+        }
+
+        public  void CopyFile(string sourcePath, string destinationPath)
+        {
+            FileProcess.CopyFile(sourcePath, destinationPath);
+            Console.WriteLine("File copied to Sucessfully");
+        }
+
+        public void DeleteFile(string filePath)
+        {
+            FileProcess.DeleteFile(filePath);
+            Console.WriteLine("File deleted Sucessfully");
+        }
+
+        public void MoveFile(string sourcePath, string destinationPath)
+        {
+            FileProcess.MoveFile(sourcePath, destinationPath);
+            Console.WriteLine("File moved Sucessfully");
         }
     }
 }
