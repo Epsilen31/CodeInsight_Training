@@ -18,7 +18,6 @@ namespace Codeinsight.FileManager.Services
 
         public void FileImplimentatiionTask()
         {
-
             const string filePath = "E:\\C#\\FileHandler\\Codeinsight.FileManager\\Codeinsight.FileManager\\Contracts\\Text.csv";
             //const string beforeMoveddestinationPath = "E:\\C#\\FileHandler\\FileHandler\\Services\\copyText.csv";
             //const string afterMovedsourcePath = "E:\\C#\\FileHandler\\FileHandler\\Contracts\\copyText.csv";
