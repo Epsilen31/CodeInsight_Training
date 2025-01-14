@@ -9,8 +9,12 @@ namespace Codeinsight.FileManager
         {
             IFileProcessor fileProcessor = new FileProcessor();
             IFileProcessor fileStreamProcessor = new FileStreamProcessor();
-            IFileServices fileServices = new FileServices(fileStreamProcessor);
-            fileServices.PerformFileOperations();
+
+            IFileServices fileStreamService = new FileServices(fileStreamProcessor);
+            IFileServices fileProcessorService = new FileServices(fileProcessor);
+
+            fileStreamService.PerformFileOperations();
+            fileProcessorService.PerformFileOperations();
         }
     }
 }

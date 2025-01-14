@@ -1,5 +1,3 @@
-using System;
-using System.IO;
 using Codeinsight.FileManager.Contracts;
 
 namespace Codeinsight.FileManager.Services
@@ -13,7 +11,6 @@ namespace Codeinsight.FileManager.Services
                 using (StreamReader streamReader = new StreamReader(filepath))
                 {
                     string content = streamReader.ReadToEnd();
-                    Console.WriteLine(content);
                     return content;
                 }
             }

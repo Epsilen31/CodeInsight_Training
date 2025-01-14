@@ -20,7 +20,7 @@ namespace Codeinsight.FileManager.Services
                 string filePath = FilePath.filePathValue;
                 string beforeMoveddestinationPath = FilePath.beforeMovedDestinationPathValue;
                 string afterMoveddestinationPath = FilePath.afterMovedSourcePathValue;
-
+                
                 ReadFile(filePath);
             }
             catch (Exception ex)
@@ -32,7 +32,6 @@ namespace Codeinsight.FileManager.Services
         public void ReadFile(string filePath)
         {
             string content = FileProcess.ReadFile(filePath);
-            Console.WriteLine("File Content:");
             Console.WriteLine(content);
         }
 
