@@ -8,3 +8,4 @@ namespace Codeinsight.FileManager.Services
         public static string afterMovedSourcePathValue = "E:\\C#\\FileHandler\\FileHandler\\Contracts\\copyText.csv";
     }
 }
+
