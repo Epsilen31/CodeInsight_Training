@@ -18,14 +18,12 @@ namespace Codeinsight.FileManager.Services
             try
             {
                 string filePath = FilePath.filePathValue;
-                string beforeMoveddestinationPath = FilePath.beforeMovedDestinationPathValue;
-                string afterMoveddestinationPath = FilePath.afterMovedSourcePathValue;
-                
+
                 ReadFile(filePath);
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
-                Console.WriteLine($"An error occurred: {ex.Message}");
+                Console.WriteLine($"An error occurred: {exception.Message}");
             }
         }
 
