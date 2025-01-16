@@ -17,8 +17,13 @@ namespace Codeinsight.VehicalInformer.Services
             {
                 var carsData = GetCarsReportData();
 
-                string directoryPath = FilePaths.directoryPathValue;
-                storeCarsData(directoryPath , carsData);
+                // Store Cars Data in a different different files
+                StoreCarsData(carsData);
+                
+                // Display All Cars in Tabular Form
+                DisplayAllCars(carsData);
+
+
             }
             catch (Exception exception)
             {
@@ -31,12 +36,14 @@ namespace Codeinsight.VehicalInformer.Services
         {
             string filePath = FilePaths.filePathValue;
             string carDetails = FileProcessor.ReadFiles(filePath);
-            var carsList =  ParseCarDetails(carDetails);
+            List<CarDTO> carsList =  ParseCarDetails(carDetails);
             return carsList;
         }
 
-        public void storeCarsData(string directoryPath, List<CarDTO> cars)
+        public void StoreCarsData(List<CarDTO> cars)
         {
+            string directoryPath = FilePaths.directoryPathValue;
+        
             if (!Directory.Exists(directoryPath))
             {
                 Directory.CreateDirectory(directoryPath);
@@ -57,24 +64,30 @@ namespace Codeinsight.VehicalInformer.Services
             }
         }
 
+        public void DisplayAllCars(List<CarDTO> carDetails) {
+            foreach (var car in carDetails) {
+                Console.WriteLine($"{car.Model}\t{car.Company}\t{car.ManufacturingYear}\t{car.BasePrice}\t{car.InsurencePrice}\t{car.AfterTotalPrice}\t{car.Rating} ");
+            }
+        }
+
         public static List<CarDTO> ParseCarDetails(string carDetails)
         {
             var cars = new List<CarDTO>();
-            var carDetailLines = carDetails.Split("\n");
+            string[] carDetailLines = carDetails.Split("\n");
 
-            foreach (var carDetailLine in carDetailLines)
+            for (int i = 1; i < carDetailLines.Length; i++)
             {
-                var carDetail = carDetailLine.Split(",");
+                var carDetail = carDetailLines[i].Split(",");
 
                 if (carDetail.Length == 7)
                 {
-                    var model = string.IsNullOrEmpty(carDetail[0]) ? "Unknown Model" : carDetail[0];
-                    var company = string.IsNullOrEmpty(carDetail[1]) ? "Unknown Company" : carDetail[1];
-                    var manufacturingYear = string.IsNullOrEmpty(carDetail[2]) ? "Unknown Year" : carDetail[2];
-                    var basePrice = string.IsNullOrEmpty(carDetail[3]) ? "0" : carDetail[3];
-                    var insurancePrice = string.IsNullOrEmpty(carDetail[4]) ? "0" : carDetail[4];
-                    var afterTotalPrice = string.IsNullOrEmpty(carDetail[5]) ? "0" : carDetail[5];
-                    var rating = string.IsNullOrEmpty(carDetail[6]) ? "0" : carDetail[6];
+                    string model = string.IsNullOrEmpty(carDetail[0]) ? "Unknown Model" : carDetail[0];
+                    string company = string.IsNullOrEmpty(carDetail[1]) ? "Unknown Company" : carDetail[1];
+                    string manufacturingYear = string.IsNullOrEmpty(carDetail[2]) ? "Unknown Year" : carDetail[2];
+                    string basePrice = string.IsNullOrEmpty(carDetail[3]) ? "0" : carDetail[3];
+                    string insurancePrice = string.IsNullOrEmpty(carDetail[4]) ? "0" : carDetail[4];
+                    string afterTotalPrice = string.IsNullOrEmpty(carDetail[5]) ? "0" : carDetail[5];
+                    string rating = string.IsNullOrEmpty(carDetail[6]) ? "0" : carDetail[6];
 
                     var car = new CarDTO
                     {
