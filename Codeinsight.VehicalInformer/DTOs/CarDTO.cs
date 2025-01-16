@@ -1,4 +1,3 @@
-
 namespace Codeinsight.VehicalInformer.DTOs
 {
     public class CarDTO
@@ -12,3 +11,4 @@ namespace Codeinsight.VehicalInformer.DTOs
         public required string Rating { get; set; }
     }
 }
+

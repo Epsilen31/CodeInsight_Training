@@ -4,7 +4,7 @@ namespace Codeinsight.VehicalInformer.Services
 {
     public class FileProcessor : IFileProcessor
     {
-        public string ReadCarDetails(string filepath)
+        public string ReadFiles(string filepath)
         {
             if (!File.Exists(filepath))
             {
@@ -12,6 +12,15 @@ namespace Codeinsight.VehicalInformer.Services
             }
             return string.Join("\n", File.ReadAllLines(filepath));
         }
+
+        public void GenerateFile(string directoryPath , string  content)
+        {
+            if (!Directory.Exists(directoryPath))
+            {
+                Directory.CreateDirectory(directoryPath);
+            }
+            File.WriteAllText(directoryPath, content);
+        }      
     }
 }
 

@@ -1,9 +1,12 @@
+using Codeinsight.VehicalInformer.DTOs;
 
 namespace Codeinsight.VehicalInformer.Contracts
 {
-    internal interface IFileProcessor
+    public interface IFileProcessor
     {
-        string ReadCarDetails(string filepath);
-        
+        string ReadFiles(string filepath);
+
+        void GenerateFile(string filepath, string content);
     }
 }
+
