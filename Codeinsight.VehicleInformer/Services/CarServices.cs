@@ -62,22 +62,21 @@ namespace Codeinsight.VehicleInformer.Services
             foreach (var car in cars)
             {
                 string fileName = @$"{directoryPath}\{car.Company}_{car.Model}.txt";
-                string carDetails = $"Model: {car.Model}\n" +
-                                    $"Company: {car.Company}\n" +
-                                    $"Manufacturing Year: {car.ManufacturingYear}\n" +
-                                    $"Base Price: {car.BasePrice:C}\n" +
-                                    $"Insurance Price: {car.InsurencePrice:C}\n" +
-                                    $"After Total Price: {car.AfterTotalPrice:C}\n" +
-                                    $"Rating: {car.Rating}/5\n";
+                string carDetails = $"{TableHeader.Model}: {car.Model}\n" +
+                                    $"{TableHeader.Company}: {car.Company}\n" +
+                                    $"{TableHeader.ManufacturingYear}: {car.ManufacturingYear}\n" +
+                                    $"{TableHeader.BasePrice}: {car.BasePrice:C}\n" +
+                                    $"{TableHeader.InsurancePrice}: {car.InsurencePrice:C}\n" +
+                                    $"{TableHeader.AfterTotalPrice}: {car.AfterTotalPrice:C}\n" +
+                                    $"{TableHeader.Rating}: {car.Rating}/5\n";
 
                 FileProcessor.GenerateFile(fileName, carDetails);
             }
         }
 
         public void DisplayAllCars(List<CarDTO> carDetails) {
-            Console.WriteLine("Model\tCompany\tManufacturing Year\tBase Price\tInsurance Price\tAfter Total Price\tRating");
+            Console.WriteLine($"{TableHeader.Model}\t{TableHeader.Company}\t{TableHeader.ManufacturingYear}\t{TableHeader.BasePrice}\t{TableHeader.InsurancePrice}\t{TableHeader.AfterTotalPrice}\t{TableHeader.Rating}");
             foreach (var car in carDetails) {
-                // print header first
                 Console.WriteLine($"{car.Model}\t{car.Company}\t{car.ManufacturingYear}\t{car.BasePrice}\t{car.InsurencePrice}\t{car.AfterTotalPrice}\t{car.Rating} ");
             }
         }
