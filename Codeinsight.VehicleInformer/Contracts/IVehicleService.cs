@@ -6,3 +6,4 @@ namespace Codeinsight.VehicleInformer.Contracts
         void ConsoleCarReport();
     }
 }
+

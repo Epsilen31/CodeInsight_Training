@@ -1,4 +1,5 @@
-﻿using Codeinsight.VehicleInformer.Contracts;
+﻿using System.Diagnostics.Contracts;
+using Codeinsight.VehicleInformer.Contracts;
 using Codeinsight.VehicleInformer.Services;
 
 namespace Codeinsight.VehicleInformer
@@ -9,7 +10,7 @@ namespace Codeinsight.VehicleInformer
         {
             IFileProcessor fileProcessor = new FileProcessor();
             IVehicleService vehicalService = new CarServices(fileProcessor);
-            // vehicalService.GenerateCarReport();
+            vehicalService.GenerateCarReport();
             vehicalService.ConsoleCarReport();
         }
     }

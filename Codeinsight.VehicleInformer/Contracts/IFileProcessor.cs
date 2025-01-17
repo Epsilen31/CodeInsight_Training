@@ -1,5 +1,3 @@
-using Codeinsight.VehicleInformer.DTOs;
-
 namespace Codeinsight.VehicleInformer.Contracts
 {
     public interface IFileProcessor

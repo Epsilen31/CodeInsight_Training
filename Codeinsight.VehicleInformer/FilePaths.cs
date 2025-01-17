@@ -4,6 +4,8 @@ namespace Codeinsight.VehicleInformer
     {
         public static string filePathValue = @"E:\C#\Assignment\abhishek-mishra-training-2025\Codeinsight.VehicleInformer\DummyCarData.csv";
         public static string directoryPathValue = @"E:\C#\Assignment\abhishek-mishra-training-2025\Codeinsight.VehicleInformer\TextFiles";
+
+        public static string summaryReportPathValue = @"E:\C#\Assignment\abhishek-mishra-training-2025\Codeinsight.VehicleInformer\SummaryReport.txt";
     }
 }
 

@@ -1,5 +1,7 @@
+using System.Text;
 using Codeinsight.VehicleInformer.Contracts;
 using Codeinsight.VehicleInformer.DTOs;
+using Microsoft.VisualBasic;
 
 namespace Codeinsight.VehicleInformer.Services
 {
@@ -15,10 +17,11 @@ namespace Codeinsight.VehicleInformer.Services
         {
             try
             {
-                var carsData = GetCarsReportData();
+                var carsData = GetCarReportData();
 
                 // Store Cars Data in a different different files
                 StoreCarsData(carsData);
+
             }
             catch (Exception exception)
             {
@@ -27,13 +30,40 @@ namespace Codeinsight.VehicleInformer.Services
             }
         }
 
-        public void ConsoleCarReport(){
-
+        public void ConsoleCarReport()
+        {
             try{
-                var carsData = GetCarsReportData();
+                string operation = OperationsPerformation();
 
-                // Display All Cars in Tabular Form
-                DisplayAllCars(carsData);
+                var carsData = GetCarReportData();
+            
+                switch (operation)
+                { 
+                    case "1":
+                        DisplayAllCars(carsData);
+                        break;
+                    case "2":
+                        SearchCarByModel(carsData);
+                        break;
+                    case "3":
+                        FilterCarsByManufacturingYear(carsData);
+                        break;
+                    case "4":
+                        SortCarsByPrice(carsData);
+                        break;
+                    case "5":
+                        CarsAvergeRating(carsData);
+                        break;
+                    case "6":
+                        CountCarsBasedOnRating(carsData);
+                        break;
+                    case "7":
+                        GenerateSummaryReport(carsData);
+                        break;
+                    default:
+                        Console.WriteLine("Invalid Operation. Please choose a valid operation.");
+                        break;
+                }
             }
             catch (Exception exception)
             {
@@ -42,7 +72,11 @@ namespace Codeinsight.VehicleInformer.Services
             }   
         }
 
-        public List<CarDTO> GetCarsReportData()
+        public List<CarDTO> GetCarReportData(){
+            return CarsReportData();
+        }
+
+        public List<CarDTO> CarsReportData()
         {
             string filePath = FilePaths.filePathValue;
             string carDetails = FileProcessor.ReadFiles(filePath);
@@ -53,22 +87,16 @@ namespace Codeinsight.VehicleInformer.Services
         public void StoreCarsData(List<CarDTO> cars)
         {
             string directoryPath = FilePaths.directoryPathValue;
-        
-            if (!Directory.Exists(directoryPath))
-            {
-                Directory.CreateDirectory(directoryPath);
-            }
-
             foreach (var car in cars)
             {
-                string fileName = @$"{directoryPath}\{car.Company}_{car.Model}.txt";
+                string fileName = Path.Combine(directoryPath, $"{car.Company}_{car.Model}.txt");
                 string carDetails = $"{TableHeader.Model}: {car.Model}\n" +
                                     $"{TableHeader.Company}: {car.Company}\n" +
                                     $"{TableHeader.ManufacturingYear}: {car.ManufacturingYear}\n" +
-                                    $"{TableHeader.BasePrice}: {car.BasePrice:C}\n" +
-                                    $"{TableHeader.InsurancePrice}: {car.InsurencePrice:C}\n" +
-                                    $"{TableHeader.AfterTotalPrice}: {car.AfterTotalPrice:C}\n" +
-                                    $"{TableHeader.Rating}: {car.Rating}/5\n";
+                                    $"{TableHeader.BasePrice}: {car.BasePrice}\n" +
+                                    $"{TableHeader.InsurancePrice}: {car.InsurencePrice}\n" +
+                                    $"{TableHeader.AfterTotalPrice}: {car.AfterTotalPrice}\n" +
+                                    $"{TableHeader.Rating}: {car.Rating}\n";
 
                 FileProcessor.GenerateFile(fileName, carDetails);
             }
@@ -79,6 +107,134 @@ namespace Codeinsight.VehicleInformer.Services
             foreach (var car in carDetails) {
                 Console.WriteLine($"{car.Model}\t{car.Company}\t{car.ManufacturingYear}\t{car.BasePrice}\t{car.InsurencePrice}\t{car.AfterTotalPrice}\t{car.Rating} ");
             }
+        }
+
+        public void SearchCarByModel(List<CarDTO> carDetails)
+        { 
+            Console.WriteLine("Enter Car Model to search: ");
+            string? carModel = Console.ReadLine();
+            if (!string.IsNullOrEmpty(carModel))
+            {
+                SearchCars(carModel, carDetails);
+            }
+            else
+            {
+                Console.WriteLine("Invalid input. Please enter a valid car model.");
+            }
+        }
+
+        public void SearchCars(string carModel, List<CarDTO> carDetails)
+        { 
+            carModel = carModel.ToLower();
+            carDetails = carDetails.Where(car => car.Model.ToLower().Contains(carModel)).ToList();
+            if (carDetails.Count > 0){
+                Console.WriteLine($"{TableHeader.Model}\t{TableHeader.Company}\t{TableHeader.ManufacturingYear}\t{TableHeader.BasePrice}\t{TableHeader.InsurancePrice}\t{TableHeader.AfterTotalPrice}\t{TableHeader.Rating}");
+                foreach (var car in carDetails)
+                {
+                    Console.WriteLine($"{car.Model}\t{car.Company}\t{car.ManufacturingYear}\t{car.BasePrice}\t{car.InsurencePrice}\t{car.AfterTotalPrice}\t{car.Rating}");
+                }
+            }
+        }
+
+        public void FilterCarsByManufacturingYear(List<CarDTO>carsData)
+        {
+            Console.WriteLine("Enter Manufacturing Year to filter: ");
+            if (int.TryParse(Console.ReadLine(), out int manufacturingYear))
+            {
+                CarsFiltering(manufacturingYear, carsData);
+             }
+            else
+            {
+                Console.WriteLine("Invalid input. Please enter a valid manufacturing year.");
+            }
+        }
+
+        public void CarsFiltering(int manufacturingYear, List<CarDTO> carDetails)
+        {  
+            // impliment using LINQ
+            carDetails = carDetails.Where(car => int.TryParse(car.ManufacturingYear, out int parsedYear) && parsedYear == manufacturingYear).ToList();
+            if (carDetails.Count > 0){
+               Console.WriteLine($"{TableHeader.Model}\t{TableHeader.Company}\t{TableHeader.ManufacturingYear}\t{TableHeader.BasePrice}\t{TableHeader.InsurancePrice}\t{TableHeader.AfterTotalPrice}\t{TableHeader.Rating}");
+                foreach (var car in carDetails)
+                {
+                    Console.WriteLine($"{car.Model}\t{car.Company}\t{car.ManufacturingYear}\t{car.BasePrice}\t{car.InsurencePrice}\t{car.AfterTotalPrice}\t{car.Rating}");
+                }
+            }
+        }
+
+        public static void SortCarsByPrice(List<CarDTO> carsData)
+        {
+            Console.WriteLine("Sort Cars by Price: ");
+            Console.WriteLine("1. Base Price");
+            Console.WriteLine("2. After Total Price");
+            Console.WriteLine("Enter your choice: ");
+            int sortChoice = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine("1. Ascending");
+            Console.WriteLine("2. Descending");
+            Console.WriteLine("Enter your choice: ");
+            int sortOrder = Convert.ToInt32(Console.ReadLine());
+            CarByPrice(sortChoice, sortOrder, carsData);
+        }
+
+        public static void CarByPrice(int sortChoice, int sortOrder, List<CarDTO> carDetails)
+        {
+            switch (sortChoice)
+            { 
+                case 1: 
+                    carDetails = sortOrder == 1 
+                        ? carDetails.OrderBy(car => car.BasePrice).ToList() 
+                        : carDetails.OrderByDescending(car => car.BasePrice).ToList();
+                    break;
+                case 2:
+                    carDetails = sortOrder == 1 
+                        ? carDetails.OrderBy(car => car.AfterTotalPrice).ToList() 
+                        : carDetails.OrderByDescending(car => car.AfterTotalPrice).ToList();
+                    break;
+                default:
+                    Console.WriteLine("Invalid Sort Choice. Please choose either 1 or 2.");
+                    return;
+            }
+        }
+
+        public double CarsAvergeRating(List<CarDTO> carDetails)
+        {
+            double totalRating = 0;
+            foreach (var car in carDetails)
+            {
+                totalRating += Convert.ToDouble(car.Rating);
+            }
+            double averageRating = totalRating / carDetails.Count;
+            Console.WriteLine($"Average Rating of all cars: {averageRating}");
+            return averageRating;
+        }
+
+        public void CountCarsBasedOnRating(List<CarDTO> carDetails)
+        { 
+            var ratingGroups = carDetails.GroupBy(car => car.Rating);
+            foreach (var ratingGroup in ratingGroups)
+            {
+                Console.WriteLine($"Rating: {ratingGroup.Key} Count: {ratingGroup.Count()}");
+            }
+            Console.WriteLine($"Average Rating: {CarsAvergeRating(carDetails)}\n");
+        }
+
+        public void GenerateSummaryReport(List<CarDTO> carDetails)
+        {   
+            
+            string filePath = FilePaths.summaryReportPathValue;
+            double averageRating = CarsAvergeRating(carDetails);
+
+            StringBuilder summaryReport = new();
+            summaryReport.AppendLine($"Total Cars: {carDetails.Count}");
+            summaryReport.AppendLine($"Average Rating: {averageRating:F2}");
+            summaryReport.AppendLine("\nCar Details:");
+            summaryReport.AppendLine($"{TableHeader.Model}\t{TableHeader.Company}\t{TableHeader.BasePrice}\t{TableHeader.Rating}");
+
+            foreach (var car in carDetails)
+            {
+                summaryReport.AppendLine($"{car.Model}\t{car.Company}\t{car.BasePrice}\t{car.Rating}");
+            }
+            FileProcessor.GenerateFile(filePath, summaryReport.ToString());
         }
 
         public static List<CarDTO> ParseCarDetails(string carDetails)
@@ -114,6 +270,21 @@ namespace Codeinsight.VehicleInformer.Services
                 }
             }
             return cars;
+        }
+
+        public static string  OperationsPerformation(){
+
+            Console.WriteLine("Choose an operation:");
+            Console.WriteLine("1. for Display All Cars");
+            Console.WriteLine("2. for Search Car By Model");
+            Console.WriteLine("3. for Filter Cars By Manufacturing Year");
+            Console.WriteLine("4. for Sort Cars By Price");
+            Console.WriteLine("5. for Cars Average Rating");
+            Console.WriteLine("6. for Count Cars Based On Rating");
+            Console.WriteLine("7. for Export Report");
+
+            string operation = Console.ReadLine() ?? string.Empty;
+            return operation;    
         }
     }
 }
