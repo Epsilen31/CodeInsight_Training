@@ -19,17 +19,27 @@ namespace Codeinsight.VehicalInformer.Services
 
                 // Store Cars Data in a different different files
                 StoreCarsData(carsData);
-                
-                // Display All Cars in Tabular Form
-                DisplayAllCars(carsData);
-
-
             }
             catch (Exception exception)
             {
                 Console.WriteLine($"Error: {exception.Message}");
                 Console.WriteLine($"Stack Trace: {exception.StackTrace}");
             }
+        }
+
+        public void ConsoleCarReport(){
+
+            try{
+                var carsData = GetCarsReportData();
+
+                // Display All Cars in Tabular Form
+                DisplayAllCars(carsData);
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine($"Error: {exception.Message}");
+                Console.WriteLine($"Stack Trace: {exception.StackTrace}");
+            }   
         }
 
         public List<CarDTO> GetCarsReportData()

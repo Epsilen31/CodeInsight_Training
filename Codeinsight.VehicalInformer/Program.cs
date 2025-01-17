@@ -9,7 +9,8 @@ namespace Codeinsight.VehicalInformer
         {
             IFileProcessor fileProcessor = new FileProcessor();
             IVehicalService vehicalService = new CarServices(fileProcessor);
-            vehicalService.GenerateCarReport();   
+            vehicalService.GenerateCarReport();
+            vehicalService.ConsoleCarReport();
         }
     }
 }
