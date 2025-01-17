@@ -1,4 +1,4 @@
-namespace Codeinsight.VehicalInformer.DTOs
+namespace Codeinsight.VehicleInformer.DTOs
 {
     public class CarDTO
     {

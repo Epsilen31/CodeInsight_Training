@@ -1,9 +1,9 @@
-using Codeinsight.VehicalInformer.Contracts;
-using Codeinsight.VehicalInformer.DTOs;
+using Codeinsight.VehicleInformer.Contracts;
+using Codeinsight.VehicleInformer.DTOs;
 
-namespace Codeinsight.VehicalInformer.Services
+namespace Codeinsight.VehicleInformer.Services
 {
-    internal class CarServices : IVehicalService
+    internal class CarServices : IVehicleService
     {
         private IFileProcessor FileProcessor { get; set; }
         public CarServices(IFileProcessor fileProcessor)
@@ -75,7 +75,9 @@ namespace Codeinsight.VehicalInformer.Services
         }
 
         public void DisplayAllCars(List<CarDTO> carDetails) {
+            Console.WriteLine("Model\tCompany\tManufacturing Year\tBase Price\tInsurance Price\tAfter Total Price\tRating");
             foreach (var car in carDetails) {
+                // print header first
                 Console.WriteLine($"{car.Model}\t{car.Company}\t{car.ManufacturingYear}\t{car.BasePrice}\t{car.InsurencePrice}\t{car.AfterTotalPrice}\t{car.Rating} ");
             }
         }

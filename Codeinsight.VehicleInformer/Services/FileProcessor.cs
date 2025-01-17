@@ -1,6 +1,6 @@
-using Codeinsight.VehicalInformer.Contracts;
+using Codeinsight.VehicleInformer.Contracts;
 
-namespace Codeinsight.VehicalInformer.Services
+namespace Codeinsight.VehicleInformer.Services
 {
     public class FileProcessor : IFileProcessor
     {
