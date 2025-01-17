@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35527.113 d17.12
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Codeinsight.VehicleInformer", "E:\\C#\\Assignment\\abhishek-mishra-training-2025\\Codeinsight.VehicleInformer\\Codeinsight.VehicleInformer.csproj", "{278B9F90-7074-4A15-960B-5F35B0A83DBD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{278B9F90-7074-4A15-960B-5F35B0A83DBD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{278B9F90-7074-4A15-960B-5F35B0A83DBD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{278B9F90-7074-4A15-960B-5F35B0A83DBD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{278B9F90-7074-4A15-960B-5F35B0A83DBD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
