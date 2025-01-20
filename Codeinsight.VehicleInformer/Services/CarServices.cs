@@ -1,7 +1,5 @@
-using System.Text;
 using Codeinsight.VehicleInformer.Contracts;
 using Codeinsight.VehicleInformer.DTOs;
-using Codeinsight.VehicleInformer.TaskManagers;
 
 namespace Codeinsight.VehicleInformer.Services
 {
@@ -45,7 +43,7 @@ namespace Codeinsight.VehicleInformer.Services
             }   
         }
 
-        public List<CarDto> SearchVehicleByModel()
+        public ICollection<CarDto> SearchVehicleByModel()
         {
             try
             {
@@ -61,7 +59,7 @@ namespace Codeinsight.VehicleInformer.Services
             }
         }
 
-        public List <CarDto> FilterVehiclesByManufacturingYear()
+        public ICollection <CarDto> FilterVehiclesByManufacturingYear()
         { 
             try
             {
@@ -77,7 +75,7 @@ namespace Codeinsight.VehicleInformer.Services
             }
         }
 
-        public List <CarDto> SortVehiclesByPrice()
+        public ICollection <CarDto> SortVehiclesByPrice()
         {
             try
             {
@@ -93,7 +91,7 @@ namespace Codeinsight.VehicleInformer.Services
             }
         }
 
-        public List<AverageRatingDto> VehiclesAvergeRating()
+        public ICollection<AverageRatingDto> VehiclesAvergeRating()
         {
             try
             {
@@ -109,7 +107,7 @@ namespace Codeinsight.VehicleInformer.Services
             }
         }
 
-        public List <CarDto> CountVehiclesBasedOnRating()
+        public ICollection <CarDto> CountVehiclesBasedOnRating()
         {
             try
             {
@@ -125,19 +123,19 @@ namespace Codeinsight.VehicleInformer.Services
             }
         }
 
-        public List<CarDto> GetCarReportData(){
+        public ICollection<CarDto> GetCarReportData(){
             return CarsReportData();
         }
 
-        public List<CarDto> CarsReportData()
+        public ICollection<CarDto> CarsReportData()
         {
             string filePath = FilePaths.filePathValue;
             string carDetails = FileProcessor.ReadFiles(filePath);
-            List<CarDto> carsList =  ParseCarDetails(carDetails);
-            return carsList;
+            ICollection<CarDto> carsICollection =  ParseCarDetails(carDetails);
+            return carsICollection;
         }
 
-        public void StoreCarsData(List<CarDto> cars)
+        public void StoreCarsData(ICollection<CarDto> cars)
         {
             string directoryPath = FilePaths.directoryPathValue;
             foreach (var car in cars)
@@ -155,14 +153,14 @@ namespace Codeinsight.VehicleInformer.Services
             }
         }
 
-        public void DisplayAllCars(List<CarDto> carDetails) {
+        public void DisplayAllCars(ICollection<CarDto> carDetails) {
             Console.WriteLine($"{TableHeader.Model}\t{TableHeader.Company}\t{TableHeader.ManufacturingYear}\t{TableHeader.BasePrice}\t{TableHeader.InsurancePrice}\t{TableHeader.AfterTotalPrice}\t{TableHeader.Rating}");
             foreach (var car in carDetails) {
                 Console.WriteLine($"{car.Model}\t{car.Company}\t{car.ManufacturingYear}\t{car.BasePrice}\t{car.InsurencePrice}\t{car.AfterTotalPrice}\t{car.Rating} ");
             }
         }
 
-        public List<CarDto> GetSearchCarByModel(List<CarDto> carDetails)
+        public ICollection<CarDto> GetSearchCarByModel(ICollection<CarDto> carDetails)
         { 
             Console.WriteLine("Enter Car Model to search: ");
             string? carModel = Console.ReadLine();
@@ -177,14 +175,14 @@ namespace Codeinsight.VehicleInformer.Services
             }
         }
 
-        public List<CarDto> SearchCars(string carModel, List<CarDto> carDetails)
+        public ICollection<CarDto> SearchCars(string carModel, ICollection<CarDto> carDetails)
         { 
             carModel = carModel.ToLower();
             carDetails = carDetails.Where(car => car.Model.ToLower().Contains(carModel)).ToList();
             return carDetails;
         }
 
-        public List<CarDto> GetFilterCarsByManufacturingYear(List<CarDto>carsData)
+        public ICollection<CarDto> GetFilterCarsByManufacturingYear(ICollection<CarDto>carsData)
         {
             Console.WriteLine("Enter Manufacturing Year to filter: ");
             if (int.TryParse(Console.ReadLine(), out int manufacturingYear))
@@ -198,13 +196,13 @@ namespace Codeinsight.VehicleInformer.Services
             }
         }
 
-        public List<CarDto> CarsFiltering(int manufacturingYear, List<CarDto> carDetails)
+        public ICollection<CarDto> CarsFiltering(int manufacturingYear, ICollection<CarDto> carDetails)
         {  
             carDetails = carDetails.Where(car => int.TryParse(car.ManufacturingYear, out int parsedYear) && parsedYear == manufacturingYear).ToList();
             return carDetails;
         }
 
-        public static List<CarDto> GetSortCarsByPrice(List<CarDto> carsData)
+        public static ICollection<CarDto> GetSortCarsByPrice(ICollection<CarDto> carsData)
         {
             Console.WriteLine("Sort Cars by Price: ");
             Console.WriteLine("1. Base Price");
@@ -218,7 +216,7 @@ namespace Codeinsight.VehicleInformer.Services
             return CarByPrice(sortChoice, sortOrder, carsData);
         }
 
-        public static List<CarDto> CarByPrice(int sortChoice, int sortOrder, List<CarDto> carDetails)
+        public static ICollection<CarDto> CarByPrice(int sortChoice, int sortOrder, ICollection<CarDto> carDetails)
         {
             switch (sortChoice)
             { 
@@ -238,14 +236,14 @@ namespace Codeinsight.VehicleInformer.Services
             }
         }
 
-        public List<AverageRatingDto> GetCarsAvergeRating(List<CarDto> carDetails)
+        public ICollection<AverageRatingDto> GetCarsAvergeRating(ICollection<CarDto> carDetails)
         {   
             // generate average rating base in company
-            List<AverageRatingDto> averageRatingDTOs = GetAverageRating(carDetails);
+            ICollection<AverageRatingDto> averageRatingDTOs = GetAverageRating(carDetails);
             return averageRatingDTOs;
         }
 
-        public List <CarDto> GetCountCarsBasedOnRating(List<CarDto> carDetails)
+        public ICollection <CarDto> GetCountCarsBasedOnRating(ICollection<CarDto> carDetails)
         { 
             var ratingGroups = carDetails.GroupBy(car => car.Rating)
                                          .SelectMany(group => group)
@@ -253,7 +251,7 @@ namespace Codeinsight.VehicleInformer.Services
             return ratingGroups;
         }
 
-        public double GetAllCarsAvergeRating(List<CarDto> carDetails){
+        public double GetAllCarsAvergeRating(ICollection<CarDto> carDetails){
 
                 var ratings = carDetails.GroupBy(car => car.Rating );
                 double totalRating = ratings.Sum(group => group.Count() * Convert.ToDouble(group.Key));
@@ -262,7 +260,7 @@ namespace Codeinsight.VehicleInformer.Services
                 return averageRating;
         }
 
-        public static List<CarDto> ParseCarDetails(string carDetails)
+        public static ICollection<CarDto> ParseCarDetails(string carDetails)
         {
             var cars = new List<CarDto>();
             string[] carDetailLines = carDetails.Split("\n");
@@ -297,7 +295,7 @@ namespace Codeinsight.VehicleInformer.Services
             return cars;
         } 
 
-        public static List<AverageRatingDto> GetAverageRating(List<CarDto> carDetail)
+        public static ICollection<AverageRatingDto> GetAverageRating(ICollection<CarDto> carDetail)
         {
             var averageRatingDtos = carDetail.GroupBy(car => car.Company)
                 .Select(group => new AverageRatingDto
