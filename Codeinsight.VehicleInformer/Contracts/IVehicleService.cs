@@ -6,11 +6,11 @@ namespace Codeinsight.VehicleInformer.Contracts
     {
         void GenerateVehicleReport();
         void DisplayVehicleReportInTabular();
-        ICollection <CarDto> SearchVehicleByModel();
-        ICollection <CarDto> FilterVehiclesByManufacturingYear();
-        ICollection <CarDto> SortVehiclesByPrice();
-        ICollection<AverageRatingDto> VehiclesAvergeRating();
-        ICollection <CarDto> CountVehiclesBasedOnRating();
+        IList <CarDto> SearchVehicleByModel();
+        IList <CarDto> FilterVehiclesByManufacturingYear();
+        IList <CarDto> SortVehiclesByPrice();
+        IList<AverageRatingDto> VehiclesAvergeRating();
+        IList <CarDto> CountVehiclesBasedOnRating();
     }
 }
 

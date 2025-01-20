@@ -28,23 +28,23 @@ namespace Codeinsight.VehicleInformer.TaskManagers{
                     vehicleService.DisplayVehicleReportInTabular();
                     break;
                 case "3":
-                    ICollection<CarDto> carsModel =  vehicleService.SearchVehicleByModel();
+                    IList<CarDto> carsModel =  vehicleService.SearchVehicleByModel();
                     ShowCarsModel(carsModel);
                     break;
                 case "4":
-                    ICollection<CarDto> carsManufacturingYear = vehicleService.FilterVehiclesByManufacturingYear();
+                    IList<CarDto> carsManufacturingYear = vehicleService.FilterVehiclesByManufacturingYear();
                     ShowCarsByManufacturingYear(carsManufacturingYear);
                     break;
                 case "5":
-                    ICollection<CarDto> carsPrices = vehicleService.SortVehiclesByPrice();
+                    IList<CarDto> carsPrices = vehicleService.SortVehiclesByPrice();
                     ShowCarsByPrice(carsPrices);
                     break;
                 case "6":
-                    ICollection<AverageRatingDto> carsAvergeRating = vehicleService.VehiclesAvergeRating();
+                    IList<AverageRatingDto> carsAvergeRating = vehicleService.VehiclesAvergeRating();
                     ShowCarsAvergedRating(carsAvergeRating);
                     break;
                 case "7":
-                    ICollection<CarDto> carsCountRating = vehicleService.CountVehiclesBasedOnRating();
+                    IList<CarDto> carsCountRating = vehicleService.CountVehiclesBasedOnRating();
                     ShowCarsCountRating(carsCountRating);
                     break;
                 default:
@@ -68,7 +68,7 @@ namespace Codeinsight.VehicleInformer.TaskManagers{
             return operation;    
         }
 
-        public void ShowCarsModel(ICollection<CarDto> carsModel)
+        public void ShowCarsModel(IList<CarDto> carsModel)
         { 
             Console.WriteLine("Cars Model:");
             if (carsModel.Count > 0){
@@ -80,7 +80,7 @@ namespace Codeinsight.VehicleInformer.TaskManagers{
             }
         }
 
-        public void ShowCarsByManufacturingYear(ICollection<CarDto> carsManufacturingYear)
+        public void ShowCarsByManufacturingYear(IList<CarDto> carsManufacturingYear)
         { 
             Console.WriteLine("Cars Manufacturing Year:");
             if (carsManufacturingYear.Count > 0){
@@ -92,7 +92,7 @@ namespace Codeinsight.VehicleInformer.TaskManagers{
             }
         }
 
-        public void ShowCarsByPrice(ICollection<CarDto> carsPrices)
+        public void ShowCarsByPrice(IList<CarDto> carsPrices)
         { 
             Console.WriteLine("Cars Sorted By Price:");
             if (carsPrices.Count > 0){
@@ -104,7 +104,7 @@ namespace Codeinsight.VehicleInformer.TaskManagers{
             }
         }
         
-        public void ShowCarsAvergedRating(ICollection<AverageRatingDto> carsAvergeRating)
+        public void ShowCarsAvergedRating(IList<AverageRatingDto> carsAvergeRating)
         {
             Console.WriteLine("Cars Average Rating:");
             if (carsAvergeRating.Count > 0){
@@ -121,7 +121,7 @@ namespace Codeinsight.VehicleInformer.TaskManagers{
             Console.WriteLine($"Total Records: {carsAvergeRating.Count}\n");
         }
 
-        public void ShowCarsCountRating(ICollection<CarDto> carsCountRating)
+        public void ShowCarsCountRating(IList<CarDto> carsCountRating)
         { 
             Console.WriteLine("Cars Count Based on Rating:");
             if (carsCountRating.Count > 0){
