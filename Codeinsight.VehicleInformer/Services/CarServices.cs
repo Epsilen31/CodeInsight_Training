@@ -12,7 +12,7 @@ namespace Codeinsight.VehicleInformer.Services
         {
              FileProcessor = fileProcessor;
         }
-
+        
         public void GenerateCarReport()
         {
             try
@@ -30,11 +30,10 @@ namespace Codeinsight.VehicleInformer.Services
             }
         }
 
-        public void ConsoleCarReport()
+        public void ConsoleCarReport(string operation)
         {
             try{
-                string operation = OperationsPerformation();
-
+                
                 var carsData = GetCarReportData();
             
                 switch (operation)
@@ -272,20 +271,7 @@ namespace Codeinsight.VehicleInformer.Services
             return cars;
         }
 
-        public static string  OperationsPerformation(){
-
-            Console.WriteLine("Choose an operation:");
-            Console.WriteLine("1. for Display All Cars");
-            Console.WriteLine("2. for Search Car By Model");
-            Console.WriteLine("3. for Filter Cars By Manufacturing Year");
-            Console.WriteLine("4. for Sort Cars By Price");
-            Console.WriteLine("5. for Cars Average Rating");
-            Console.WriteLine("6. for Count Cars Based On Rating");
-            Console.WriteLine("7. for Export Report");
-
-            string operation = Console.ReadLine() ?? string.Empty;
-            return operation;    
-        }
+        
     }
 }
 

@@ -3,7 +3,7 @@ namespace Codeinsight.VehicleInformer.Contracts
     public interface IVehicleService
     {
         void GenerateCarReport();
-        void ConsoleCarReport();
+        void ConsoleCarReport(string operation);
     }
 }
 
