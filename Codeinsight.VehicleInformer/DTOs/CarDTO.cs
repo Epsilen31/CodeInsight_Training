@@ -1,4 +1,3 @@
-
 namespace Codeinsight.VehicleInformer.DTOs
 {
     public class CarDto
@@ -13,4 +12,3 @@ namespace Codeinsight.VehicleInformer.DTOs
 
     }
 }
-

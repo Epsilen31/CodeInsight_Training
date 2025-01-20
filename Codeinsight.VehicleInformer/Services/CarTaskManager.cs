@@ -1,68 +1,81 @@
-
 using Codeinsight.VehicleInformer.DTOs;
 using Codeinsight.VehicleInformer.Contracts;
+using Codeinsight.VehicleInformer.Constants;
+using Codeinsight.VehicleInformer.Enums;
 
-namespace Codeinsight.VehicleInformer.TaskManagers{
+namespace Codeinsight.VehicleInformer.Services{
 
-    public class carsTaskManager : IVehicleTaskManager
+    public class CarsTaskManager : IVehicleTaskManager
     {   
         private IVehicleService VehicleService { get; set; }
-        public carsTaskManager(IVehicleService vehicleService){
+        public CarsTaskManager(IVehicleService vehicleService){
             VehicleService = vehicleService;
         }
 
         public void PerformVehicleTasks(){
 
-            string operation = OperationsAvailable();
+            string operationString = VehicalOperationsAvailable();
+            if (!Enum.TryParse(operationString, out VehicleOperationEnum operation))
+            {
+                Console.WriteLine("Invalid Operation");
+                return;
+            }
             PerformVehicleOperation(operation, VehicleService);
-        } 
+        }
 
-        public void PerformVehicleOperation(string operation, IVehicleService vehicleService)
+        private void PerformVehicleOperation(VehicleOperationEnum operation, IVehicleService vehicleService)
         {
-                switch (operation)
+            switch (operation)
             {   
-                case "1":
+                case VehicleOperationEnum.GenerateVehicleReport:
                     vehicleService.GenerateVehicleReport();
                     break;
-                case "2":
+
+                case VehicleOperationEnum.DisplayVehicleReportInTabular:
                     vehicleService.DisplayVehicleReportInTabular();
                     break;
-                case "3":
-                    IList<CarDto> carsModel =  vehicleService.SearchVehicleByModel();
+
+                case VehicleOperationEnum.SearchVehicleByModel:
+                    IList<CarDto> carsModel = vehicleService.SearchVehicleByModel();
                     ShowCarsModel(carsModel);
                     break;
-                case "4":
+
+                case VehicleOperationEnum.FilterVehiclesByManufacturingYear:
                     IList<CarDto> carsManufacturingYear = vehicleService.FilterVehiclesByManufacturingYear();
                     ShowCarsByManufacturingYear(carsManufacturingYear);
                     break;
-                case "5":
+
+                case VehicleOperationEnum.SortVehiclesByPrice:
                     IList<CarDto> carsPrices = vehicleService.SortVehiclesByPrice();
                     ShowCarsByPrice(carsPrices);
                     break;
-                case "6":
+
+                case VehicleOperationEnum.VehiclesAverageRating:
                     IList<AverageRatingDto> carsAvergeRating = vehicleService.VehiclesAvergeRating();
                     ShowCarsAvergedRating(carsAvergeRating);
                     break;
-                case "7":
+
+                case VehicleOperationEnum.CountVehiclesBasedOnRating:
                     IList<CarDto> carsCountRating = vehicleService.CountVehiclesBasedOnRating();
                     ShowCarsCountRating(carsCountRating);
                     break;
+
                 default:
                     Console.WriteLine("Invalid Operation");
                     break;
             }
         }
 
-        public string OperationsAvailable()
+        public string VehicalOperationsAvailable()
         {
-            Console.WriteLine("Choose an operation:");
-            Console.WriteLine("1. for GenerateCarReport");
-            Console.WriteLine("2. for Display All Cars in Tabular Format");
-            Console.WriteLine("3. for Search Car By Model");
-            Console.WriteLine("4. for Filter Cars By Manufacturing Year");
-            Console.WriteLine("5. for Sort Cars By Price");
-            Console.WriteLine("6. for Cars Average Rating");
-            Console.WriteLine("7. for Count Cars Based On Rating");
+            Console.WriteLine(VehicleConsoleOptions.ChooseOperation);
+            Console.WriteLine(VehicleConsoleOptions.GenerateCarReport);
+            Console.WriteLine(VehicleConsoleOptions.DisplayAllCarsTabular);
+            Console.WriteLine(VehicleConsoleOptions.SearchCarByModel);
+            Console.WriteLine(VehicleConsoleOptions.FilterCarsByManufacturingYear);
+            Console.WriteLine(VehicleConsoleOptions.SortCarsByPrice);
+            Console.WriteLine(VehicleConsoleOptions.CarsAverageRating);
+            Console.WriteLine(VehicleConsoleOptions.CountCarsBasedOnRating);
 
             string operation = Console.ReadLine() ?? string.Empty;
             return operation;    

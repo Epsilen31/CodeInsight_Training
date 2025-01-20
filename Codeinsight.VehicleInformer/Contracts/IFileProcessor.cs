@@ -7,4 +7,3 @@ namespace Codeinsight.VehicleInformer.Contracts
         void GenerateFile(string filepath, string content);
     }
 }
-

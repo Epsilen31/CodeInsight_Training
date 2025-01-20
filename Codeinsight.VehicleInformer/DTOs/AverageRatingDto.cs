@@ -1,4 +1,3 @@
-
 namespace Codeinsight.VehicleInformer.DTOs
 {
     public class AverageRatingDto
@@ -7,4 +6,3 @@ namespace Codeinsight.VehicleInformer.DTOs
         public required string Rating { get; set; }
     }
 }
-

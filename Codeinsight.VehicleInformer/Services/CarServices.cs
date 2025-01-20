@@ -1,5 +1,7 @@
 using Codeinsight.VehicleInformer.Contracts;
 using Codeinsight.VehicleInformer.DTOs;
+using Codeinsight.VehicleInformer.Constants;
+using Codeinsight.VehicleInformer.Enums;
 
 namespace Codeinsight.VehicleInformer.Services
 {
@@ -213,34 +215,40 @@ namespace Codeinsight.VehicleInformer.Services
             Console.WriteLine("2. Descending");
             Console.WriteLine("Enter your choice: ");
             int sortOrder = Convert.ToInt32(Console.ReadLine());
-            return CarByPrice(sortChoice, sortOrder, carsData);
+
+            SortCriteria sortCriteria = (SortCriteria)sortChoice;
+            SortOrder order = (SortOrder)sortOrder;
+
+            return CarByPrice(sortCriteria, order, carsData);
         }
 
-        public static IList<CarDto> CarByPrice(int sortChoice, int sortOrder, IList<CarDto> carDetails)
+        public static IList<CarDto> CarByPrice(SortCriteria sortCriteria, SortOrder sortOrder, IList<CarDto> carDetails)
         {
-            switch (sortChoice)
+            switch (sortCriteria)
             { 
-                case 1: 
-                    carDetails = sortOrder == 1 
+                case SortCriteria.BasePrice:
+                    carDetails = sortOrder == SortOrder.Ascending 
                         ? carDetails.OrderBy(car => car.BasePrice).ToList() 
                         : carDetails.OrderByDescending(car => car.BasePrice).ToList();
                     return carDetails;
-                case 2:
-                    carDetails = sortOrder == 1 
+
+                case SortCriteria.AfterTotalPrice:
+                    carDetails = sortOrder == SortOrder.Ascending 
                         ? carDetails.OrderBy(car => car.AfterTotalPrice).ToList() 
                         : carDetails.OrderByDescending(car => car.AfterTotalPrice).ToList();
                     return carDetails;
+
                 default:
                     Console.WriteLine("Invalid Sort Choice. Please choose either 1 or 2.");
-                    return [] ;
+                    return []; 
             }
         }
 
         public IList<AverageRatingDto> GetCarsAvergeRating(IList<CarDto> carDetails)
         {   
             // generate average rating base in company
-            IList<AverageRatingDto> averageRatingDTOs = GetAverageRating(carDetails);
-            return averageRatingDTOs;
+            IList<AverageRatingDto> averageRatingDtOs = GetAverageRating(carDetails);
+            return averageRatingDtOs;
         }
 
         public IList <CarDto> GetCountCarsBasedOnRating(IList<CarDto> carDetails)
@@ -309,4 +317,3 @@ namespace Codeinsight.VehicleInformer.Services
         }
     }
 }
-

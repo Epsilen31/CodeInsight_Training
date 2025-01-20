@@ -1,6 +1,5 @@
 ﻿using Codeinsight.VehicleInformer.Contracts;
 using Codeinsight.VehicleInformer.Services;
-using Codeinsight.VehicleInformer.TaskManagers;
 
 namespace Codeinsight.VehicleInformer
 {
@@ -10,9 +9,8 @@ namespace Codeinsight.VehicleInformer
         {
             IFileProcessor fileProcessor = new FileProcessor();
             IVehicleService vehicleService = new CarServices(fileProcessor);
-            IVehicleTaskManager vehicalTaskManager = new carsTaskManager(vehicleService);
+            IVehicleTaskManager vehicalTaskManager = new CarsTaskManager(vehicleService);
             vehicalTaskManager.PerformVehicleTasks();          
         } 
     }
 }
-

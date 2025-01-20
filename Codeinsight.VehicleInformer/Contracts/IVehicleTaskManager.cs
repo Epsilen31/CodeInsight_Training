@@ -3,4 +3,3 @@ namespace Codeinsight.VehicleInformer.Contracts{
         void PerformVehicleTasks();
     }
 }
-

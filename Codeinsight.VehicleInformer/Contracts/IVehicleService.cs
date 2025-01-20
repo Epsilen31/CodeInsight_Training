@@ -13,4 +13,3 @@ namespace Codeinsight.VehicleInformer.Contracts
         IList <CarDto> CountVehiclesBasedOnRating();
     }
 }
-
