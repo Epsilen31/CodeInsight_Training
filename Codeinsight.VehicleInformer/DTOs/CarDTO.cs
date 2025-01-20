@@ -1,6 +1,7 @@
+
 namespace Codeinsight.VehicleInformer.DTOs
 {
-    public class CarDTO
+    public class CarDto
     {
         public required string Model { get; set; }
         public required string Company { get; set; }
@@ -9,6 +10,7 @@ namespace Codeinsight.VehicleInformer.DTOs
         public required string InsurencePrice { get; set; }
         public required string AfterTotalPrice { get; set; }
         public required string Rating { get; set; }
+
     }
 }
 
