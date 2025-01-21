@@ -90,7 +90,7 @@ namespace Codeinsight.VehicleInformer.Services
             try
             {
                 var carsData = GetCarReportData();
-                return GetCarsAverageRating(carsData);
+                return GetAverageRating(carsData);
             }
             catch (Exception exception)
             {
@@ -226,12 +226,6 @@ namespace Codeinsight.VehicleInformer.Services
             }
         }
 
-        private ICollection<AverageRatingDto> GetCarsAverageRating(ICollection<CarDto> carDetails)
-        {
-            ICollection<AverageRatingDto> averageRatingDtOs = GetAverageRating(carDetails);
-            return averageRatingDtOs;
-        }
-
         private ICollection <CarDto> GetCountCarsBasedOnRating(ICollection<CarDto> carDetails)
         {
             var ratingGroups = carDetails.GroupBy(car => car.Rating)
@@ -277,7 +271,7 @@ namespace Codeinsight.VehicleInformer.Services
 
         private ICollection<AverageRatingDto> GetAverageRating(ICollection<CarDto> carDetail)
         {
-            ICollection<AverageRatingDto> averageRatingDtos = carDetail.GroupBy(car => car.Company)
+            ICollection<AverageRatingDto> averageRatings = carDetail.GroupBy(car => car.Company)
                 .Select(group => new AverageRatingDto
                 {
                     Company = group.Key,
@@ -285,7 +279,7 @@ namespace Codeinsight.VehicleInformer.Services
                 })
                 .ToList();
 
-            return averageRatingDtos;
+            return averageRatings;
         }
     }
 }
