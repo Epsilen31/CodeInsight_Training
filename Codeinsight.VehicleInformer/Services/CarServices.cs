@@ -121,7 +121,7 @@ namespace Codeinsight.VehicleInformer.Services
 
         private ICollection<CarDto> CarsReportData()
         {
-            string filePath = FilePathConstants.filePathValue;
+            string filePath = FilePathConstants.FilePathValue;
             string carDetails = FileProcessor.ReadFiles(filePath);
             ICollection<CarDto> carsICollection =  ParseCarDetails(carDetails);
             return carsICollection;
@@ -129,7 +129,7 @@ namespace Codeinsight.VehicleInformer.Services
 
         private void StoreCarsData(ICollection<CarDto> cars)
         {
-            string directoryPath = FilePathConstants.directoryPathValue;
+            string directoryPath = FilePathConstants.DirectoryPathValue;
             foreach (var car in cars)
             {
                 string fileName = Path.Combine(directoryPath, $"{car.Company}_{car.Model}.txt");
