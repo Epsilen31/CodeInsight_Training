@@ -163,14 +163,14 @@ namespace Codeinsight.VehicleInformer.Services
             return new List<CarDto>(); 
         }
 
-        public ICollection<CarDto> SearchCars(string carModel, ICollection<CarDto> carDetails)
+        private ICollection<CarDto> SearchCars(string carModel, ICollection<CarDto> carDetails)
         {
             carModel = carModel.ToLower();
             carDetails = carDetails.Where(car => car.Model.ToLower().Contains(carModel)).ToList();
             return carDetails;
         }
 
-        public ICollection<CarDto> GetFilterCarsByManufacturingYear(ICollection<CarDto>carsData)
+        private ICollection<CarDto> GetFilterCarsByManufacturingYear(ICollection<CarDto>carsData)
         {
             Console.WriteLine("Enter Manufacturing Year to filter: ");
             if (int.TryParse(Console.ReadLine(), out int manufacturingYear))
