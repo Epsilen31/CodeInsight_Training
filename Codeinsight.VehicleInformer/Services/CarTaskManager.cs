@@ -6,14 +6,14 @@ using Codeinsight.VehicleInformer.Enums;
 namespace Codeinsight.VehicleInformer.Services{
 
     public class CarsTaskManager : IVehicleTaskManager
-    {   
+    {
         private IVehicleService VehicleService { get; set; }
         public CarsTaskManager(IVehicleService vehicleService){
             VehicleService = vehicleService;
         }
 
-        public void PerformVehicleTasks(){
-
+        public void PerformVehicleTasks()
+        {
             string operationString = VehicleOperationsAvailable();
             if (!Enum.TryParse(operationString, out VehicleOperations operation))
             {
@@ -26,7 +26,7 @@ namespace Codeinsight.VehicleInformer.Services{
         private void PerformVehicleOperation(VehicleOperations operation, IVehicleService vehicleService)
         {
             switch (operation)
-            {   
+            {
                 case VehicleOperations.GenerateVehicleReport:
                     vehicleService.GenerateVehicleReport();
                     break;
@@ -78,11 +78,11 @@ namespace Codeinsight.VehicleInformer.Services{
             Console.WriteLine(VehicleConsoleOptions.CountCarsBasedOnRating);
 
             string operation = Console.ReadLine() ?? string.Empty;
-            return operation;    
+            return operation;
         }
 
         private void ShowCarsModel(ICollection<CarDto> carsModel)
-        { 
+        {
             Console.WriteLine("Cars Model:");
             if (carsModel.Count > 0){
                 Console.WriteLine($"{TableHeader.Model}\t{TableHeader.Company}\t{TableHeader.ManufacturingYear}\t{TableHeader.BasePrice}\t{TableHeader.InsurancePrice}\t{TableHeader.AfterTotalPrice}\t{TableHeader.Rating}");
@@ -94,7 +94,7 @@ namespace Codeinsight.VehicleInformer.Services{
         }
 
         private void ShowCarsByManufacturingYear(ICollection<CarDto> carsManufacturingYear)
-        { 
+        {
             Console.WriteLine("Cars Manufacturing Year:");
             if (carsManufacturingYear.Count > 0){
                Console.WriteLine($"{TableHeader.Model}\t{TableHeader.Company}\t{TableHeader.ManufacturingYear}\t{TableHeader.BasePrice}\t{TableHeader.InsurancePrice}\t{TableHeader.AfterTotalPrice}\t{TableHeader.Rating}");
@@ -106,7 +106,7 @@ namespace Codeinsight.VehicleInformer.Services{
         }
 
         private void ShowCarsByPrice(ICollection<CarDto> carsPrices)
-        { 
+        {
             Console.WriteLine("Cars Sorted By Price:");
             if (carsPrices.Count > 0){
                 Console.WriteLine($"{TableHeader.Model}\t{TableHeader.Company}\t{TableHeader.ManufacturingYear}\t{TableHeader.BasePrice}\t{TableHeader.InsurancePrice}\t{TableHeader.AfterTotalPrice}\t{TableHeader.Rating}");
@@ -116,7 +116,7 @@ namespace Codeinsight.VehicleInformer.Services{
                 }
             }
         }
-        
+
         private void ShowCarsAvergedRating(ICollection<AverageRatingDto> carsAverageRating)
         {
             Console.WriteLine("Cars Average Rating:");
@@ -135,7 +135,7 @@ namespace Codeinsight.VehicleInformer.Services{
         }
 
         private void ShowCarsCountRating(ICollection<CarDto> carsCountRating)
-        { 
+        {
             Console.WriteLine("Cars Count Based on Rating:");
             if (carsCountRating.Count > 0){
                 var groupedByRating = carsCountRating.GroupBy(car => car.Rating);

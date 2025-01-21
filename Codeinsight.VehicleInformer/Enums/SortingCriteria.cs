@@ -10,5 +10,5 @@ namespace Codeinsight.VehicleInformer.Enums
     {
         Ascending = 1,
         Descending
-    } 
+    }
 }

@@ -10,7 +10,7 @@ namespace Codeinsight.VehicleInformer
             IFileProcessor fileProcessor = new FileProcessor();
             IVehicleService vehicleService = new CarServices(fileProcessor);
             IVehicleTaskManager vehicleTaskManager = new CarsTaskManager(vehicleService);
-            vehicleTaskManager.PerformVehicleTasks();          
-        } 
+            vehicleTaskManager.PerformVehicleTasks();
+        }
     }
 }

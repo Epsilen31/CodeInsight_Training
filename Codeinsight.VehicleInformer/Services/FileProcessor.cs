@@ -14,12 +14,12 @@ namespace Codeinsight.VehicleInformer.Services
         }
 
         public void GenerateFile(string filePath , string  content)
-        {   
+        {
             if(!File.Exists(filePath)){
 
                 Console.WriteLine("File does not exist");
             }
             File.WriteAllText(filePath, content);
-        }      
+        }
     }
 }
