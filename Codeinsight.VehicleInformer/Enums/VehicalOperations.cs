@@ -1,6 +1,6 @@
 namespace Codeinsight.VehicleInformer.Enums
 {
-    public enum VehicleOperationEnum
+    public enum VehicleOperations
     {
         GenerateVehicleReport = 1,
         DisplayVehicleReportInTabular,

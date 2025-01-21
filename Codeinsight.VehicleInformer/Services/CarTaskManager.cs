@@ -15,7 +15,7 @@ namespace Codeinsight.VehicleInformer.Services{
         public void PerformVehicleTasks(){
 
             string operationString = VehicleOperationsAvailable();
-            if (!Enum.TryParse(operationString, out VehicleOperationEnum operation))
+            if (!Enum.TryParse(operationString, out VehicleOperations operation))
             {
                 Console.WriteLine("Invalid Operation");
                 return;
@@ -23,39 +23,39 @@ namespace Codeinsight.VehicleInformer.Services{
             PerformVehicleOperation(operation, VehicleService);
         }
 
-        private void PerformVehicleOperation(VehicleOperationEnum operation, IVehicleService vehicleService)
+        private void PerformVehicleOperation(VehicleOperations operation, IVehicleService vehicleService)
         {
             switch (operation)
             {   
-                case VehicleOperationEnum.GenerateVehicleReport:
+                case VehicleOperations.GenerateVehicleReport:
                     vehicleService.GenerateVehicleReport();
                     break;
 
-                case VehicleOperationEnum.DisplayVehicleReportInTabular:
+                case VehicleOperations.DisplayVehicleReportInTabular:
                     vehicleService.DisplayVehicleReportInTabular();
                     break;
 
-                case VehicleOperationEnum.SearchVehicleByModel:
+                case VehicleOperations.SearchVehicleByModel:
                     ICollection<CarDto> carsModel = vehicleService.SearchVehicleByModel();
                     ShowCarsModel(carsModel);
                     break;
 
-                case VehicleOperationEnum.FilterVehiclesByManufacturingYear:
+                case VehicleOperations.FilterVehiclesByManufacturingYear:
                     ICollection<CarDto> carsManufacturingYear = vehicleService.FilterVehiclesByManufacturingYear();
                     ShowCarsByManufacturingYear(carsManufacturingYear);
                     break;
 
-                case VehicleOperationEnum.SortVehiclesByPrice:
+                case VehicleOperations.SortVehiclesByPrice:
                     ICollection<CarDto> carsPrices = vehicleService.SortVehiclesByPrice();
                     ShowCarsByPrice(carsPrices);
                     break;
 
-                case VehicleOperationEnum.VehiclesAverageRating:
+                case VehicleOperations.VehiclesAverageRating:
                     ICollection<AverageRatingDto> carsAverageRating = vehicleService.VehiclesAverageRating();
                     ShowCarsAvergedRating(carsAverageRating);
                     break;
 
-                case VehicleOperationEnum.CountVehiclesBasedOnRating:
+                case VehicleOperations.CountVehiclesBasedOnRating:
                     ICollection<CarDto> carsCountRating = vehicleService.CountVehiclesBasedOnRating();
                     ShowCarsCountRating(carsCountRating);
                     break;
