@@ -121,7 +121,7 @@ namespace Codeinsight.VehicleInformer.Services
 
         private ICollection<CarDto> CarsReportData()
         {
-            string filePath = FilePaths.filePathValue;
+            string filePath = FilePathConstants.filePathValue;
             string carDetails = FileProcessor.ReadFiles(filePath);
             ICollection<CarDto> carsICollection =  ParseCarDetails(carDetails);
             return carsICollection;
@@ -129,24 +129,24 @@ namespace Codeinsight.VehicleInformer.Services
 
         private void StoreCarsData(ICollection<CarDto> cars)
         {
-            string directoryPath = FilePaths.directoryPathValue;
+            string directoryPath = FilePathConstants.directoryPathValue;
             foreach (var car in cars)
             {
                 string fileName = Path.Combine(directoryPath, $"{car.Company}_{car.Model}.txt");
-                string carDetails = $"{TableHeader.Model}: {car.Model}\n" +
-                                    $"{TableHeader.Company}: {car.Company}\n" +
-                                    $"{TableHeader.ManufacturingYear}: {car.ManufacturingYear}\n" +
-                                    $"{TableHeader.BasePrice}: {car.BasePrice}\n" +
-                                    $"{TableHeader.InsurancePrice}: {car.InsurancePrice}\n" +
-                                    $"{TableHeader.AfterTotalPrice}: {car.AfterTotalPrice}\n" +
-                                    $"{TableHeader.Rating}: {car.Rating}\n";
+                string carDetails = $"{TableHeaderConstants.Model}: {car.Model}\n" +
+                                    $"{TableHeaderConstants.Company}: {car.Company}\n" +
+                                    $"{TableHeaderConstants.ManufacturingYear}: {car.ManufacturingYear}\n" +
+                                    $"{TableHeaderConstants.BasePrice}: {car.BasePrice}\n" +
+                                    $"{TableHeaderConstants.InsurancePrice}: {car.InsurancePrice}\n" +
+                                    $"{TableHeaderConstants.AfterTotalPrice}: {car.AfterTotalPrice}\n" +
+                                    $"{TableHeaderConstants.Rating}: {car.Rating}\n";
 
                 FileProcessor.GenerateFile(fileName, carDetails);
             }
         }
 
         private void DisplayAllCars(ICollection<CarDto> carDetails) {
-            Console.WriteLine($"{TableHeader.Model}\t{TableHeader.Company}\t{TableHeader.ManufacturingYear}\t{TableHeader.BasePrice}\t{TableHeader.InsurancePrice}\t{TableHeader.AfterTotalPrice}\t{TableHeader.Rating}");
+            Console.WriteLine($"{TableHeaderConstants.Model}\t{TableHeaderConstants.Company}\t{TableHeaderConstants.ManufacturingYear}\t{TableHeaderConstants.BasePrice}\t{TableHeaderConstants.InsurancePrice}\t{TableHeaderConstants.AfterTotalPrice}\t{TableHeaderConstants.Rating}");
             foreach (var car in carDetails) {
                 Console.WriteLine($"{car.Model}\t{car.Company}\t{car.ManufacturingYear}\t{car.BasePrice}\t{car.InsurancePrice}\t{car.AfterTotalPrice}\t{car.Rating} ");
             }
@@ -160,7 +160,7 @@ namespace Codeinsight.VehicleInformer.Services
             {
                 return SearchCars(carModel, carDetails);
             }
-            return new List<CarDto>(); 
+            return new List<CarDto>();
         }
 
         private ICollection<CarDto> SearchCars(string carModel, ICollection<CarDto> carDetails)
@@ -177,7 +177,7 @@ namespace Codeinsight.VehicleInformer.Services
             {
                 return CarsFiltering(manufacturingYear, carsData);
             }
-            return new List<CarDto>(); 
+            return new List<CarDto>();
         }
 
         private ICollection<CarDto> CarsFiltering(int manufacturingYear, ICollection<CarDto> carDetails)
@@ -209,20 +209,20 @@ namespace Codeinsight.VehicleInformer.Services
             switch (sortCriteria)
             {
                 case SortCriteria.BasePrice:
-                    carDetails = sortOrder == SortOrder.Ascending 
-                        ? carDetails.OrderBy(car => car.BasePrice).ToList() 
+                    carDetails = sortOrder == SortOrder.Ascending
+                        ? carDetails.OrderBy(car => car.BasePrice).ToList()
                         : carDetails.OrderByDescending(car => car.BasePrice).ToList();
                     return carDetails;
 
                 case SortCriteria.AfterTotalPrice:
-                    carDetails = sortOrder == SortOrder.Ascending 
-                        ? carDetails.OrderBy(car => car.AfterTotalPrice).ToList() 
+                    carDetails = sortOrder == SortOrder.Ascending
+                        ? carDetails.OrderBy(car => car.AfterTotalPrice).ToList()
                         : carDetails.OrderByDescending(car => car.AfterTotalPrice).ToList();
                     return carDetails;
 
                 default:
                     Console.WriteLine("Invalid Sort Choice. Please choose either 1 or 2.");
-                    return new List<CarDto>(); 
+                    return new List<CarDto>();
             }
         }
 

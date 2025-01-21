@@ -1,5 +1,6 @@
 namespace Codeinsight.VehicleInformer{
-    public class TableHeader{
+    public class TableHeaderConstants
+    {
         public const string Model = "Model";
         public const string Company = "Company";
         public const string ManufacturingYear = "Manufacturing Year";

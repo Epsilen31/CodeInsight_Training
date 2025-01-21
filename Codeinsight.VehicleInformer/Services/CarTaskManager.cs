@@ -68,14 +68,14 @@ namespace Codeinsight.VehicleInformer.Services{
 
         private string VehicleOperationsAvailable()
         {
-            Console.WriteLine(VehicleConsoleOptions.ChooseOperation);
-            Console.WriteLine(VehicleConsoleOptions.GenerateCarReport);
-            Console.WriteLine(VehicleConsoleOptions.DisplayAllCarsTabular);
-            Console.WriteLine(VehicleConsoleOptions.SearchCarByModel);
-            Console.WriteLine(VehicleConsoleOptions.FilterCarsByManufacturingYear);
-            Console.WriteLine(VehicleConsoleOptions.SortCarsByPrice);
-            Console.WriteLine(VehicleConsoleOptions.CarsAverageRating);
-            Console.WriteLine(VehicleConsoleOptions.CountCarsBasedOnRating);
+            Console.WriteLine(VehicleConsoleOptionConstants.ChooseOperation);
+            Console.WriteLine(VehicleConsoleOptionConstants.GenerateCarReport);
+            Console.WriteLine(VehicleConsoleOptionConstants.DisplayAllCarsTabular);
+            Console.WriteLine(VehicleConsoleOptionConstants.SearchCarByModel);
+            Console.WriteLine(VehicleConsoleOptionConstants.FilterCarsByManufacturingYear);
+            Console.WriteLine(VehicleConsoleOptionConstants.SortCarsByPrice);
+            Console.WriteLine(VehicleConsoleOptionConstants.CarsAverageRating);
+            Console.WriteLine(VehicleConsoleOptionConstants.CountCarsBasedOnRating);
 
             string operation = Console.ReadLine() ?? string.Empty;
             return operation;
@@ -85,7 +85,7 @@ namespace Codeinsight.VehicleInformer.Services{
         {
             Console.WriteLine("Cars Model:");
             if (carsModel.Count > 0){
-                Console.WriteLine($"{TableHeader.Model}\t{TableHeader.Company}\t{TableHeader.ManufacturingYear}\t{TableHeader.BasePrice}\t{TableHeader.InsurancePrice}\t{TableHeader.AfterTotalPrice}\t{TableHeader.Rating}");
+                Console.WriteLine($"{TableHeaderConstants.Model}\t{TableHeaderConstants.Company}\t{TableHeaderConstants.ManufacturingYear}\t{TableHeaderConstants.BasePrice}\t{TableHeaderConstants.InsurancePrice}\t{TableHeaderConstants.AfterTotalPrice}\t{TableHeaderConstants.Rating}");
                 foreach (var car in carsModel)
                 {
                     Console.WriteLine($"{car.Model}\t{car.Company}\t{car.ManufacturingYear}\t{car.BasePrice}\t{car.InsurancePrice}\t{car.AfterTotalPrice}\t{car.Rating}");
@@ -97,7 +97,7 @@ namespace Codeinsight.VehicleInformer.Services{
         {
             Console.WriteLine("Cars Manufacturing Year:");
             if (carsManufacturingYear.Count > 0){
-               Console.WriteLine($"{TableHeader.Model}\t{TableHeader.Company}\t{TableHeader.ManufacturingYear}\t{TableHeader.BasePrice}\t{TableHeader.InsurancePrice}\t{TableHeader.AfterTotalPrice}\t{TableHeader.Rating}");
+               Console.WriteLine($"{TableHeaderConstants.Model}\t{TableHeaderConstants.Company}\t{TableHeaderConstants.ManufacturingYear}\t{TableHeaderConstants.BasePrice}\t{TableHeaderConstants.InsurancePrice}\t{TableHeaderConstants.AfterTotalPrice}\t{TableHeaderConstants.Rating}");
                 foreach (var car in carsManufacturingYear)
                 {
                     Console.WriteLine($"{car.Model}\t{car.Company}\t{car.ManufacturingYear}\t{car.BasePrice}\t{car.InsurancePrice}\t{car.AfterTotalPrice}\t{car.Rating}");
@@ -109,7 +109,7 @@ namespace Codeinsight.VehicleInformer.Services{
         {
             Console.WriteLine("Cars Sorted By Price:");
             if (carsPrices.Count > 0){
-                Console.WriteLine($"{TableHeader.Model}\t{TableHeader.Company}\t{TableHeader.ManufacturingYear}\t{TableHeader.BasePrice}\t{TableHeader.InsurancePrice}\t{TableHeader.AfterTotalPrice}\t{TableHeader.Rating}");
+                Console.WriteLine($"{TableHeaderConstants.Model}\t{TableHeaderConstants.Company}\t{TableHeaderConstants.ManufacturingYear}\t{TableHeaderConstants.BasePrice}\t{TableHeaderConstants.InsurancePrice}\t{TableHeaderConstants.AfterTotalPrice}\t{TableHeaderConstants.Rating}");
                 foreach (var car in carsPrices)
                 {
                     Console.WriteLine($"{car.Model}\t{car.Company}\t{car.ManufacturingYear}\t{car.BasePrice}\t{car.InsurancePrice}\t{car.AfterTotalPrice}\t{car.Rating}");
