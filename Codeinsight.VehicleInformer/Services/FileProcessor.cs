@@ -23,4 +23,3 @@ namespace Codeinsight.VehicleInformer.Services
         }      
     }
 }
-
