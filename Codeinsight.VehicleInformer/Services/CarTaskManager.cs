@@ -20,44 +20,39 @@ namespace Codeinsight.VehicleInformer.Services{
                 Console.WriteLine("Invalid Operation");
                 return;
             }
-            PerformVehicleOperation(operation, VehicleService);
+            PerformVehicleOperation(operation);
         }
 
-        private void PerformVehicleOperation(VehicleOperations operation, IVehicleService vehicleService)
+        private void PerformVehicleOperation(VehicleOperations operation)
         {
             switch (operation)
             {
                 case VehicleOperations.GenerateVehicleReport:
-                    vehicleService.GenerateVehicleReport();
+                    VehicleService.GenerateVehicleReport();
                     break;
 
                 case VehicleOperations.DisplayVehicleReportInTabular:
-                    vehicleService.DisplayVehicleReportInTabular();
+                    VehicleService.DisplayVehicleReportInTabular();
                     break;
 
                 case VehicleOperations.SearchVehicleByModel:
-                    ICollection<CarDto> carsModel = vehicleService.SearchVehicleByModel();
-                    ShowCarsModel(carsModel);
+                    SearchVehiclesByModel();
                     break;
 
                 case VehicleOperations.FilterVehiclesByManufacturingYear:
-                    ICollection<CarDto> carsManufacturingYear = vehicleService.FilterVehiclesByManufacturingYear();
-                    ShowCarsByManufacturingYear(carsManufacturingYear);
+                    FilterVehiclesByManufacturingYear();
                     break;
 
                 case VehicleOperations.SortVehiclesByPrice:
-                    ICollection<CarDto> carsPrices = vehicleService.SortVehiclesByPrice();
-                    ShowCarsByPrice(carsPrices);
+                    SortVehiclesByPrice();
                     break;
 
                 case VehicleOperations.VehiclesAverageRating:
-                    ICollection<AverageRatingDto> carsAverageRating = vehicleService.VehiclesAverageRating();
-                    ShowCarsAvergedRating(carsAverageRating);
+                    GetVehiclesAverageRating();
                     break;
 
                 case VehicleOperations.CountVehiclesBasedOnRating:
-                    ICollection<CarDto> carsCountRating = vehicleService.CountVehiclesBasedOnRating();
-                    ShowCarsCountRating(carsCountRating);
+                    GetVehicleCountByRating();
                     break;
 
                 default:
@@ -81,7 +76,37 @@ namespace Codeinsight.VehicleInformer.Services{
             return operation;
         }
 
-        private void ShowCarsModel(ICollection<CarDto> carsModel)
+        private void SearchVehiclesByModel()
+        {
+            ICollection<CarDto> carsModel = VehicleService.SearchVehicleByModel();
+            DisplayCarsByModel(carsModel);
+        }
+
+        private void FilterVehiclesByManufacturingYear()
+        {
+            ICollection<CarDto> carsManufacturingYear = VehicleService.FilterVehiclesByManufacturingYear();
+            DisplayCarsByManufacturingYear(carsManufacturingYear);
+        }
+
+        private void SortVehiclesByPrice()
+        {
+            ICollection<CarDto> carsPrices = VehicleService.SortVehiclesByPrice();
+            DisplayCarsByPrice(carsPrices);
+        }
+
+        private void GetVehiclesAverageRating()
+        {
+            ICollection<AverageRatingDto> carsAverageRating = VehicleService.VehiclesAverageRating();
+            DisplayCarsAverageRating(carsAverageRating);
+        }
+
+        private void GetVehicleCountByRating()
+        {
+            ICollection<CarDto> carsCountRating = VehicleService.CountVehiclesBasedOnRating();
+            DisplayCarsCountByRating(carsCountRating);
+        }
+
+        private void DisplayCarsByModel(ICollection<CarDto> carsModel)
         {
             Console.WriteLine("Cars Model:");
             if (carsModel.Count > 0){
@@ -93,7 +118,7 @@ namespace Codeinsight.VehicleInformer.Services{
             }
         }
 
-        private void ShowCarsByManufacturingYear(ICollection<CarDto> carsManufacturingYear)
+        private void DisplayCarsByManufacturingYear(ICollection<CarDto> carsManufacturingYear)
         {
             Console.WriteLine("Cars Manufacturing Year:");
             if (carsManufacturingYear.Count > 0){
@@ -105,7 +130,7 @@ namespace Codeinsight.VehicleInformer.Services{
             }
         }
 
-        private void ShowCarsByPrice(ICollection<CarDto> carsPrices)
+        private void DisplayCarsByPrice(ICollection<CarDto> carsPrices)
         {
             Console.WriteLine("Cars Sorted By Price:");
             if (carsPrices.Count > 0){
@@ -117,7 +142,7 @@ namespace Codeinsight.VehicleInformer.Services{
             }
         }
 
-        private void ShowCarsAvergedRating(ICollection<AverageRatingDto> carsAverageRating)
+        private void DisplayCarsAverageRating(ICollection<AverageRatingDto> carsAverageRating)
         {
             Console.WriteLine("Cars Average Rating:");
             if (carsAverageRating.Count > 0){
@@ -134,7 +159,7 @@ namespace Codeinsight.VehicleInformer.Services{
             Console.WriteLine($"Total Records: {carsAverageRating.Count}\n");
         }
 
-        private void ShowCarsCountRating(ICollection<CarDto> carsCountRating)
+        private void DisplayCarsCountByRating(ICollection<CarDto> carsCountRating)
         {
             Console.WriteLine("Cars Count Based on Rating:");
             if (carsCountRating.Count > 0){

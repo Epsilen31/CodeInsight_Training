@@ -90,7 +90,7 @@ namespace Codeinsight.VehicleInformer.Services
             try
             {
                 var carsData = GetCarReportData();
-                return GetCarsAvergeRating(carsData);
+                return GetCarsAverageRating(carsData);
             }
             catch (Exception exception)
             {
@@ -226,7 +226,7 @@ namespace Codeinsight.VehicleInformer.Services
             }
         }
 
-        private ICollection<AverageRatingDto> GetCarsAvergeRating(ICollection<CarDto> carDetails)
+        private ICollection<AverageRatingDto> GetCarsAverageRating(ICollection<CarDto> carDetails)
         {
             ICollection<AverageRatingDto> averageRatingDtOs = GetAverageRating(carDetails);
             return averageRatingDtOs;
@@ -240,23 +240,14 @@ namespace Codeinsight.VehicleInformer.Services
             return ratingGroups;
         }
 
-        private double GetAllCarsAvergeRating(ICollection<CarDto> carDetails){
-
-                var ratings = carDetails.GroupBy(car => car.Rating );
-                double totalRating = ratings.Sum(group => group.Count() * Convert.ToDouble(group.Key));
-                double totalCars = carDetails.Count;
-                double averageRating = totalRating / totalCars;
-                return averageRating;
-        }
-
         private ICollection<CarDto> ParseCarDetails(string carDetails)
         {
             var cars = new List<CarDto>();
             string[] carDetailLines = carDetails.Split("\n");
 
-            for (int i = 1; i < carDetailLines.Length; i++)
+            for (int index = 1; index < carDetailLines.Length; index++)
             {
-                var carDetail = carDetailLines[i].Split(",");
+                var carDetail = carDetailLines[index].Split(",");
 
                 if (carDetail.Length == 7)
                 {
@@ -286,7 +277,7 @@ namespace Codeinsight.VehicleInformer.Services
 
         private ICollection<AverageRatingDto> GetAverageRating(ICollection<CarDto> carDetail)
         {
-            var averageRatingDtos = carDetail.GroupBy(car => car.Company)
+            ICollection<AverageRatingDto> averageRatingDtos = carDetail.GroupBy(car => car.Company)
                 .Select(group => new AverageRatingDto
                 {
                     Company = group.Key,
