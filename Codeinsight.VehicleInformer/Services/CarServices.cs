@@ -55,7 +55,7 @@ namespace Codeinsight.VehicleInformer.Services
             }
         }
 
-        public ICollection <CarDto> FilterVehiclesByManufacturingYear()
+        public ICollection <CarDto> GetFilterVehiclesByManufacturingYear()
         {
             try
             {
@@ -70,7 +70,7 @@ namespace Codeinsight.VehicleInformer.Services
             }
         }
 
-        public ICollection <CarDto> SortVehiclesByPrice()
+        public ICollection <CarDto> GetSortVehiclesByPrice()
         {
             try
             {
@@ -85,7 +85,7 @@ namespace Codeinsight.VehicleInformer.Services
             }
         }
 
-        public ICollection<AverageRatingDto> VehiclesAverageRating()
+        public ICollection<AverageRatingDto> GetVehiclesAverageRating()
         {
             try
             {
@@ -100,7 +100,7 @@ namespace Codeinsight.VehicleInformer.Services
             }
         }
 
-        public ICollection <CarDto> CountVehiclesBasedOnRating()
+        public ICollection <CarDto> GetCountVehiclesBasedOnRating()
         {
             try
             {

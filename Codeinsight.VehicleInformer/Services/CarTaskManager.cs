@@ -84,25 +84,25 @@ namespace Codeinsight.VehicleInformer.Services{
 
         private void FilterVehiclesByManufacturingYear()
         {
-            ICollection<CarDto> carsManufacturingYear = VehicleService.FilterVehiclesByManufacturingYear();
+            ICollection<CarDto> carsManufacturingYear = VehicleService.GetFilterVehiclesByManufacturingYear();
             DisplayCarsByManufacturingYear(carsManufacturingYear);
         }
 
         private void SortVehiclesByPrice()
         {
-            ICollection<CarDto> carsPrices = VehicleService.SortVehiclesByPrice();
+            ICollection<CarDto> carsPrices = VehicleService.GetSortVehiclesByPrice();
             DisplayCarsByPrice(carsPrices);
         }
 
         private void GetVehiclesAverageRating()
         {
-            ICollection<AverageRatingDto> carsAverageRating = VehicleService.VehiclesAverageRating();
+            ICollection<AverageRatingDto> carsAverageRating = VehicleService.GetVehiclesAverageRating();
             DisplayCarsAverageRating(carsAverageRating);
         }
 
         private void GetVehicleCountByRating()
         {
-            ICollection<CarDto> carsCountRating = VehicleService.CountVehiclesBasedOnRating();
+            ICollection<CarDto> carsCountRating = VehicleService.GetCountVehiclesBasedOnRating();
             DisplayCarsCountByRating(carsCountRating);
         }
 
