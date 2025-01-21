@@ -90,7 +90,7 @@ namespace Codeinsight.VehicleInformer.Services{
 
         private void SortVehiclesByPrice()
         {
-            ICollection<CarDto> carsPrices = VehicleService.GetSortVehiclesByPrice();
+            ICollection<CarDto> carsPrices = VehicleService.GetSortedVehiclesByPrice();
             DisplayCarsByPrice(carsPrices);
         }
 
@@ -102,7 +102,7 @@ namespace Codeinsight.VehicleInformer.Services{
 
         private void GetVehicleCountByRating()
         {
-            ICollection<CarDto> carsCountRating = VehicleService.GetCountVehiclesBasedOnRating();
+            ICollection<CarDto> carsCountRating = VehicleService.GetVehiclesCountBasedOnRating();
             DisplayCarsCountByRating(carsCountRating);
         }
 

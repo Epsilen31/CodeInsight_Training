@@ -70,7 +70,7 @@ namespace Codeinsight.VehicleInformer.Services
             }
         }
 
-        public ICollection <CarDto> GetSortVehiclesByPrice()
+        public ICollection <CarDto> GetSortedVehiclesByPrice()
         {
             try
             {
@@ -100,7 +100,7 @@ namespace Codeinsight.VehicleInformer.Services
             }
         }
 
-        public ICollection <CarDto> GetCountVehiclesBasedOnRating()
+        public ICollection <CarDto> GetVehiclesCountBasedOnRating()
         {
             try
             {

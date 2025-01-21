@@ -8,8 +8,8 @@ namespace Codeinsight.VehicleInformer.Contracts
         void DisplayVehicleReportInTabular();
         ICollection <CarDto> SearchVehicleByModel();
         ICollection <CarDto> GetFilterVehiclesByManufacturingYear();
-        ICollection <CarDto> GetSortVehiclesByPrice();
+        ICollection <CarDto> GetSortedVehiclesByPrice();
         ICollection<AverageRatingDto> GetVehiclesAverageRating();
-        ICollection <CarDto> GetCountVehiclesBasedOnRating();
+        ICollection <CarDto> GetVehiclesCountBasedOnRating();
     }
 }
