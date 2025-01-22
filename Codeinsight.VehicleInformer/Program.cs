@@ -8,10 +8,9 @@ namespace Codeinsight.VehicleInformer
         static void Main(string[] args)
         {
             IFileProcessor fileProcessor = new FileProcessor();
-            IVehicleService vehicalService = new CarServices(fileProcessor);
-            // vehicalService.GenerateCarReport();
-            vehicalService.ConsoleCarReport();
+            IVehicleService vehicleService = new CarServices(fileProcessor);
+            IVehicleTaskManager vehicleTaskManager = new CarsTaskManager(vehicleService);
+            vehicleTaskManager.PerformVehicleTasks();
         }
     }
 }
-

@@ -13,14 +13,13 @@ namespace Codeinsight.VehicleInformer.Services
             return string.Join("\n", File.ReadAllLines(filepath));
         }
 
-        public void GenerateFile(string directoryPath , string  content)
+        public void GenerateFile(string filePath , string  content)
         {
-            if (!Directory.Exists(directoryPath))
-            {
-                Directory.CreateDirectory(directoryPath);
+            if(!File.Exists(filePath)){
+
+                Console.WriteLine("File does not exist");
             }
-            File.WriteAllText(directoryPath, content);
-        }      
+            File.WriteAllText(filePath, content);
+        }
     }
 }
-
