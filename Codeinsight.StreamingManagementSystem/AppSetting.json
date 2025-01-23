@@ -1,0 +1,9 @@
+{
+  "AppSetting": {
+    "Port": 3000,
+    "Server": "localhost",
+    "Database": "subscriptionBillingDB",
+    "Password": "Admin@1234",
+    "Username": "root"
+  }
+}
