@@ -2,8 +2,9 @@ namespace Codeinsight.StreamingManagementSystem.DataAccess.Contracts
 {
     public interface IUnitOfWork
     {
-        IRepository<Subscription> ManageSubscriptions { get; set; }
-        IRepository<Payment> ProcessPayments { get; set; }
-        IRepository<Billing> ManageBilling { get; set; }
+        IUserSubscriptionRepository UserSubscriptionRepository { get; }
+        IPaymentRepository PaymentRepository { get; }
+        IBillingRepository BillingRepository { get; }
+        IUserRepository UserRepository { get; }
     }
 }

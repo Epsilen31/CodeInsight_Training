@@ -1,4 +1,8 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Codeinsight.StreamingManagementSystem.DataAccess.Context;
+using Codeinsight.StreamingManagementSystem.DataAccess.Contracts;
+using Codeinsight.StreamingManagementSystem.DataAccess.Repository;
+using Codeinsight.StreamingManagementSystem.Settings;
+using Microsoft.Extensions.Configuration;
 
 namespace Codeinsight.StreamingManagementSystem
 {
@@ -6,17 +10,24 @@ namespace Codeinsight.StreamingManagementSystem
     {
         static void Main(string[] args)
         {
-            string configFilePath = "AppSettings.json";
-            IConfiguration config = new ConfigurationBuilder()
-            .AddJsonFile(configFilePath)
-            .Build();
+            string configFilePath =
+                @"E:\C#\Assignment\abhishek-mishra-training-2025\Codeinsight.StreamingManagementSystem\AppSetting.json";
+
+            IConfiguration config = new ConfigurationBuilder().AddJsonFile(configFilePath).Build();
+
             IConfigurationSection section = config.GetSection("AppSetting");
-            DatabaseSettings dbSettings = JsonSerializer.Deserialize<DatabaseSettings>(section);
-            var databaseService = new DatabaseConnection(dbSettings);
-            databaseService.Connect();
 
-            IWorkOfUnit workOfUnit = new WorkOfUnit(dbSettings);
+            AppSetting appSetting =
+                section.Get<AppSetting>()
+                ?? throw new InvalidOperationException("AppSetting section is missing or invalid.");
 
+            DatabaseConnection databaseConnection = DatabaseConnection.GetInstance(appSetting);
+
+            databaseConnection.Connect();
+
+            IUnitOfWork unitOfWork = new UnitOfWork(databaseConnection);
+
+            databaseConnection.Disconnect();
         }
     }
 }
