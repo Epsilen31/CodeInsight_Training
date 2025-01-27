@@ -1,9 +1,11 @@
-using Codeinsight.StreamingManagementSystem.BusinessLogic.DTOs;
+using Codeinsight.StreamingManagementSystem.DataAccess.Entities;
 
 namespace Codeinsight.StreamingManagementSystem.DataAccess.Contracts
 {
     public interface IBillingRepository
     {
-        // ICollection <BillingDto> UpdateBillingDetails(int userId, string paymentMethod, string billingAddress);
+        ICollection<Billing> GetBillingWithUserDetails(int userId);
+        void UpdateBillingDetails(Billing billingDetails);
+        ICollection<Billing> GetAllUsersWithBillingDetails();
     }
 }

@@ -1,5 +1,4 @@
-﻿using Codeinsight.StreamingManagementSystem.DataAccess.Context;
-using Codeinsight.StreamingManagementSystem.DataAccess.Contracts;
+﻿using Codeinsight.StreamingManagementSystem.BusinessLogic.Contracts;
 using Codeinsight.StreamingManagementSystem.DataAccess.Repository;
 using Codeinsight.StreamingManagementSystem.Settings;
 using Microsoft.Extensions.Configuration;
@@ -10,24 +9,31 @@ namespace Codeinsight.StreamingManagementSystem
     {
         static void Main(string[] args)
         {
-            string configFilePath =
-                @"E:\C#\Assignment\abhishek-mishra-training-2025\Codeinsight.StreamingManagementSystem\AppSetting.json";
+            try
+            {
+                var appSettings = GetAppSetting();
 
-            IConfiguration config = new ConfigurationBuilder().AddJsonFile(configFilePath).Build();
+                var unitOfWork = new UnitOfWork(appSettings);
 
-            IConfigurationSection section = config.GetSection("AppSetting");
+                var billingAndSubscriptionManager = new BillingAndSubscriptionManager(unitOfWork);
+                billingAndSubscriptionManager.ManageSubscriptionAndBilling();
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine($"An error occurred: {exception.Message}");
+            }
+        }
 
-            AppSetting appSetting =
-                section.Get<AppSetting>()
+        private static AppSetting GetAppSetting()
+        {
+            var configFilePath = Path.Combine(Directory.GetCurrentDirectory(), "AppSetting.json");
+
+            var config = new ConfigurationBuilder().AddJsonFile(configFilePath).Build();
+
+            var section = config.GetSection("AppSetting");
+
+            return section.Get<AppSetting>()
                 ?? throw new InvalidOperationException("AppSetting section is missing or invalid.");
-
-            DatabaseConnection databaseConnection = DatabaseConnection.GetInstance(appSetting);
-
-            databaseConnection.Connect();
-
-            IUnitOfWork unitOfWork = new UnitOfWork(databaseConnection);
-
-            databaseConnection.Disconnect();
         }
     }
 }

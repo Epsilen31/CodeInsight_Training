@@ -1,8 +1,8 @@
-namespace Codeinsight.StreamingManagementSystem.BusinessLogic
+namespace Codeinsight.StreamingManagementSystem.BusinessLogic.Enums
 {
     public enum PaymentStatus
     {
         Paid,
-        Overdue
+        Overdue,
     }
 }

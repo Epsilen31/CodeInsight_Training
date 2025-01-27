@@ -1,5 +1,6 @@
 using Codeinsight.StreamingManagementSystem.DataAccess.Context;
 using Codeinsight.StreamingManagementSystem.DataAccess.Contracts;
+using Codeinsight.StreamingManagementSystem.Settings;
 
 namespace Codeinsight.StreamingManagementSystem.DataAccess.Repository
 {
@@ -9,59 +10,21 @@ namespace Codeinsight.StreamingManagementSystem.DataAccess.Repository
         private IUserSubscriptionRepository _userSubscriptionRepository;
         private IBillingRepository _billingRepository;
         private IPaymentRepository _paymentRepository;
-
         private IUserRepository _userRepository;
 
-        public UnitOfWork(DatabaseConnection context)
+        public UnitOfWork(AppSetting appSetting)
         {
-            _context = context;
+            _context = DatabaseConnection.GetInstance(appSetting);
+            _userSubscriptionRepository = new UserSubscriptionRepository(_context);
+            _billingRepository = new BillingRepository(_context);
+            _paymentRepository = new PaymentRepository(_context);
+            _userRepository = new UserRepository(_context);
         }
 
-        public IUserSubscriptionRepository UserSubscriptionRepository
-        {
-            get
-            {
-                if (_userSubscriptionRepository == null)
-                {
-                    _userSubscriptionRepository = new UserSubscriptionRepository(_context);
-                }
-                return _userSubscriptionRepository;
-            }
-        }
-        public IBillingRepository BillingRepository
-        {
-            get
-            {
-                if (_billingRepository == null)
-                {
-                    _billingRepository = new BillingRepository(_context);
-                }
-                return _billingRepository;
-            }
-        }
-
-        public IPaymentRepository PaymentRepository
-        {
-            get
-            {
-                if (_paymentRepository == null)
-                {
-                    _paymentRepository = new PaymentRepository(_context);
-                }
-                return _paymentRepository;
-            }
-        }
-
-        public IUserRepository UserRepository
-        {
-            get
-            {
-                if (_userRepository == null)
-                {
-                    _userRepository = new UserRepository(_context);
-                }
-                return _userRepository;
-            }
-        }
+        public IUserSubscriptionRepository UserSubscriptionRepository =>
+            _userSubscriptionRepository;
+        public IBillingRepository BillingRepository => _billingRepository;
+        public IPaymentRepository PaymentRepository => _paymentRepository;
+        public IUserRepository UserRepository => _userRepository;
     }
 }

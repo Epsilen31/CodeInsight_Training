@@ -1,8 +1,9 @@
-namespace Codeinsight.StreamingManagementSystem.BusinessLogic{
+namespace Codeinsight.StreamingManagementSystem.BusinessLogic.Enums
+{
     public enum PlanType
     {
-        Basic,
+        Basic = 1,
         Premium,
-        VIP
+        VIP,
     }
 }

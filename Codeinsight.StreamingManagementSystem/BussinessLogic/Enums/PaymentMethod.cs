@@ -1,8 +1,8 @@
-namespace Codeinsight.StreamingManagementSystem.BusinessLogic
+namespace Codeinsight.StreamingManagementSystem.BusinessLogic.Enums
 {
     public enum PaymentMethod
     {
-        CreditCard,
-        PayPal
+        CreditCard = 0,
+        PayPal = 1,
     }
 }

@@ -1,4 +1,4 @@
-#nullable enable
+using System.Data;
 using Codeinsight.StreamingManagementSystem.Settings;
 using MySql.Data.MySqlClient;
 
@@ -7,8 +7,8 @@ namespace Codeinsight.StreamingManagementSystem.DataAccess.Context
     public class DatabaseConnection : IDisposable
     {
         private readonly string _connectionString;
-        private static DatabaseConnection? _instance;
-        private MySqlConnection? _connection;
+        private static DatabaseConnection _instance;
+        private MySqlConnection _connection;
 
         private DatabaseConnection(AppSetting appSetting)
         {
@@ -26,31 +26,20 @@ namespace Codeinsight.StreamingManagementSystem.DataAccess.Context
             return _instance;
         }
 
-        public void Connect()
+        public IDbConnection Connection
         {
-            try
+            get
             {
-                _connection = new MySqlConnection(_connectionString);
-                _connection.Open();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error connecting to the database: {ex.Message}");
-            }
-        }
-
-        public void Disconnect()
-        {
-            try
-            {
-                if (_connection != null && _connection.State == System.Data.ConnectionState.Open)
+                if (_connection == null)
                 {
-                    _connection.Close();
+                    _connection = new MySqlConnection(_connectionString);
                 }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error while disconnecting: {ex.Message}");
+
+                if (_connection.State != ConnectionState.Open)
+                {
+                    _connection.Open();
+                }
+                return _connection;
             }
         }
 

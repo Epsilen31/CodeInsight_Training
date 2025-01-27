@@ -1,7 +1,12 @@
-public class Billing
+using Codeinsight.StreamingManagementSystem.BusinessLogic.Enums;
+
+namespace Codeinsight.StreamingManagementSystem.DataAccess.Entities
 {
-    public int BillingId { get; set; }
-    public int UserId { get; set; }
-    public decimal TotalAmount { get; set; }
-    public DateTime BillingDate { get; set; }
+    public class Billing
+    {
+        public int Id { get; set; }
+        public int UserId { get; set; }
+        public PaymentMethod PaymentMethod { get; set; }
+        public string BillingAddress { get; set; }
+    }
 }

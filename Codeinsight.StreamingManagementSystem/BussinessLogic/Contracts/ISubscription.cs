@@ -1,7 +1,11 @@
-// collection or method related to the subscription
 using Codeinsight.StreamingManagementSystem.BusinessLogic.DTOs;
 
-namespace Codeinsight.StreamingManagementSystem.BusinessLogic
+namespace Codeinsight.StreamingManagementSystem.BusinessLogic.Contracts
 {
-    public interface ISubscriptionService { }
+    public interface ISubscriptionService
+    {
+        void CreateUserSubscriptonPlan(SubscriptionDto subscription);
+        void UpdateUserSubscriptonPlan(SubscriptionDto subscription);
+        ICollection<SubscriptionDto> GetSubscriptionsByUserId(int userId);
+    }
 }
