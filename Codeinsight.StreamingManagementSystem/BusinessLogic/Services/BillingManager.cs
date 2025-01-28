@@ -24,6 +24,7 @@ namespace Codeinsight.StreamingManagementSystem.BusinessLogic.Services
             }
 
             string newBillingAddress = GetNewBillingAddressFromUser();
+
             if (string.IsNullOrEmpty(newBillingAddress))
             {
                 Console.WriteLine("Invalid billing address.");
@@ -49,13 +50,22 @@ namespace Codeinsight.StreamingManagementSystem.BusinessLogic.Services
         private int GetUserIdFromUser()
         {
             Console.WriteLine("Enter User ID:");
+
             string userIdInput = Console.ReadLine();
+
+            if (string.IsNullOrEmpty(userIdInput))
+            {
+                Console.WriteLine("User ID cannot be empty.");
+                return -1;
+            }
+
             if (int.TryParse(userIdInput, out int userId))
             {
                 return userId;
             }
+
             Console.WriteLine("Invalid user ID. Please enter a valid integer.");
-            return 0;
+            return -1;
         }
 
         private string GetNewBillingAddressFromUser()
@@ -72,6 +82,7 @@ namespace Codeinsight.StreamingManagementSystem.BusinessLogic.Services
             Console.WriteLine("2. PayPal");
 
             string paymentChoiceInput = Console.ReadLine();
+
             if (int.TryParse(paymentChoiceInput, out int paymentChoice))
             {
                 if (paymentChoice == 1)

@@ -20,7 +20,15 @@ namespace Codeinsight.StreamingManagementSystem.BusinessLogic.Services
             try
             {
                 Console.WriteLine("Enter User ID:");
-                int userId = int.Parse(Console.ReadLine());
+                var Id = Console.ReadLine();
+
+                if (string.IsNullOrEmpty(Id))
+                {
+                    Console.WriteLine("Invalid user ID.");
+                    return;
+                }
+
+                int userId = int.Parse(Id);
 
                 Enums.PlanType planType = GetPlanTypeFromUser();
 
@@ -56,12 +64,28 @@ namespace Codeinsight.StreamingManagementSystem.BusinessLogic.Services
             try
             {
                 Console.WriteLine("Enter User ID:");
-                int userId = int.Parse(Console.ReadLine());
+                var Id = Console.ReadLine();
+
+                if (string.IsNullOrEmpty(Id))
+                {
+                    Console.WriteLine("Invalid user ID.");
+                    return;
+                }
+
+                int userId = int.Parse(Id);
 
                 Enums.PlanType planType = GetPlanTypeFromUser();
 
                 Console.WriteLine("Enter New Subscription Duration in Months:");
-                int durationInMonths = int.Parse(Console.ReadLine());
+
+                var months = Console.ReadLine();
+                if (string.IsNullOrWhiteSpace(months))
+                {
+                    Console.WriteLine("Invalid subscription duration input.");
+                    return;
+                }
+
+                int durationInMonths = int.Parse(months);
 
                 var subscription = new SubscriptionDto
                 {
@@ -95,7 +119,16 @@ namespace Codeinsight.StreamingManagementSystem.BusinessLogic.Services
                 ISubscriptionService subscriptionService = new SubscriptionService(unitOfWork);
 
                 Console.WriteLine("Enter User ID:");
-                int userId = int.Parse(Console.ReadLine());
+                var Id = Console.ReadLine();
+
+                if (string.IsNullOrEmpty(Id))
+                {
+                    Console.WriteLine("Invalid user ID.");
+                    return;
+                }
+
+                int userId = int.Parse(Id);
+
                 if (userId <= 0)
                 {
                     Console.WriteLine("Invalid user ID.");
@@ -142,7 +175,15 @@ namespace Codeinsight.StreamingManagementSystem.BusinessLogic.Services
 
             try
             {
-                int planChoice = int.Parse(Console.ReadLine());
+                var input = Console.ReadLine();
+
+                if (string.IsNullOrEmpty(input))
+                {
+                    Console.WriteLine("Invalid input");
+                    return Enums.PlanType.Basic;
+                }
+
+                int planChoice = int.Parse(input);
 
                 switch (planChoice)
                 {

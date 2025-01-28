@@ -20,25 +20,38 @@ namespace Codeinsight.StreamingManagementSystem.BusinessLogic.Services
             try
             {
                 Console.WriteLine("Enter Subscription ID:");
-                if (!int.TryParse(Console.ReadLine(), out var subscriptionId))
+
+                string Id = Console.ReadLine();
+
+                if (string.IsNullOrWhiteSpace(Id))
                 {
                     Console.WriteLine("Invalid input for Subscription ID.");
                     return;
                 }
 
+                int subscriptionId = int.Parse(Id);
+
                 Console.WriteLine("Enter The Amount:");
-                if (!decimal.TryParse(Console.ReadLine(), out var amount))
+
+                string subscriptionAmount = Console.ReadLine();
+
+                if (string.IsNullOrWhiteSpace(subscriptionAmount))
                 {
                     Console.WriteLine("Invalid input for Amount.");
                     return;
                 }
 
+                int amount = int.Parse(subscriptionAmount);
+
                 Console.WriteLine("Enter The Payment Date (yyyy-MM-dd):");
-                if (!DateTime.TryParse(Console.ReadLine(), out var paymentDate))
+
+                if (string.IsNullOrWhiteSpace(Console.ReadLine()))
                 {
                     Console.WriteLine("Invalid input for Payment Date.");
                     return;
                 }
+
+                DateTime paymentDate = DateTime.Parse(Console.ReadLine());
 
                 Enums.PaymentStatus paymentStatus = GetPaymentStatus();
 
