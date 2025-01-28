@@ -17,6 +17,7 @@ namespace Codeinsight.StreamingManagementSystem.DataAccess.Repository
         public void CreateSubscription(Subscription subscription)
         {
             using var connection = _context.Connection;
+
             string query =
                 "INSERT INTO Subscriptions (UserId, PlanType, StartDate, EndDate, Status) VALUES (@UserId, @PlanType, @StartDate, @EndDate, @SubscriptionStatus)";
             var parameters = new
@@ -33,6 +34,7 @@ namespace Codeinsight.StreamingManagementSystem.DataAccess.Repository
         public void UpdateSubscription(Subscription subscription)
         {
             using var connection = _context.Connection;
+
             string query =
                 "UPDATE Subscriptions SET UserId = @UserId, PlanType = @PlanType, StartDate = @StartDate, EndDate = @EndDate, Status = @SubscriptionStatus WHERE Id = @Id";
 
@@ -52,6 +54,7 @@ namespace Codeinsight.StreamingManagementSystem.DataAccess.Repository
         public ICollection<Subscription> GetSubscriptionsByUserId(int userId)
         {
             using var connection = _context.Connection;
+
             string query =
                 @"
                 SELECT subscription.*

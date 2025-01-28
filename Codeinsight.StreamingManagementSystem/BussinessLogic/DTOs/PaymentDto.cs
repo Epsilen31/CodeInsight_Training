@@ -1,6 +1,6 @@
 using Codeinsight.StreamingManagementSystem.BusinessLogic.Enums;
 
-namespace Codeinsight.StreamingManagementSystem.BusinessLogic
+namespace Codeinsight.StreamingManagementSystem.BusinessLogic.DTOs
 {
     public class PaymentDto
     {

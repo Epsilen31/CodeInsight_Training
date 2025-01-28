@@ -1,4 +1,5 @@
 using Codeinsight.StreamingManagementSystem.BusinessLogic.Contracts;
+using Codeinsight.StreamingManagementSystem.BusinessLogic.DTOs;
 using Codeinsight.StreamingManagementSystem.DataAccess.Contracts;
 using Codeinsight.StreamingManagementSystem.DataAccess.Entities;
 using Dapper;
@@ -16,6 +17,10 @@ namespace Codeinsight.StreamingManagementSystem.BusinessLogic.Services
 
         public void ProcessPayment(PaymentDto paymentDetails)
         {
+            if (paymentDetails == null)
+            {
+                throw new ArgumentNullException(" paymentDetails cannot be null");
+            }
             Payment createPaymentDetails = new Payment()
             {
                 SubscriptionId = paymentDetails.SubscriptionId,
@@ -32,6 +37,10 @@ namespace Codeinsight.StreamingManagementSystem.BusinessLogic.Services
         public ICollection<PaymentDto> GetOverduePayments()
         {
             var overduePayments = _unitOfWork.PaymentRepository.GetOverduePayments();
+            if (overduePayments == null)
+            {
+                return new List<PaymentDto>();
+            }
             return overduePayments
                 .Select(payment => new PaymentDto
                 {

@@ -1,16 +1,18 @@
 using Codeinsight.StreamingManagementSystem.BusinessLogic.Contracts;
 using Codeinsight.StreamingManagementSystem.BusinessLogic.DTOs;
+using Codeinsight.StreamingManagementSystem.Core.Setting;
 using Codeinsight.StreamingManagementSystem.DataAccess.Contracts;
+using Codeinsight.StreamingManagementSystem.DataAccess.Repository;
 
 namespace Codeinsight.StreamingManagementSystem.BusinessLogic.Services
 {
     public class BillingManager
     {
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly AppSetting _appSetting;
 
-        public BillingManager(IUnitOfWork unitOfWork)
+        public BillingManager(AppSetting appSetting)
         {
-            _unitOfWork = unitOfWork;
+            _appSetting = appSetting;
         }
 
         public void ExecuteUpdateBillingDetails()
@@ -37,18 +39,11 @@ namespace Codeinsight.StreamingManagementSystem.BusinessLogic.Services
                 PaymentMethod = newPaymentMethod,
             };
 
-            IBillingService billingService = new BillingService(_unitOfWork);
-            try
-            {
-                billingService.UpdateBillingDetails(billingDetail);
-                Console.WriteLine("Billing details updated successfully.");
-            }
-            catch (Exception exception)
-            {
-                Console.WriteLine(
-                    "An error occurred while updating billing details: " + exception.Message
-                );
-            }
+            IUnitOfWork unitOfWork = new UnitOfWork(_appSetting);
+            IBillingService billingService = new BillingService(unitOfWork);
+
+            billingService.UpdateBillingDetails(billingDetail);
+            Console.WriteLine("Billing details updated successfully.");
         }
 
         private int GetUserIdFromUser()
@@ -99,8 +94,9 @@ namespace Codeinsight.StreamingManagementSystem.BusinessLogic.Services
             {
                 return;
             }
+            IUnitOfWork unitOfWork = new UnitOfWork(_appSetting);
+            IBillingService billingService = new BillingService(unitOfWork);
 
-            IBillingService billingService = new BillingService(_unitOfWork);
             try
             {
                 var billingDetails = billingService.GetBillingWithUserDetails(userId);
@@ -121,7 +117,8 @@ namespace Codeinsight.StreamingManagementSystem.BusinessLogic.Services
 
         public void ExecuteViewAllBillingDetails()
         {
-            IBillingService billingService = new BillingService(_unitOfWork);
+            IUnitOfWork unitOfWork = new UnitOfWork(_appSetting);
+            IBillingService billingService = new BillingService(unitOfWork);
             try
             {
                 var allBillingDetails = billingService.GetAllUsersWithBillingDetails();

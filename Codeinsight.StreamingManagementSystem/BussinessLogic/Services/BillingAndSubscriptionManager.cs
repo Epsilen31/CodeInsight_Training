@@ -1,22 +1,16 @@
 using Codeinsight.StreamingManagementSystem.BusinessLogic.Enums;
 using Codeinsight.StreamingManagementSystem.BusinessLogic.Services;
-using Codeinsight.StreamingManagementSystem.DataAccess.Contracts;
+using Codeinsight.StreamingManagementSystem.Core.Setting;
 
 namespace Codeinsight.StreamingManagementSystem.BusinessLogic.Contracts
 {
     public class BillingAndSubscriptionManager : IBillingAndSubscriptionManager
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly SubscriptionManager _subscriptionManager;
-        private readonly BillingManager _billingManager;
-        private readonly PaymentManager _paymentManager;
+        private readonly AppSetting _appSetting;
 
-        public BillingAndSubscriptionManager(IUnitOfWork unitOfWork)
+        public BillingAndSubscriptionManager(AppSetting appSetting)
         {
-            _unitOfWork = unitOfWork;
-            _subscriptionManager = new SubscriptionManager(_unitOfWork);
-            _billingManager = new BillingManager(_unitOfWork);
-            _paymentManager = new PaymentManager(_unitOfWork);
+            _appSetting = appSetting;
         }
 
         public void ManageSubscriptionAndBilling()
@@ -59,16 +53,20 @@ namespace Codeinsight.StreamingManagementSystem.BusinessLogic.Contracts
         {
             Console.WriteLine("1. Add Subscription");
             Console.WriteLine("2. Update Subscription");
+            Console.WriteLine("3. Get Subscription By User");
 
             if (int.TryParse(Console.ReadLine(), out var subscriptionOperation))
             {
                 switch ((SubscriptionOperations)subscriptionOperation)
                 {
                     case SubscriptionOperations.AddSubscription:
-                        _subscriptionManager.ExecuteUserSubscriptionPlan();
+                        PerformUserSubscriptionPlan();
                         break;
                     case SubscriptionOperations.UpdateSubscription:
-                        _subscriptionManager.ExecuteUpdateUserSubscriptionPlan();
+                        PerformUpdateUserSubscriptionPlan();
+                        break;
+                    case SubscriptionOperations.GetSubscriptionsByUserId:
+                        PerformDisplayUserSubscriptions();
                         break;
                     default:
                         Console.WriteLine("Invalid subscription operation selected.");
@@ -81,9 +79,70 @@ namespace Codeinsight.StreamingManagementSystem.BusinessLogic.Contracts
             }
         }
 
+        private void PerformUserSubscriptionPlan()
+        {
+            SubscriptionManager subscriptionManager = new SubscriptionManager(_appSetting);
+            subscriptionManager.ExecuteUserSubscriptionPlan();
+        }
+
+        private void PerformUpdateUserSubscriptionPlan()
+        {
+            SubscriptionManager subscriptionManager = new SubscriptionManager(_appSetting);
+            subscriptionManager.ExecuteUpdateUserSubscriptionPlan();
+        }
+
+        private void PerformDisplayUserSubscriptions()
+        {
+            SubscriptionManager subscriptionManager = new SubscriptionManager(_appSetting);
+            subscriptionManager.DisplayUserSubscriptions();
+        }
+
         private void ManageBilling()
         {
-            _billingManager.ExecuteUpdateBillingDetails();
+            Console.WriteLine("1. Update Billing");
+            Console.WriteLine("2. Get Billing By User");
+            Console.WriteLine("3. Get All Billing By User");
+
+            if (int.TryParse(Console.ReadLine(), out var billingOperation))
+            {
+                switch ((BillingOperations)billingOperation)
+                {
+                    case BillingOperations.UpdateBilling:
+                        PerformExecuteUpdateBillingDetails();
+                        break;
+                    case BillingOperations.GetBillingByUser:
+                        PerformExecuteViewBillingDetails();
+                        break;
+                    case BillingOperations.GetAllBillingByUser:
+                        PerformExecuteViewAllBillingDetails();
+                        break;
+                    default:
+                        Console.WriteLine("Invalid billing operation selected.");
+                        break;
+                }
+            }
+            else
+            {
+                Console.WriteLine("Invalid billing operation selected.");
+            }
+        }
+
+        private void PerformExecuteUpdateBillingDetails()
+        {
+            BillingManager billingManager = new BillingManager(_appSetting);
+            billingManager.ExecuteUpdateBillingDetails();
+        }
+
+        private void PerformExecuteViewBillingDetails()
+        {
+            BillingManager billingManager = new BillingManager(_appSetting);
+            billingManager.ExecuteViewBillingDetails();
+        }
+
+        private void PerformExecuteViewAllBillingDetails()
+        {
+            BillingManager billingManager = new BillingManager(_appSetting);
+            billingManager.ExecuteViewAllBillingDetails();
         }
 
         private void ManagePayment()
@@ -96,10 +155,10 @@ namespace Codeinsight.StreamingManagementSystem.BusinessLogic.Contracts
                 switch ((PaymentOperations)paymentOperation)
                 {
                     case PaymentOperations.UpdatePayment:
-                        _paymentManager.ExecuteProcessPayment();
+                        PerformExecuteProcessPayment();
                         break;
                     case PaymentOperations.GetOverduePayment:
-                        _paymentManager.ExecuteGetOverduePayments();
+                        PerformExecuteGetOverduePayments();
                         break;
                     default:
                         Console.WriteLine("Invalid payment operation selected.");
@@ -110,6 +169,18 @@ namespace Codeinsight.StreamingManagementSystem.BusinessLogic.Contracts
             {
                 Console.WriteLine("Invalid payment operation selected.");
             }
+        }
+
+        private void PerformExecuteProcessPayment()
+        {
+            PaymentManager paymentManager = new PaymentManager(_appSetting);
+            paymentManager.ExecuteProcessPayment();
+        }
+
+        private void PerformExecuteGetOverduePayments()
+        {
+            PaymentManager paymentManager = new PaymentManager(_appSetting);
+            paymentManager.ExecuteGetOverduePayments();
         }
     }
 }

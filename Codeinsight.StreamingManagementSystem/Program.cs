@@ -1,6 +1,5 @@
 ﻿using Codeinsight.StreamingManagementSystem.BusinessLogic.Contracts;
-using Codeinsight.StreamingManagementSystem.DataAccess.Repository;
-using Codeinsight.StreamingManagementSystem.Settings;
+using Codeinsight.StreamingManagementSystem.Core.Setting;
 using Microsoft.Extensions.Configuration;
 
 namespace Codeinsight.StreamingManagementSystem
@@ -11,11 +10,11 @@ namespace Codeinsight.StreamingManagementSystem
         {
             try
             {
-                var appSettings = GetAppSetting();
+                AppSetting appSetting = GetAppSetting();
 
-                var unitOfWork = new UnitOfWork(appSettings);
+                IBillingAndSubscriptionManager billingAndSubscriptionManager =
+                    new BillingAndSubscriptionManager(appSetting);
 
-                var billingAndSubscriptionManager = new BillingAndSubscriptionManager(unitOfWork);
                 billingAndSubscriptionManager.ManageSubscriptionAndBilling();
             }
             catch (Exception exception)
@@ -26,7 +25,10 @@ namespace Codeinsight.StreamingManagementSystem
 
         private static AppSetting GetAppSetting()
         {
-            var configFilePath = Path.Combine(Directory.GetCurrentDirectory(), "AppSetting.json");
+            string configFilePath = Path.Combine(
+                Directory.GetCurrentDirectory(),
+                "AppSetting.json"
+            );
 
             var config = new ConfigurationBuilder().AddJsonFile(configFilePath).Build();
 

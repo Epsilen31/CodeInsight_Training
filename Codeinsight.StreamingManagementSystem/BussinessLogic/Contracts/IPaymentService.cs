@@ -1,3 +1,5 @@
+using Codeinsight.StreamingManagementSystem.BusinessLogic.DTOs;
+
 namespace Codeinsight.StreamingManagementSystem.BusinessLogic.Contracts
 {
     public interface IPaymentService

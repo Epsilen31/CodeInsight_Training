@@ -1,16 +1,18 @@
 using Codeinsight.StreamingManagementSystem.BusinessLogic.Contracts;
 using Codeinsight.StreamingManagementSystem.BusinessLogic.DTOs;
+using Codeinsight.StreamingManagementSystem.Core.Setting;
 using Codeinsight.StreamingManagementSystem.DataAccess.Contracts;
+using Codeinsight.StreamingManagementSystem.DataAccess.Repository;
 
 namespace Codeinsight.StreamingManagementSystem.BusinessLogic.Services
 {
     public class SubscriptionManager
     {
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly AppSetting _appSetting;
 
-        public SubscriptionManager(IUnitOfWork unitOfWork)
+        public SubscriptionManager(AppSetting appSetting)
         {
-            _unitOfWork = unitOfWork;
+            _appSetting = appSetting;
         }
 
         public void ExecuteUserSubscriptionPlan()
@@ -34,16 +36,17 @@ namespace Codeinsight.StreamingManagementSystem.BusinessLogic.Services
                     SubscriptionStatus = Enums.SubscriptionStatus.Active,
                 };
 
-                ISubscriptionService subscriptionService = new SubscriptionService(_unitOfWork);
+                IUnitOfWork unitOfWork = new UnitOfWork(_appSetting);
+                ISubscriptionService subscriptionService = new SubscriptionService(unitOfWork);
 
-                subscriptionService.CreateUserSubscriptonPlan(subscription);
+                subscriptionService.CreateUserSubscriptionPlan(subscription);
 
                 Console.WriteLine("Subscription created successfully.");
             }
-            catch (FormatException)
+            catch (Exception exception)
             {
                 Console.WriteLine(
-                    "Invalid input format. Please enter numeric values where expected."
+                    "An error occurred while creating subscription plan: " + exception.Message
                 );
             }
         }
@@ -68,24 +71,37 @@ namespace Codeinsight.StreamingManagementSystem.BusinessLogic.Services
                     EndDate = DateTime.Now.AddMonths(durationInMonths),
                     SubscriptionStatus = Enums.SubscriptionStatus.Active,
                 };
-                ISubscriptionService subscriptionService = new SubscriptionService(_unitOfWork);
-                subscriptionService.UpdateUserSubscriptonPlan(subscription);
+
+                IUnitOfWork unitOfWork = new UnitOfWork(_appSetting);
+                ISubscriptionService subscriptionService = new SubscriptionService(unitOfWork);
+
+                subscriptionService.UpdateUserSubscriptionPlan(subscription);
 
                 Console.WriteLine("Subscription updated successfully.");
             }
-            catch (FormatException)
+            catch (Exception exception)
             {
                 Console.WriteLine(
-                    "Invalid input format. Please enter numeric values where expected."
+                    "An error occurred while updating subscription details: " + exception.Message
                 );
             }
         }
 
-        public void DisplayUserSubscriptions(int userId)
+        public void DisplayUserSubscriptions()
         {
             try
             {
-                ISubscriptionService subscriptionService = new SubscriptionService(_unitOfWork);
+                IUnitOfWork unitOfWork = new UnitOfWork(_appSetting);
+                ISubscriptionService subscriptionService = new SubscriptionService(unitOfWork);
+
+                Console.WriteLine("Enter User ID:");
+                int userId = int.Parse(Console.ReadLine());
+                if (userId <= 0)
+                {
+                    Console.WriteLine("Invalid user ID.");
+                    return;
+                }
+
                 var subscriptions = subscriptionService.GetSubscriptionsByUserId(userId);
 
                 if (subscriptions != null)
@@ -108,9 +124,11 @@ namespace Codeinsight.StreamingManagementSystem.BusinessLogic.Services
                     Console.WriteLine("No subscriptions found for this user.");
                 }
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
-                Console.WriteLine($"An error occurred while fetching subscriptions: {ex.Message}");
+                Console.WriteLine(
+                    $"An error occurred while fetching subscriptions: {exception.Message}"
+                );
             }
         }
 
@@ -143,10 +161,12 @@ namespace Codeinsight.StreamingManagementSystem.BusinessLogic.Services
                         break;
                 }
             }
-            catch (FormatException)
+            catch (Exception exception)
             {
-                Console.WriteLine("Invalid choice. Defaulting to Basic plan.");
-                planType = Enums.PlanType.Basic;
+                Console.WriteLine(
+                    $"An error occurred while getting plan type: {exception.Message}"
+                );
+                throw;
             }
 
             return planType;

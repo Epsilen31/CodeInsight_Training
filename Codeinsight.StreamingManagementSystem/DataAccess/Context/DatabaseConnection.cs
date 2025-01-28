@@ -1,5 +1,5 @@
 using System.Data;
-using Codeinsight.StreamingManagementSystem.Settings;
+using Codeinsight.StreamingManagementSystem.Core.Setting;
 using MySql.Data.MySqlClient;
 
 namespace Codeinsight.StreamingManagementSystem.DataAccess.Context

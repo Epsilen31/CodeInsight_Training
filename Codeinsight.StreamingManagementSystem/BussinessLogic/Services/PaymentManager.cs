@@ -1,16 +1,18 @@
 using Codeinsight.StreamingManagementSystem.BusinessLogic.Contracts;
 using Codeinsight.StreamingManagementSystem.BusinessLogic.DTOs;
+using Codeinsight.StreamingManagementSystem.Core.Setting;
 using Codeinsight.StreamingManagementSystem.DataAccess.Contracts;
+using Codeinsight.StreamingManagementSystem.DataAccess.Repository;
 
 namespace Codeinsight.StreamingManagementSystem.BusinessLogic.Services
 {
     public class PaymentManager
     {
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly AppSetting _appSetting;
 
-        public PaymentManager(IUnitOfWork unitOfWork)
+        public PaymentManager(AppSetting appSetting)
         {
-            _unitOfWork = unitOfWork;
+            _appSetting = appSetting;
         }
 
         public void ExecuteProcessPayment()
@@ -40,7 +42,7 @@ namespace Codeinsight.StreamingManagementSystem.BusinessLogic.Services
 
                 Enums.PaymentStatus paymentStatus = GetPaymentStatus();
 
-                var paymentDetails = new PaymentDto
+                var paymentDetail = new PaymentDto
                 {
                     SubscriptionId = subscriptionId,
                     Amount = amount,
@@ -48,14 +50,16 @@ namespace Codeinsight.StreamingManagementSystem.BusinessLogic.Services
                     Status = paymentStatus,
                 };
 
-                IPaymentService paymentService = new PaymentService(_unitOfWork);
-                paymentService.ProcessPayment(paymentDetails);
+                IUnitOfWork unitOfWork = new UnitOfWork(_appSetting);
+                IPaymentService paymentService = new PaymentService(unitOfWork);
+
+                paymentService.ProcessPayment(paymentDetail);
 
                 Console.WriteLine("Payment processed successfully.");
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
-                Console.WriteLine($"An error occurred: {ex.Message}");
+                Console.WriteLine($"An error occurred: {exception.Message}");
             }
         }
 
@@ -63,7 +67,9 @@ namespace Codeinsight.StreamingManagementSystem.BusinessLogic.Services
         {
             try
             {
-                IPaymentService paymentService = new PaymentService(_unitOfWork);
+                IUnitOfWork unitOfWork = new UnitOfWork(_appSetting);
+                IPaymentService paymentService = new PaymentService(unitOfWork);
+
                 var overduePaymentsDetails = paymentService.GetOverduePayments();
 
                 Console.WriteLine("Overdue payments:");
@@ -76,10 +82,10 @@ namespace Codeinsight.StreamingManagementSystem.BusinessLogic.Services
 
                 return overduePaymentsDetails;
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
                 Console.WriteLine(
-                    $"An error occurred while fetching overdue payments: {ex.Message}"
+                    $"An error occurred while fetching overdue payments: {exception.Message}"
                 );
                 return new List<PaymentDto>();
             }

@@ -1,4 +1,4 @@
-namespace Codeinsight.StreamingManagementSystem.Settings
+namespace Codeinsight.StreamingManagementSystem.Core.Setting
 {
     public class AppSetting
     {

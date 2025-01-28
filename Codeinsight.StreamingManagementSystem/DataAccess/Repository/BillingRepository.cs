@@ -17,20 +17,20 @@ namespace Codeinsight.StreamingManagementSystem.DataAccess.Repository
         public ICollection<Billing> GetBillingWithUserDetails(int userId)
         {
             using var connection = _context.Connection;
-            string query =
-                @"
-                SELECT
-                    u.Id AS UserId,
-                    u.Name AS UserName,
-                    u.Email AS UserEmail,
-                    b.Id AS BillingId,
-                    b.BillingAddress,
-                    b.PaymentMethod
-                FROM Users u
-                INNER JOIN BillingDetails b ON u.Id = b.UserId
-                WHERE u.Id = @UserId";
 
-            return connection.Query<Billing>(query, new { userId }).AsList();
+            string query =
+                @"SELECT Id AS BillingId, BillingAddress, PaymentMethod, UserId FROM BillingDetails WHERE UserId = @UserId";
+
+            var billingDetails = connection.Query<Billing>(query, new { UserId = userId }).AsList();
+
+            if (billingDetails == null)
+            {
+                throw new InvalidOperationException(
+                    $"No billing details found for User ID: {userId}"
+                );
+            }
+
+            return billingDetails;
         }
 
         public void UpdateBillingDetails(Billing billingDetails)
@@ -58,16 +58,15 @@ namespace Codeinsight.StreamingManagementSystem.DataAccess.Repository
             string query =
                 @"
                 SELECT
-                    u.Id AS UserId,
-                    u.Name AS UserName,
-                    u.Email AS UserEmail,
-                    u.Phone AS UserPhone,
-                    b.Id AS BillingId,
-                    b.BillingAddress,
-                    b.PaymentMethod
-                FROM Users u
-                LEFT JOIN BillingDetails b ON u.Id = b.UserId";
-
+                    user.Id AS UserId,
+                    user.Name AS UserName,
+                    user.Email AS UserEmail,
+                    user.Phone AS UserPhone,
+                    billing.Id AS BillingId,
+                    billing.BillingAddress,
+                    billing.PaymentMethod
+                FROM Users user
+                LEFT JOIN BillingDetails billing ON user.Id = billing.UserId";
             return connection.Query<Billing>(query).AsList();
         }
     }

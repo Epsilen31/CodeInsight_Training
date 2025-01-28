@@ -4,8 +4,8 @@ namespace Codeinsight.StreamingManagementSystem.BusinessLogic.Contracts
 {
     public interface ISubscriptionService
     {
-        void CreateUserSubscriptonPlan(SubscriptionDto subscription);
-        void UpdateUserSubscriptonPlan(SubscriptionDto subscription);
+        void CreateUserSubscriptionPlan(SubscriptionDto subscription);
+        void UpdateUserSubscriptionPlan(SubscriptionDto subscription);
         ICollection<SubscriptionDto> GetSubscriptionsByUserId(int userId);
     }
 }

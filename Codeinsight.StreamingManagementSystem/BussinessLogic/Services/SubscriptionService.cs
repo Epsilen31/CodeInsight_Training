@@ -14,8 +14,22 @@ namespace Codeinsight.StreamingManagementSystem.BusinessLogic.Services
             _unitOfWork = unitOfWork;
         }
 
-        public void CreateUserSubscriptonPlan(SubscriptionDto subscription)
+        public void CreateUserSubscriptionPlan(SubscriptionDto subscription)
         {
+            if (subscription.UserId <= 0)
+            {
+                throw new ArgumentException("Invalid subscription parameters.");
+            }
+            var existingSubscription =
+                _unitOfWork.UserSubscriptionRepository.GetSubscriptionsByUserId(
+                    subscription.UserId
+                );
+
+            if (existingSubscription != null)
+            {
+                throw new ArgumentException("Subscription already exists");
+            }
+
             var newSubscription = new Subscription
             {
                 UserId = subscription.UserId,
@@ -31,8 +45,22 @@ namespace Codeinsight.StreamingManagementSystem.BusinessLogic.Services
             _unitOfWork.UserSubscriptionRepository.CreateSubscription(newSubscription);
         }
 
-        public void UpdateUserSubscriptonPlan(SubscriptionDto subscription)
+        public void UpdateUserSubscriptionPlan(SubscriptionDto subscription)
         {
+            if (subscription.UserId <= 0)
+            {
+                throw new ArgumentException("Invalid subscription parameters.");
+            }
+            var existingSubscription =
+                _unitOfWork.UserSubscriptionRepository.GetSubscriptionsByUserId(
+                    subscription.UserId
+                );
+
+            if (existingSubscription == null)
+            {
+                throw new ArgumentException("Subscription not found");
+            }
+
             var updatedSubscription = new Subscription
             {
                 UserId = subscription.UserId,
@@ -51,11 +79,21 @@ namespace Codeinsight.StreamingManagementSystem.BusinessLogic.Services
 
         public ICollection<SubscriptionDto> GetSubscriptionsByUserId(int userId)
         {
+            if (userId <= 0)
+            {
+                throw new ArgumentException("Invalid user ID.");
+            }
+
             var subscriptions = _unitOfWork.UserSubscriptionRepository.GetSubscriptionsByUserId(
                 userId
             );
 
-            var subscriptionDtos = subscriptions
+            if (subscriptions == null)
+            {
+                return new List<SubscriptionDto>();
+            }
+
+            var subscription = subscriptions
                 .Select(sub => new SubscriptionDto
                 {
                     SubscriptionId = sub.Id,
@@ -67,7 +105,7 @@ namespace Codeinsight.StreamingManagementSystem.BusinessLogic.Services
                 })
                 .ToList();
 
-            return subscriptionDtos;
+            return subscription;
         }
     }
 }
