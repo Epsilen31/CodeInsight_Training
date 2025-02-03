@@ -1,0 +1,8 @@
+{
+  "AppSetting": {
+    "Server": "localhost",
+    "Database": "subscriptionbillingdb",
+    "Password": "Admin@1234",
+    "UserID": "root"
+  }
+}

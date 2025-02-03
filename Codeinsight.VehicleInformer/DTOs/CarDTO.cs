@@ -9,6 +9,5 @@ namespace Codeinsight.VehicleInformer.DTOs
         public required string InsurancePrice { get; set; }
         public required string AfterTotalPrice { get; set; }
         public required string Rating { get; set; }
-
     }
 }
