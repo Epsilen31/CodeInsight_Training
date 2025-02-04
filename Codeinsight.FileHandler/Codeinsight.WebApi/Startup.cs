@@ -5,7 +5,7 @@ namespace Codeinsight.WebApi
     public static class Startup
     {
         public static void ConfigureServices(
-            IServiceCollection services,
+            this IServiceCollection services,
             IConfiguration configuration
         )
         {

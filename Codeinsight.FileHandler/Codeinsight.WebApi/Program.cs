@@ -1,18 +1,11 @@
-namespace Codeinsight.WebApi
-{
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
-            var builder = WebApplication.CreateBuilder(args);
+using Codeinsight.WebApi;
 
-            Startup.ConfigureServices(builder.Services, builder.Configuration);
+var builder = WebApplication.CreateBuilder(args);
 
-            var app = builder.Build();
+builder.Services.ConfigureServices(builder.Configuration);
 
-            Startup.Configure(app);
+var app = builder.Build();
 
-            app.Run();
-        }
-    }
-}
+Startup.Configure(app);
+
+app.Run();

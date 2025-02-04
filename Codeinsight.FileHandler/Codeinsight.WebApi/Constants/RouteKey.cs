@@ -6,5 +6,6 @@
         public const string WriteRoute = "write";
         public const string CopyRoute = "copy";
         public const string DeleteRoute = "delete";
+        public const string controllers = "api/[controller]";
     }
 }

@@ -5,7 +5,7 @@ using Microsoft.Extensions.Options;
 
 namespace Codeinsight.WebApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route(RouteKey.controllers)]
     [ApiController]
     public class FileController : BaseController
     {
