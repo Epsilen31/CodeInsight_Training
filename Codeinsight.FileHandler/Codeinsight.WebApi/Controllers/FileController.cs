@@ -1,3 +1,4 @@
+using Codeinsight.Cors.Settings;
 using Codeinsight.Services.Contracts;
 using Codeinsight.WebApi.Constants;
 using Microsoft.AspNetCore.Mvc;

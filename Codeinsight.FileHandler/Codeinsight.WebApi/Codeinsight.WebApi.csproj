@@ -11,7 +11,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Codeinsight.Services\Codeinsight.Services.csproj" />
+  <ProjectReference Include="../Codeinsight.Cors/Codeinsight.Cors.csproj"/>
+  <ProjectReference Include="../Codeinsight.Services/Codeinsight.Services.csproj"/>
   </ItemGroup>
 
 </Project>

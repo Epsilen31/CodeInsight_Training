@@ -14,7 +14,7 @@ namespace Codeinsight.Services.Services
             }
             catch
             {
-                throw;
+                throw new Exception("Cannot read file " + filePath);
             }
         }
 
@@ -26,7 +26,7 @@ namespace Codeinsight.Services.Services
             }
             catch
             {
-                throw;
+                throw new Exception($"Failed to Write file: {filePath}");
             }
         }
 
@@ -42,7 +42,7 @@ namespace Codeinsight.Services.Services
             }
             catch
             {
-                throw;
+                throw new Exception($"Failed to copy file: {sourcePath} to {destinationPath}");
             }
         }
 
@@ -54,7 +54,7 @@ namespace Codeinsight.Services.Services
             }
             catch
             {
-                throw;
+                throw new Exception($"Failed to delete file: {path}");
             }
         }
     }

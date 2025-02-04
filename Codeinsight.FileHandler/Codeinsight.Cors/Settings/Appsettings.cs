@@ -1,4 +1,4 @@
-﻿namespace Codeinsight.WebApi
+﻿namespace Codeinsight.Cors.Settings
 {
     public class FilePaths
     {
