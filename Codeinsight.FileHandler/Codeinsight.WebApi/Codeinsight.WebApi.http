@@ -1,0 +1,6 @@
+@Codeinsight.WebApi_HostAddress = http://localhost:5095
+
+GET {{Codeinsight.WebApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
