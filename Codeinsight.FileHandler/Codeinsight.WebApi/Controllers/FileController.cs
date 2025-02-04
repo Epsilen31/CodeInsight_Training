@@ -19,14 +19,13 @@ namespace Codeinsight.WebApi.Controllers
         }
 
         [HttpGet(RouteKey.ReadRoute)]
-        public async Task<IActionResult> ReadFile()
+        public async Task<IActionResult> ReadFile(CancellationToken cancellationToken)
         {
             try
             {
                 if (string.IsNullOrWhiteSpace(_filePaths.BaseFile))
                     return BadRequest("File path cannot be empty.");
 
-                CancellationToken cancellationToken = HttpContext.RequestAborted;
                 string content = await _fileHandler.ReadFileAsync(
                     Path.GetFullPath(_filePaths.BaseFile),
                     cancellationToken
@@ -41,7 +40,10 @@ namespace Codeinsight.WebApi.Controllers
         }
 
         [HttpPost(RouteKey.WriteRoute)]
-        public async Task<IActionResult> WriteFile([FromBody] string content)
+        public async Task<IActionResult> WriteFile(
+            [FromBody] string content,
+            CancellationToken cancellationToken
+        )
         {
             try
             {
@@ -51,7 +53,6 @@ namespace Codeinsight.WebApi.Controllers
                 )
                     return BadRequest("File path and content cannot be empty.");
 
-                CancellationToken cancellationToken = HttpContext.RequestAborted;
                 await _fileHandler.WriteToFileAsync(
                     Path.GetFullPath(_filePaths.BaseFile),
                     content,
@@ -67,14 +68,13 @@ namespace Codeinsight.WebApi.Controllers
         }
 
         [HttpDelete(RouteKey.DeleteRoute)]
-        public async Task<IActionResult> DeleteFile()
+        public async Task<IActionResult> DeleteFile(CancellationToken cancellationToken)
         {
             try
             {
                 if (string.IsNullOrWhiteSpace(_filePaths.CopyFile))
                     return BadRequest("File path cannot be empty.");
 
-                CancellationToken cancellationToken = HttpContext.RequestAborted;
                 await _fileHandler.DeleteFileAsync(
                     Path.GetFullPath(_filePaths.CopyFile),
                     cancellationToken
@@ -89,7 +89,7 @@ namespace Codeinsight.WebApi.Controllers
         }
 
         [HttpPost(RouteKey.CopyRoute)]
-        public async Task<IActionResult> CopyFile()
+        public async Task<IActionResult> CopyFile(CancellationToken cancellationToken)
         {
             try
             {
@@ -99,7 +99,6 @@ namespace Codeinsight.WebApi.Controllers
                 )
                     return BadRequest("Source and destination paths cannot be empty.");
 
-                CancellationToken cancellationToken = HttpContext.RequestAborted;
                 await _fileHandler.CopyFileAsync(
                     Path.GetFullPath(_filePaths.BaseFile),
                     Path.GetFullPath(_filePaths.CopyFile),
