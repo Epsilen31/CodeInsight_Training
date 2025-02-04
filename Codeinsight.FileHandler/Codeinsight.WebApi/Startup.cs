@@ -2,23 +2,19 @@
 
 namespace Codeinsight.WebApi
 {
-    public class Startup
+    public static class Startup
     {
-        private readonly IConfiguration _configuration;
-
-        public Startup(IConfiguration configuration)
-        {
-            _configuration = configuration;
-        }
-
-        public void ConfigureServices(IServiceCollection services)
+        public static void ConfigureServices(
+            IServiceCollection services,
+            IConfiguration configuration
+        )
         {
             services.AddControllers();
             services.GetServices();
-            services.Configure<FilePaths>(_configuration.GetSection("FilePaths"));
+            services.Configure<FilePaths>(configuration.GetSection("FilePaths"));
         }
 
-        public void Configure(IApplicationBuilder app)
+        public static void Configure(IApplicationBuilder app)
         {
             app.UseRouting();
 

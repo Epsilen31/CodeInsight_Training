@@ -4,12 +4,11 @@ namespace Codeinsight.Services.Services
 {
     public class FileHandler : IFileHandler
     {
-        public async Task<string> ReadFile(string filePath)
+        public async Task<string> ReadFileAsync(string filePath, CancellationToken token)
         {
             try
             {
-                var tokenSource = new CancellationTokenSource();
-                var lines = await File.ReadAllLinesAsync(filePath, tokenSource.Token);
+                var lines = await File.ReadAllLinesAsync(filePath, token);
                 Console.WriteLine("CSV file is read successfully");
                 return string.Join(Environment.NewLine, lines);
             }
@@ -19,12 +18,11 @@ namespace Codeinsight.Services.Services
             }
         }
 
-        public async Task WriteToFile(string filePath, string content)
+        public async Task WriteToFileAsync(string filePath, string content, CancellationToken token)
         {
             try
             {
-                var tokenSource = new CancellationTokenSource();
-                await File.WriteAllTextAsync(filePath, content, tokenSource.Token);
+                await File.WriteAllTextAsync(filePath, content, token);
             }
             catch
             {
@@ -32,15 +30,15 @@ namespace Codeinsight.Services.Services
             }
         }
 
-        public async Task CopyFile(string sourcePath, string destinationPath)
+        public async Task CopyFileAsync(
+            string sourcePath,
+            string destinationPath,
+            CancellationToken token
+        )
         {
             try
             {
-                var tokenSource = new CancellationTokenSource();
-                await Task.Run(
-                    () => File.Copy(sourcePath, destinationPath, true),
-                    tokenSource.Token
-                );
+                await Task.Run(() => File.Copy(sourcePath, destinationPath, true), token);
             }
             catch
             {
@@ -48,12 +46,11 @@ namespace Codeinsight.Services.Services
             }
         }
 
-        public async Task DeleteFile(string path)
+        public async Task DeleteFileAsync(string path, CancellationToken token)
         {
             try
             {
-                var tokenSource = new CancellationTokenSource();
-                await Task.Run(() => File.Delete(path), tokenSource.Token);
+                await Task.Run(() => File.Delete(path), token);
             }
             catch
             {

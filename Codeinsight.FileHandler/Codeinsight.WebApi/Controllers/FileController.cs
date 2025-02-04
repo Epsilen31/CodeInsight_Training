@@ -26,17 +26,22 @@ namespace Codeinsight.WebApi.Controllers
                 if (string.IsNullOrWhiteSpace(_filePaths.BaseFile))
                     return BadRequest("File path cannot be empty.");
 
-                string content = await _fileHandler.ReadFile(Path.GetFullPath(_filePaths.BaseFile));
+                CancellationToken cancellationToken = HttpContext.RequestAborted;
+                string content = await _fileHandler.ReadFileAsync(
+                    Path.GetFullPath(_filePaths.BaseFile),
+                    cancellationToken
+                );
                 return Ok(content);
             }
             catch (Exception exception)
             {
+                Console.WriteLine($"Error reading file: {exception.Message}");
                 return StatusCode(500, $"Error reading file: {exception.Message}");
             }
         }
 
         [HttpPost(RouteKey.WriteRoute)]
-        public async Task<IActionResult> WriteFile(string content)
+        public async Task<IActionResult> WriteFile([FromBody] string content)
         {
             try
             {
@@ -46,12 +51,17 @@ namespace Codeinsight.WebApi.Controllers
                 )
                     return BadRequest("File path and content cannot be empty.");
 
-                await _fileHandler.WriteToFile(_filePaths.BaseFile, content);
+                CancellationToken cancellationToken = HttpContext.RequestAborted;
+                await _fileHandler.WriteToFileAsync(
+                    Path.GetFullPath(_filePaths.BaseFile),
+                    content,
+                    cancellationToken
+                );
                 return Ok("File written successfully.");
             }
             catch (Exception exception)
             {
-                Console.Error.WriteLine("Error writing file");
+                Console.WriteLine($"Error writing to file: {exception.Message}");
                 return StatusCode(500, $"Error writing to file: {exception.Message}");
             }
         }
@@ -64,12 +74,16 @@ namespace Codeinsight.WebApi.Controllers
                 if (string.IsNullOrWhiteSpace(_filePaths.CopyFile))
                     return BadRequest("File path cannot be empty.");
 
-                await _fileHandler.DeleteFile(_filePaths.CopyFile);
+                CancellationToken cancellationToken = HttpContext.RequestAborted;
+                await _fileHandler.DeleteFileAsync(
+                    Path.GetFullPath(_filePaths.CopyFile),
+                    cancellationToken
+                );
                 return Ok("File deleted successfully.");
             }
             catch (Exception exception)
             {
-                Console.Error.WriteLine($"Error while deleting file");
+                Console.WriteLine($"Error deleting file: {exception.Message}");
                 return StatusCode(500, $"Error deleting file: {exception.Message}");
             }
         }
@@ -85,15 +99,17 @@ namespace Codeinsight.WebApi.Controllers
                 )
                     return BadRequest("Source and destination paths cannot be empty.");
 
-                await _fileHandler.CopyFile(
+                CancellationToken cancellationToken = HttpContext.RequestAborted;
+                await _fileHandler.CopyFileAsync(
                     Path.GetFullPath(_filePaths.BaseFile),
-                    Path.GetFullPath(_filePaths.CopyFile)
+                    Path.GetFullPath(_filePaths.CopyFile),
+                    cancellationToken
                 );
                 return Ok("File copied successfully.");
             }
             catch (Exception exception)
             {
-                Console.Error.WriteLine($"Error while copying file");
+                Console.WriteLine($"Error copying file: {exception.Message}");
                 return StatusCode(500, $"Error copying file: {exception.Message}");
             }
         }

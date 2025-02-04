@@ -6,13 +6,12 @@ namespace Codeinsight.WebApi
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            var startup = new Startup(builder.Configuration);
-            startup.ConfigureServices(builder.Services);
+            Startup.ConfigureServices(builder.Services, builder.Configuration);
 
-            builder.Services.AddControllers();
-            builder.Services.AddEndpointsApiExplorer();
             var app = builder.Build();
-            app.MapControllers();
+
+            Startup.Configure(app);
+
             app.Run();
         }
     }

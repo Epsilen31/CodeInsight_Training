@@ -2,12 +2,16 @@
 {
     public interface IFileHandler
     {
-        public Task<string> ReadFile(string filePath);
+        public Task<string> ReadFileAsync(string filePath, CancellationToken token);
 
-        public Task WriteToFile(string filePath, string content);
+        public Task WriteToFileAsync(string filePath, string content, CancellationToken token);
 
-        public Task CopyFile(string sourcePath, string destinationPath);
+        public Task CopyFileAsync(
+            string sourcePath,
+            string destinationPath,
+            CancellationToken token
+        );
 
-        public Task DeleteFile(string path);
+        public Task DeleteFileAsync(string path, CancellationToken token);
     }
 }
