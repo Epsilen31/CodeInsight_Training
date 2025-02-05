@@ -1,4 +1,4 @@
-using Codeinsight.Cors.Settings;
+using Codeinsight.Core.Settings;
 using Codeinsight.Services.Contracts;
 using Codeinsight.WebApi.Constants;
 using Microsoft.AspNetCore.Mvc;
@@ -6,7 +6,7 @@ using Microsoft.Extensions.Options;
 
 namespace Codeinsight.WebApi.Controllers
 {
-    [Route(RouteKey.controllers)]
+    [Route(RouteKey.HeadRoute)]
     [ApiController]
     public class FileController : BaseController
     {

@@ -1,4 +1,4 @@
-﻿using Codeinsight.Cors.Settings;
+﻿using Codeinsight.Core.Settings;
 using Codeinsight.WebApi.Extensions;
 
 namespace Codeinsight.WebApi

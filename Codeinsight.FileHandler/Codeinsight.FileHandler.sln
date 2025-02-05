@@ -13,7 +13,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Codeinsight.Services", "Cod
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{881589EE-639B-0A35-DBCE-5D94E4FC90C0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Codeinsight.Cors", "Codeinsight.Cors\Codeinsight.Cors.csproj", "{45F2B285-0995-42B2-A4A4-10BD22C7B856}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Codeinsight.Core", "Codeinsight.Core\Codeinsight.Core.csproj", "{45F2B285-0995-42B2-A4A4-10BD22C7B856}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
