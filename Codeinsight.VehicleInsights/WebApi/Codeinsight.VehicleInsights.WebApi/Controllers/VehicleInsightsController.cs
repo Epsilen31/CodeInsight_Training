@@ -9,7 +9,7 @@ namespace Codeinsight.VehicleInsights.WebApi.Controllers
 {
     [ApiController]
     [Route(RouteKey.HeadRoute)]
-    public class VehicleInsightsController : ControllerBase
+    public class VehicleInsightsController : BaseController
     {
         private readonly IMediator _mediator;
         private readonly FilePaths _filePaths;
