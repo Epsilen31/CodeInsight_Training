@@ -2,6 +2,6 @@ namespace Codeinsight.VehicleInsights.Core.Settings
 {
     public class FilePaths
     {
-        public string? BaseFile { get; set; }
+        public string BaseFile { get; set; } = string.Empty;
     }
 }

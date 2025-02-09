@@ -33,22 +33,16 @@ namespace Codeinsight.VehicleInsights.WebApi.Controllers
         {
             try
             {
-                if (string.IsNullOrWhiteSpace(_filePaths.BaseFile))
-                    return BadRequest("File path cannot be empty.");
-
                 await _mediator.Send(
                     new GenerateVehicleReport.Query(_filePaths.BaseFile),
                     cancellationToken
                 );
                 return Ok("Vehicle report generated successfully.");
             }
-            catch (Exception exception)
+            catch (Exception ex)
             {
-                _logger.LogError(
-                    "Error generating vehicle report : {Exception}",
-                    exception.Message
-                );
-                return StatusCode(500, $"Error generating vehicle report: {exception.Message}");
+                _logger.LogError(ex, "Error generating vehicle report");
+                return StatusCode(500, "Error generating vehicle report");
             }
         }
 
@@ -59,23 +53,16 @@ namespace Codeinsight.VehicleInsights.WebApi.Controllers
         {
             try
             {
-                Console.WriteLine($"getting file path: {_filePaths.BaseFile}");
-                if (string.IsNullOrWhiteSpace(_filePaths.BaseFile))
-                    return BadRequest("File path cannot be empty.");
-
                 await _mediator.Send(
                     new DisplayVehicleReportInTabular.Query(_filePaths.BaseFile),
                     cancellationToken
                 );
                 return Ok("Vehicle report displayed successfully.");
             }
-            catch (Exception exception)
+            catch (Exception ex)
             {
-                _logger.LogError(
-                    "Error displaying vehicle report : {Exception}",
-                    exception.Message
-                );
-                return StatusCode(500, $"Error displaying vehicle report: {exception.Message}");
+                _logger.LogError(ex, "Error displaying vehicle report");
+                return StatusCode(500, "Error displaying vehicle report");
             }
         }
 
@@ -87,12 +74,6 @@ namespace Codeinsight.VehicleInsights.WebApi.Controllers
         {
             try
             {
-                if (string.IsNullOrWhiteSpace(model))
-                    return BadRequest("Vehicle model cannot be empty.");
-
-                if (string.IsNullOrWhiteSpace(_filePaths.BaseFile))
-                    return BadRequest("File path cannot be empty.");
-
                 var result = await _mediator.Send(
                     new SearchVehicleByModel.Query(model, _filePaths.BaseFile),
                     cancellationToken
@@ -102,16 +83,10 @@ namespace Codeinsight.VehicleInsights.WebApi.Controllers
 
                 return Ok(result);
             }
-            catch (Exception exception)
+            catch (Exception ex)
             {
-                _logger.LogError(
-                    "Error searching vehicle by model: {Exception}",
-                    exception.Message
-                );
-                return StatusCode(
-                    500,
-                    $"Error searching vehicle by model '{model}': {exception.Message}"
-                );
+                _logger.LogError(ex, $"Error searching vehicle by model '{model}'");
+                return StatusCode(500, $"Error searching vehicle by model '{model}'");
             }
         }
 
@@ -123,12 +98,6 @@ namespace Codeinsight.VehicleInsights.WebApi.Controllers
         {
             try
             {
-                if (year <= 0)
-                    return BadRequest("Invalid manufacturing year specified.");
-
-                if (string.IsNullOrWhiteSpace(_filePaths.BaseFile))
-                    return BadRequest("File path cannot be empty.");
-
                 var result = await _mediator.Send(
                     new GetFilterVehiclesByManufacturingYear.Query(year, _filePaths.BaseFile),
                     cancellationToken
@@ -138,16 +107,10 @@ namespace Codeinsight.VehicleInsights.WebApi.Controllers
 
                 return Ok(result);
             }
-            catch (Exception exception)
+            catch (Exception ex)
             {
-                _logger.LogError(
-                    "Error while filtering vehicles by manufacturing year: {Exception}",
-                    exception.Message
-                );
-                return StatusCode(
-                    500,
-                    $"Error filtering vehicles by manufacturing year '{year}': {exception.Message}"
-                );
+                _logger.LogError(ex, $"Error filtering vehicles by manufacturing year '{year}'");
+                return StatusCode(500, $"Error filtering vehicles by manufacturing year '{year}'");
             }
         }
 
@@ -160,12 +123,6 @@ namespace Codeinsight.VehicleInsights.WebApi.Controllers
         {
             try
             {
-                if (sortOrder < 1 || sortCriteria < 1)
-                    return BadRequest("Invalid sort criteria. Use '1' for price or '2' for model.");
-
-                if (string.IsNullOrWhiteSpace(_filePaths.BaseFile))
-                    return BadRequest("File path cannot be empty.");
-
                 var result = await _mediator.Send(
                     new GetSortedVehiclesByPrice.Query(
                         sortOrder,
@@ -174,18 +131,15 @@ namespace Codeinsight.VehicleInsights.WebApi.Controllers
                     ),
                     cancellationToken
                 );
-                if (result == null || !result.Any())
+                if (result == null || result.Count == 0)
                     return NotFound("No vehicles available for sorting.");
 
                 return Ok(result);
             }
-            catch (Exception exception)
+            catch (Exception ex)
             {
-                _logger.LogError(
-                    "Error while sorting vehicles by price: {Exception}",
-                    exception.Message
-                );
-                return StatusCode(500, $"Error sorting vehicles by price: {exception.Message}");
+                _logger.LogError(ex, "Error sorting vehicles by price");
+                return StatusCode(500, "Error sorting vehicles by price");
             }
         }
 
@@ -196,9 +150,6 @@ namespace Codeinsight.VehicleInsights.WebApi.Controllers
         {
             try
             {
-                if (string.IsNullOrWhiteSpace(_filePaths.BaseFile))
-                    return BadRequest("File path cannot be empty.");
-
                 var result = await _mediator.Send(
                     new GetVehiclesAverageRating.Query(_filePaths.BaseFile),
                     cancellationToken
@@ -208,16 +159,10 @@ namespace Codeinsight.VehicleInsights.WebApi.Controllers
 
                 return Ok(result);
             }
-            catch (Exception exception)
+            catch (Exception ex)
             {
-                _logger.LogError(
-                    "Error while getting vehicles average rating: {Exception}",
-                    exception.Message
-                );
-                return StatusCode(
-                    500,
-                    $"Error retrieving vehicle average rating: {exception.Message}"
-                );
+                _logger.LogError(ex, "Error retrieving vehicle average rating");
+                return StatusCode(500, "Error retrieving vehicle average rating");
             }
         }
 
@@ -228,9 +173,6 @@ namespace Codeinsight.VehicleInsights.WebApi.Controllers
         {
             try
             {
-                if (string.IsNullOrWhiteSpace(_filePaths.BaseFile))
-                    return BadRequest("File path cannot be empty.");
-
                 var result = await _mediator.Send(
                     new GetVehiclesCountBasedOnRating.Query(_filePaths.BaseFile),
                     cancellationToken
@@ -240,16 +182,10 @@ namespace Codeinsight.VehicleInsights.WebApi.Controllers
 
                 return Ok(result);
             }
-            catch (Exception exception)
+            catch (Exception ex)
             {
-                _logger.LogError(
-                    "Error while getting vehicles count based on rating: {Exception}",
-                    exception.Message
-                );
-                return StatusCode(
-                    500,
-                    $"Error retrieving vehicle count based on rating: {exception.Message}"
-                );
+                _logger.LogError(ex, "Error retrieving vehicle count based on rating");
+                return StatusCode(500, "Error retrieving vehicle count based on rating");
             }
         }
     }

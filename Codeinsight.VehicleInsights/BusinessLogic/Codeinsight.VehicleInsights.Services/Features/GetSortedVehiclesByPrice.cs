@@ -40,6 +40,19 @@ namespace Codeinsight.VehicleInsights.Services.Features
             {
                 try
                 {
+                    if (request.SortOrder < 1 || request.SortCriteria < 1)
+                    {
+                        _logger.LogError(
+                            "Invalid sort criteria. Use '1' for price or '2' for model."
+                        );
+
+                        return new List<CarDto>();
+                    }
+                    if (string.IsNullOrWhiteSpace(request.FilePath))
+                    {
+                        _logger.LogError("File path cannot be empty.");
+                        return [];
+                    }
                     var carsData = await _reportHelper.CarsReportCommonHelperAsyncAsync(
                         request.FilePath,
                         cancellationToken

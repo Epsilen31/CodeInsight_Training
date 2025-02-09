@@ -38,6 +38,10 @@ namespace Codeinsight.VehicleInsights.Services.Services
         {
             try
             {
+                if (!File.Exists(filePath))
+                {
+                    throw new FileNotFoundException($"File {filePath} not found.");
+                }
                 await File.WriteAllTextAsync(Path.GetFullPath(filePath), content, token);
             }
             catch (Exception exception)

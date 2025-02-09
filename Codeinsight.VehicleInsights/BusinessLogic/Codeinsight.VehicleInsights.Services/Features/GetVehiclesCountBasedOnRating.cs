@@ -38,6 +38,11 @@ namespace Codeinsight.VehicleInsights.Services.Features
             {
                 try
                 {
+                    if (string.IsNullOrWhiteSpace(request.FilePath))
+                    {
+                        _logger.LogError("File path cannot be empty.");
+                        return [];
+                    }
                     var carsData = await _reportHelper.CarsReportCommonHelperAsyncAsync(
                         request.FilePath,
                         cancellationToken

@@ -40,6 +40,16 @@ namespace Codeinsight.VehicleInsights.Services.Features
             {
                 try
                 {
+                    if (request.ManufacturingYear <= 0)
+                    {
+                        _logger.LogError("Invalid manufacturing year specified.");
+                        return [];
+                    }
+                    if (string.IsNullOrWhiteSpace(request.FilePath))
+                    {
+                        _logger.LogError("File path cannot be empty.");
+                        return [];
+                    }
                     var carsData = await _reportHelper.CarsReportCommonHelperAsyncAsync(
                         request.FilePath,
                         cancellationToken
