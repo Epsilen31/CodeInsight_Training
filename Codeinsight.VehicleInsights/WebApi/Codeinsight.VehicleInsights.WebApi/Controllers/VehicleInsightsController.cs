@@ -66,7 +66,7 @@ namespace Codeinsight.VehicleInsights.WebApi.Controllers
 
         [HttpGet(RouteKey.SearchByModel)]
         public async Task<IActionResult> SearchVehicleByModelAsync(
-            [FromRoute] string model,
+            string model,
             CancellationToken cancellationToken
         )
         {
@@ -86,7 +86,7 @@ namespace Codeinsight.VehicleInsights.WebApi.Controllers
 
         [HttpGet(RouteKey.FilterByYear)]
         public async Task<IActionResult> GetFilterVehiclesByManufacturingYearAsync(
-            [FromQuery] int year,
+            int year,
             CancellationToken cancellationToken
         )
         {
@@ -107,8 +107,8 @@ namespace Codeinsight.VehicleInsights.WebApi.Controllers
         [HttpGet(RouteKey.SortByPrice)]
         public async Task<IActionResult> GetSortedVehiclesByPriceAsync(
             CancellationToken cancellationToken,
-            [FromQuery] int sortOrder = 1,
-            [FromQuery] int sortCriteria = 1
+            int sortOrder = 1,
+            int sortCriteria = 1
         )
         {
             try
