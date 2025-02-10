@@ -1,11 +1,1 @@
-Model,Company,ManufacturingYear,BasePrice,InsurancePrice,AfterTotalPrice,Rating
-Civic,Honda,2020,20000,1500,21500,4.5
-Camry,Toyota,2021,25000,1800,26800,4.7
-Model S,Tesla,2022,80000,2500,82500,4.9
-Mustang,Ford,2019,35000,2000,37000,4.6
-Altima,Nissan,2018,24000,1600,25600,4.4
-3 Series,BMW,2021,41000,2200,43200,4.8
-A4,Audi,2020,43000,2100,45100,4.7
-Elantra,Hyundai,2019,19000,1400,20400,4.3
-CX-5,Mazda,2021,27000,1700,28700,4.6
-Sorento,Kia,2022,31000,1800,32800,4.5
+
