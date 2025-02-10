@@ -51,6 +51,7 @@ namespace Codeinsight.VehicleInsights.Services.Features
                         .GroupBy(car => car.Rating)
                         .SelectMany(group => group)
                         .ToList();
+
                     return ratingGroup;
                 }
                 catch (Exception exception)

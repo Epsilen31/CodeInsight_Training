@@ -14,76 +14,71 @@ namespace Codeinsight.VehicleInsights.Services.Services
 
         public async Task<ICollection<CarDto>> CarsReportCommonHelperAsyncAsync(
             string filePath,
-            CancellationToken token
+            CancellationToken cancellationToken
         )
         {
-            return await GetCarReportDataAsync(filePath, token);
+            return await GetCarReportDataAsync(filePath, cancellationToken);
         }
 
         public async Task<ICollection<CarDto>> GetCarReportDataAsync(
             string filePath,
-            CancellationToken token
+            CancellationToken cancellationToken
         )
         {
-            return await CarsReportDataAsync(filePath, token);
+            return await CarsReportDataAsync(filePath, cancellationToken);
         }
 
         private async Task<ICollection<CarDto>> CarsReportDataAsync(
             string filePath,
-            CancellationToken token
+            CancellationToken cancellationToken
         )
         {
-            string carDetails = await _fileHandler.ReadFileAsync(filePath, token);
-            ICollection<CarDto> carsCollection = await ParseCarDetailsAsync(carDetails);
+            string carDetails = await _fileHandler.ReadFileAsync(filePath, cancellationToken);
+            ICollection<CarDto> carsCollection = ParseCarDetails(carDetails);
             return carsCollection;
         }
 
-        private async Task<ICollection<CarDto>> ParseCarDetailsAsync(string carDetails)
+        private ICollection<CarDto> ParseCarDetails(string carDetails)
         {
-            return await Task.Run(() =>
+            var cars = new List<CarDto>();
+            string[] carDetailLines = carDetails.Split("\n");
+
+            for (int index = 1; index < carDetailLines.Length; index++)
             {
-                var cars = new List<CarDto>();
-                string[] carDetailLines = carDetails.Split("\n");
+                var carDetail = carDetailLines[index].Split(",");
 
-                for (int index = 1; index < carDetailLines.Length; index++)
+                if (carDetail.Length == 7)
                 {
-                    var carDetail = carDetailLines[index].Split(",");
+                    string model = string.IsNullOrEmpty(carDetail[0])
+                        ? "Unknown Model"
+                        : carDetail[0];
+                    string company = string.IsNullOrEmpty(carDetail[1])
+                        ? "Unknown Company"
+                        : carDetail[1];
+                    string manufacturingYear = string.IsNullOrEmpty(carDetail[2])
+                        ? "Unknown Year"
+                        : carDetail[2];
+                    string basePrice = string.IsNullOrEmpty(carDetail[3]) ? "0" : carDetail[3];
+                    string insurancePrice = string.IsNullOrEmpty(carDetail[4]) ? "0" : carDetail[4];
+                    string afterTotalPrice = string.IsNullOrEmpty(carDetail[5])
+                        ? "0"
+                        : carDetail[5];
+                    string rating = string.IsNullOrEmpty(carDetail[6]) ? "0" : carDetail[6];
 
-                    if (carDetail.Length == 7)
+                    var car = new CarDto
                     {
-                        string model = string.IsNullOrEmpty(carDetail[0])
-                            ? "Unknown Model"
-                            : carDetail[0];
-                        string company = string.IsNullOrEmpty(carDetail[1])
-                            ? "Unknown Company"
-                            : carDetail[1];
-                        string manufacturingYear = string.IsNullOrEmpty(carDetail[2])
-                            ? "Unknown Year"
-                            : carDetail[2];
-                        string basePrice = string.IsNullOrEmpty(carDetail[3]) ? "0" : carDetail[3];
-                        string insurancePrice = string.IsNullOrEmpty(carDetail[4])
-                            ? "0"
-                            : carDetail[4];
-                        string afterTotalPrice = string.IsNullOrEmpty(carDetail[5])
-                            ? "0"
-                            : carDetail[5];
-                        string rating = string.IsNullOrEmpty(carDetail[6]) ? "0" : carDetail[6];
-
-                        var car = new CarDto
-                        {
-                            Model = model,
-                            Company = company,
-                            ManufacturingYear = manufacturingYear,
-                            BasePrice = basePrice,
-                            InsurancePrice = insurancePrice,
-                            AfterTotalPrice = afterTotalPrice,
-                            Rating = rating,
-                        };
-                        cars.Add(car);
-                    }
+                        Model = model,
+                        Company = company,
+                        ManufacturingYear = manufacturingYear,
+                        BasePrice = basePrice,
+                        InsurancePrice = insurancePrice,
+                        AfterTotalPrice = afterTotalPrice,
+                        Rating = rating,
+                    };
+                    cars.Add(car);
                 }
-                return cars;
-            });
+            }
+            return cars;
         }
     }
 }

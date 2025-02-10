@@ -6,7 +6,7 @@ namespace Codeinsight.VehicleInsights.Services.Contracts
     {
         Task<ICollection<CarDto>> CarsReportCommonHelperAsyncAsync(
             string filePath,
-            CancellationToken token
+            CancellationToken cancellationToken
         );
     }
 }

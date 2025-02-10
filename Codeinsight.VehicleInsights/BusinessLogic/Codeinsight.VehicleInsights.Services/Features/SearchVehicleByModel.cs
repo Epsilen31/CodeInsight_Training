@@ -52,9 +52,16 @@ namespace Codeinsight.VehicleInsights.Services.Features
                         request.FilePath,
                         cancellationToken
                     );
+
                     var filteredCars = carsData.Where(car =>
                         car.Model.Contains(request.Model, StringComparison.CurrentCultureIgnoreCase)
                     );
+                    if (filteredCars == null || !filteredCars.Any())
+                    {
+                        _logger.LogWarning($"No vehicles found for the model: {request.Model}.");
+                        return [];
+                    }
+
                     return [.. filteredCars];
                 }
                 catch (Exception exception)

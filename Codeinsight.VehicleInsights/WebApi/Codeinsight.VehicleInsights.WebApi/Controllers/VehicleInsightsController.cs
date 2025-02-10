@@ -39,9 +39,8 @@ namespace Codeinsight.VehicleInsights.WebApi.Controllers
                 );
                 return Ok("Vehicle report generated successfully.");
             }
-            catch (Exception ex)
+            catch
             {
-                _logger.LogError(ex, "Error generating vehicle report");
                 return StatusCode(500, "Error generating vehicle report");
             }
         }
@@ -59,9 +58,8 @@ namespace Codeinsight.VehicleInsights.WebApi.Controllers
                 );
                 return Ok("Vehicle report displayed successfully.");
             }
-            catch (Exception ex)
+            catch
             {
-                _logger.LogError(ex, "Error displaying vehicle report");
                 return StatusCode(500, "Error displaying vehicle report");
             }
         }
@@ -78,14 +76,10 @@ namespace Codeinsight.VehicleInsights.WebApi.Controllers
                     new SearchVehicleByModel.Query(model, _filePaths.BaseFile),
                     cancellationToken
                 );
-                if (result == null || result.Count == 0)
-                    return NotFound($"No vehicles found for the model: {model}.");
-
                 return Ok(result);
             }
-            catch (Exception ex)
+            catch
             {
-                _logger.LogError(ex, $"Error searching vehicle by model '{model}'");
                 return StatusCode(500, $"Error searching vehicle by model '{model}'");
             }
         }
@@ -102,23 +96,19 @@ namespace Codeinsight.VehicleInsights.WebApi.Controllers
                     new GetFilterVehiclesByManufacturingYear.Query(year, _filePaths.BaseFile),
                     cancellationToken
                 );
-                if (result == null || result.Count == 0)
-                    return NotFound($"No vehicles found for the manufacturing year: {year}.");
-
                 return Ok(result);
             }
-            catch (Exception ex)
+            catch
             {
-                _logger.LogError(ex, $"Error filtering vehicles by manufacturing year '{year}'");
                 return StatusCode(500, $"Error filtering vehicles by manufacturing year '{year}'");
             }
         }
 
         [HttpGet(RouteKey.SortByPrice)]
         public async Task<IActionResult> GetSortedVehiclesByPriceAsync(
+            CancellationToken cancellationToken,
             [FromQuery] int sortOrder = 1,
-            [FromQuery] int sortCriteria = 1,
-            CancellationToken cancellationToken = default
+            [FromQuery] int sortCriteria = 1
         )
         {
             try
@@ -131,14 +121,10 @@ namespace Codeinsight.VehicleInsights.WebApi.Controllers
                     ),
                     cancellationToken
                 );
-                if (result == null || result.Count == 0)
-                    return NotFound("No vehicles available for sorting.");
-
                 return Ok(result);
             }
-            catch (Exception ex)
+            catch
             {
-                _logger.LogError(ex, "Error sorting vehicles by price");
                 return StatusCode(500, "Error sorting vehicles by price");
             }
         }
@@ -154,14 +140,10 @@ namespace Codeinsight.VehicleInsights.WebApi.Controllers
                     new GetVehiclesAverageRating.Query(_filePaths.BaseFile),
                     cancellationToken
                 );
-                if (result == null || result.Count == 0)
-                    return NotFound("No rating data available for vehicles.");
-
                 return Ok(result);
             }
-            catch (Exception ex)
+            catch
             {
-                _logger.LogError(ex, "Error retrieving vehicle average rating");
                 return StatusCode(500, "Error retrieving vehicle average rating");
             }
         }
@@ -177,14 +159,10 @@ namespace Codeinsight.VehicleInsights.WebApi.Controllers
                     new GetVehiclesCountBasedOnRating.Query(_filePaths.BaseFile),
                     cancellationToken
                 );
-                if (result == null || result.Count == 0)
-                    return NotFound("No vehicle count data found for ratings.");
-
                 return Ok(result);
             }
-            catch (Exception ex)
+            catch
             {
-                _logger.LogError(ex, "Error retrieving vehicle count based on rating");
                 return StatusCode(500, "Error retrieving vehicle count based on rating");
             }
         }

@@ -45,8 +45,7 @@ namespace Codeinsight.VehicleInsights.Services.Features
                         _logger.LogError(
                             "Invalid sort criteria. Use '1' for price or '2' for model."
                         );
-
-                        return new List<CarDto>();
+                        return [];
                     }
                     if (string.IsNullOrWhiteSpace(request.FilePath))
                     {

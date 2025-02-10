@@ -12,7 +12,10 @@ namespace Codeinsight.VehicleInsights.Services.Services
             _logger = logger;
         }
 
-        public async Task<string> ReadFileAsync(string filePath, CancellationToken token)
+        public async Task<string> ReadFileAsync(
+            string filePath,
+            CancellationToken cancellationToken
+        )
         {
             try
             {
@@ -20,7 +23,10 @@ namespace Codeinsight.VehicleInsights.Services.Services
                 {
                     throw new FileNotFoundException($"File {filePath} not found.");
                 }
-                var lines = await File.ReadAllLinesAsync(Path.GetFullPath(filePath), token);
+                var lines = await File.ReadAllLinesAsync(
+                    Path.GetFullPath(filePath),
+                    cancellationToken
+                );
                 return string.Join(Environment.NewLine, lines);
             }
             catch (Exception exception)
@@ -33,7 +39,7 @@ namespace Codeinsight.VehicleInsights.Services.Services
         public async Task GenerateFileAsync(
             string filePath,
             string content,
-            CancellationToken token
+            CancellationToken cancellationToken
         )
         {
             try
@@ -42,7 +48,11 @@ namespace Codeinsight.VehicleInsights.Services.Services
                 {
                     throw new FileNotFoundException($"File {filePath} not found.");
                 }
-                await File.WriteAllTextAsync(Path.GetFullPath(filePath), content, token);
+                await File.WriteAllTextAsync(
+                    Path.GetFullPath(filePath),
+                    content,
+                    cancellationToken
+                );
             }
             catch (Exception exception)
             {

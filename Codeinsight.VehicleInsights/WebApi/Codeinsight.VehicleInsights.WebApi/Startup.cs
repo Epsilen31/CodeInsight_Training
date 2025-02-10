@@ -22,14 +22,5 @@ namespace Codeinsight.VehicleInsights.WebApi
 
             services.AddSingleton(file => file.GetRequiredService<IOptions<FilePaths>>().Value);
         }
-
-        public static void Configure(IApplicationBuilder app)
-        {
-            app.UseRouting();
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
-        }
     }
 }

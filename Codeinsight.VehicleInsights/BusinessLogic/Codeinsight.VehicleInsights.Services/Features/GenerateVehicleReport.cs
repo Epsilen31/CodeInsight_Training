@@ -64,14 +64,14 @@ namespace Codeinsight.VehicleInsights.Services.Features
             private async Task StoreCarsDataAsync(
                 string filepath,
                 ICollection<CarDto> cars,
-                CancellationToken token
+                CancellationToken cancellationToken
             )
             {
                 foreach (var car in cars)
                 {
                     string fileName = Path.Combine(filepath, $"{car.Company}_{car.Model}.txt");
                     string carDetails = await FormatCarDetailsAsync(car);
-                    await _fileHandler.GenerateFileAsync(fileName, carDetails, token);
+                    await _fileHandler.GenerateFileAsync(fileName, carDetails, cancellationToken);
                 }
             }
 

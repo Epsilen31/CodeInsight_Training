@@ -56,6 +56,8 @@ namespace Codeinsight.VehicleInsights.Services.Features
                                     .ToString("0.00"),
                             }),
                     ];
+                    if (averageRatings == null || averageRatings.Count == 0)
+                        return [];
 
                     return averageRatings;
                 }

@@ -59,6 +59,15 @@ namespace Codeinsight.VehicleInsights.Services.Features
                         int.TryParse(car.ManufacturingYear, out int year)
                         && year == request.ManufacturingYear
                     );
+
+                    if (filteredCars == null || !filteredCars.Any())
+                    {
+                        _logger.LogWarning(
+                            "No cars found for the specified manufacturing year: {ManufacturingYear}",
+                            request.ManufacturingYear
+                        );
+                        return [];
+                    }
                     return [.. filteredCars];
                 }
                 catch (Exception exception)
