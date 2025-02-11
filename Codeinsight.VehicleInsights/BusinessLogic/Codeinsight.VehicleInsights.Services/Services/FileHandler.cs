@@ -31,8 +31,8 @@ namespace Codeinsight.VehicleInsights.Services.Services
             }
             catch (Exception exception)
             {
-                _logger.LogError(exception, "Error {filepath} reading file", filePath);
-                throw new Exception("Cannot read file " + filePath);
+                _logger.LogError(exception, "Error {Filepath} reading file", exception.Message);
+                throw new InvalidOperationException("Cannot read file " + filePath);
             }
         }
 
@@ -57,7 +57,8 @@ namespace Codeinsight.VehicleInsights.Services.Services
             catch (Exception exception)
             {
                 _logger.LogError(
-                    "Error {fiePath} generating file : {Exception} ",
+                    exception,
+                    "Error {FiePath} generating file : {Exception} ",
                     filePath,
                     exception.Message
                 );

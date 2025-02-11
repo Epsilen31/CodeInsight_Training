@@ -21,12 +21,12 @@ namespace Codeinsight.VehicleInsights.Services.Features
 
         public class Handler : IRequestHandler<Query, ICollection<CarDto>>
         {
-            private readonly ICarsDataHelper _reportHelper;
+            private readonly ICarsDataHelperServiceService _reportHelper;
             private readonly ILogger<GetFilterVehiclesByManufacturingYear> _logger;
 
             public Handler(
                 ILogger<GetFilterVehiclesByManufacturingYear> logger,
-                ICarsDataHelper reportHelper
+                ICarsDataHelperServiceService reportHelper
             )
             {
                 _logger = logger;
@@ -73,10 +73,11 @@ namespace Codeinsight.VehicleInsights.Services.Features
                 catch (Exception exception)
                 {
                     _logger.LogError(
+                        exception,
                         "Error while getting cars data : {Exception}",
                         exception.Message
                     );
-                    throw new Exception(exception.Message);
+                    throw new InvalidOperationException(exception.Message);
                 }
             }
         }

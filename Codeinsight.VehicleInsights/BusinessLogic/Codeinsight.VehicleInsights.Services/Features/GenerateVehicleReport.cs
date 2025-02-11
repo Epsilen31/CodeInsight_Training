@@ -20,14 +20,14 @@ namespace Codeinsight.VehicleInsights.Services.Features
 
         public class Handler : IRequestHandler<Query, Unit>
         {
-            private readonly ICarsDataHelper _reportHelper;
+            private readonly ICarsDataHelperServiceService _reportHelper;
             private readonly IFileHandler _fileHandler;
             private readonly ILogger<GenerateVehicleReport> _logger;
 
             public Handler(
                 IFileHandler fileHandler,
                 ILogger<GenerateVehicleReport> logger,
-                ICarsDataHelper reportHelper
+                ICarsDataHelperServiceService reportHelper
             )
             {
                 _fileHandler = fileHandler;
@@ -54,10 +54,14 @@ namespace Codeinsight.VehicleInsights.Services.Features
                 catch (Exception exception)
                 {
                     _logger.LogError(
+                        exception,
                         "Error generating vehicle report for file path: {FilePath}",
                         request.PathValue
                     );
-                    throw new Exception(exception.Message);
+                    throw new InvalidOperationException(
+                        "Error generating vehicle report.",
+                        exception
+                    );
                 }
             }
 
@@ -70,23 +74,20 @@ namespace Codeinsight.VehicleInsights.Services.Features
                 foreach (var car in cars)
                 {
                     string fileName = Path.Combine(filepath, $"{car.Company}_{car.Model}.txt");
-                    string carDetails = await FormatCarDetailsAsync(car);
+                    string carDetails = FormatCarDetails(car);
                     await _fileHandler.GenerateFileAsync(fileName, carDetails, cancellationToken);
                 }
             }
 
-            private async Task<string> FormatCarDetailsAsync(CarDto car)
+            private string FormatCarDetails(CarDto car)
             {
-                return await Task.Run(
-                    () =>
-                        $"{TableHeaderConstants.Model}: {car.Model}\n"
-                        + $"{TableHeaderConstants.Company}: {car.Company}\n"
-                        + $"{TableHeaderConstants.ManufacturingYear}: {car.ManufacturingYear}\n"
-                        + $"{TableHeaderConstants.BasePrice}: {car.BasePrice}\n"
-                        + $"{TableHeaderConstants.InsurancePrice}: {car.InsurancePrice}\n"
-                        + $"{TableHeaderConstants.AfterTotalPrice}: {car.AfterTotalPrice}\n"
-                        + $"{TableHeaderConstants.Rating}: {car.Rating}\n"
-                );
+                return $"{TableHeaderConstants.Model}: {car.Model}\n"
+                    + $"{TableHeaderConstants.Company}: {car.Company}\n"
+                    + $"{TableHeaderConstants.ManufacturingYear}: {car.ManufacturingYear}\n"
+                    + $"{TableHeaderConstants.BasePrice}: {car.BasePrice}\n"
+                    + $"{TableHeaderConstants.InsurancePrice}: {car.InsurancePrice}\n"
+                    + $"{TableHeaderConstants.AfterTotalPrice}: {car.AfterTotalPrice}\n"
+                    + $"{TableHeaderConstants.Rating}: {car.Rating}\n";
             }
         }
     }

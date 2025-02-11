@@ -2,7 +2,7 @@ using Codeinsight.VehicleInsights.Services.DTOs;
 
 namespace Codeinsight.VehicleInsights.Services.Contracts
 {
-    public interface ICarsDataHelper
+    public interface ICarsDataHelperServiceService
     {
         Task<ICollection<CarDto>> CarsReportCommonHelperAsyncAsync(
             string filePath,

@@ -20,13 +20,13 @@ namespace Codeinsight.VehicleInsights.Services.Features
 
         public class Handler : IRequestHandler<Query, Unit>
         {
-            private readonly ICarsDataHelper _reportHelper;
+            private readonly ICarsDataHelperServiceService _reportHelper;
 
             private readonly ILogger<DisplayVehicleReportInTabular> _logger;
 
             public Handler(
                 ILogger<DisplayVehicleReportInTabular> logger,
-                ICarsDataHelper reportHelper
+                ICarsDataHelperServiceService reportHelper
             )
             {
                 _logger = logger;
@@ -39,30 +39,28 @@ namespace Codeinsight.VehicleInsights.Services.Features
                 {
                     if (string.IsNullOrWhiteSpace(request.PathValue))
                     {
-                        _logger.LogError("File path cannot be empty.");
+                        _logger.LogWarning("File path cannot be empty.");
                         return Unit.Value;
                     }
                     var carsData = await _reportHelper.CarsReportCommonHelperAsyncAsync(
                         request.PathValue,
                         cancellationToken
                     );
-                    await DisplayAllCarsAsync(carsData, cancellationToken);
+                    await DisplayAllCarsAsync(carsData);
                     return Unit.Value;
                 }
                 catch (Exception exception)
                 {
                     _logger.LogError(
+                        exception,
                         "Error displaying vehicle report in tabular format: {ErrorMessage}",
                         exception.Message
                     );
-                    throw new Exception(exception.Message);
+                    throw new InvalidOperationException(exception.Message);
                 }
             }
 
-            private Task DisplayAllCarsAsync(
-                ICollection<CarDto> carDetails,
-                CancellationToken cancellationToken
-            )
+            private Task DisplayAllCarsAsync(ICollection<CarDto> carDetails)
             {
                 _logger.LogInformation(
                     "{Model}\t{Company}\t{ManufacturingYear}\t{BasePrice}\t{InsurancePrice}\t{AfterTotalPrice}\t{Rating}",

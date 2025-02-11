@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Codeinsight.VehicleInsights.Services.Contracts;
 using Codeinsight.VehicleInsights.Services.DTOs;
 using MediatR;
@@ -21,10 +22,13 @@ namespace Codeinsight.VehicleInsights.Services.Features
 
         public class Handler : IRequestHandler<Query, ICollection<CarDto>>
         {
-            private readonly ICarsDataHelper _reportHelper;
+            private readonly ICarsDataHelperServiceService _reportHelper;
             private readonly ILogger<SearchVehicleByModel> _logger;
 
-            public Handler(ILogger<SearchVehicleByModel> logger, ICarsDataHelper reportHelper)
+            public Handler(
+                ILogger<SearchVehicleByModel> logger,
+                ICarsDataHelperServiceService reportHelper
+            )
             {
                 _logger = logger;
                 _reportHelper = reportHelper;
@@ -45,21 +49,22 @@ namespace Codeinsight.VehicleInsights.Services.Features
                     if (string.IsNullOrWhiteSpace(request.Model))
                     {
                         _logger.LogError("Vehicle model cannot be empty.");
-                        return [];
+                        throw new InvalidOperationException("Vehicle model cannot be empty.");
                     }
 
                     var carsData = await _reportHelper.CarsReportCommonHelperAsyncAsync(
                         request.FilePath,
                         cancellationToken
                     );
-
                     var filteredCars = carsData.Where(car =>
                         car.Model.Contains(request.Model, StringComparison.CurrentCultureIgnoreCase)
                     );
                     if (filteredCars == null || !filteredCars.Any())
                     {
-                        _logger.LogWarning($"No vehicles found for the model: {request.Model}.");
-                        return [];
+                        _logger.LogWarning("No vehicles found for the model");
+                        throw new InvalidOperationException(
+                            "Somthing is missing on this vehicle's model data."
+                        );
                     }
 
                     return [.. filteredCars];
@@ -67,10 +72,14 @@ namespace Codeinsight.VehicleInsights.Services.Features
                 catch (Exception exception)
                 {
                     _logger.LogError(
+                        exception,
                         "Error in SearchVehicleByModel: {Exception}",
                         exception.Message
                     );
-                    throw new Exception(exception.Message);
+                    throw new ArgumentException(
+                        "An error occurred while searching for vehicles by model.",
+                        exception.Message.Trim()
+                    );
                 }
             }
         }

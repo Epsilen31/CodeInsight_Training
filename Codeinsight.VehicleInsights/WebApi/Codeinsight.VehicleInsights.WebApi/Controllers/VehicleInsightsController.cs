@@ -13,17 +13,11 @@ namespace Codeinsight.VehicleInsights.WebApi.Controllers
     {
         private readonly IMediator _mediator;
         private readonly FilePaths _filePaths;
-        private readonly ILogger<VehicleInsightsController> _logger;
 
-        public VehicleInsightsController(
-            IMediator mediator,
-            IOptions<FilePaths> filePathsOptions,
-            ILogger<VehicleInsightsController> logger
-        )
+        public VehicleInsightsController(IMediator mediator, IOptions<FilePaths> filePathsOptions)
         {
             _mediator = mediator;
             _filePaths = filePathsOptions.Value;
-            _logger = logger;
         }
 
         [HttpGet(RouteKey.GenerateReport)]
@@ -31,18 +25,11 @@ namespace Codeinsight.VehicleInsights.WebApi.Controllers
             CancellationToken cancellationToken
         )
         {
-            try
-            {
-                await _mediator.Send(
-                    new GenerateVehicleReport.Query(_filePaths.BaseFile),
-                    cancellationToken
-                );
-                return Ok("Vehicle report generated successfully.");
-            }
-            catch
-            {
-                return StatusCode(500, "Error generating vehicle report");
-            }
+            await _mediator.Send(
+                new GenerateVehicleReport.Query(_filePaths.BaseFile),
+                cancellationToken
+            );
+            return Ok("Vehicle report generated successfully.");
         }
 
         [HttpGet(RouteKey.DisplayReport)]
@@ -50,18 +37,11 @@ namespace Codeinsight.VehicleInsights.WebApi.Controllers
             CancellationToken cancellationToken
         )
         {
-            try
-            {
-                await _mediator.Send(
-                    new DisplayVehicleReportInTabular.Query(_filePaths.BaseFile),
-                    cancellationToken
-                );
-                return Ok("Vehicle report displayed successfully.");
-            }
-            catch
-            {
-                return StatusCode(500, "Error displaying vehicle report");
-            }
+            await _mediator.Send(
+                new DisplayVehicleReportInTabular.Query(_filePaths.BaseFile),
+                cancellationToken
+            );
+            return Ok("Vehicle report displayed successfully.");
         }
 
         [HttpGet(RouteKey.SearchByModel)]
@@ -70,18 +50,11 @@ namespace Codeinsight.VehicleInsights.WebApi.Controllers
             CancellationToken cancellationToken
         )
         {
-            try
-            {
-                var result = await _mediator.Send(
-                    new SearchVehicleByModel.Query(model, _filePaths.BaseFile),
-                    cancellationToken
-                );
-                return Ok(result);
-            }
-            catch
-            {
-                return StatusCode(500, $"Error searching vehicle by model '{model}'");
-            }
+            var result = await _mediator.Send(
+                new SearchVehicleByModel.Query(model, _filePaths.BaseFile),
+                cancellationToken
+            );
+            return Ok(result);
         }
 
         [HttpGet(RouteKey.FilterByYear)]
@@ -90,18 +63,11 @@ namespace Codeinsight.VehicleInsights.WebApi.Controllers
             CancellationToken cancellationToken
         )
         {
-            try
-            {
-                var result = await _mediator.Send(
-                    new GetFilterVehiclesByManufacturingYear.Query(year, _filePaths.BaseFile),
-                    cancellationToken
-                );
-                return Ok(result);
-            }
-            catch
-            {
-                return StatusCode(500, $"Error filtering vehicles by manufacturing year '{year}'");
-            }
+            var result = await _mediator.Send(
+                new GetFilterVehiclesByManufacturingYear.Query(year, _filePaths.BaseFile),
+                cancellationToken
+            );
+            return Ok(result);
         }
 
         [HttpGet(RouteKey.SortByPrice)]
@@ -111,22 +77,11 @@ namespace Codeinsight.VehicleInsights.WebApi.Controllers
             int sortCriteria = 1
         )
         {
-            try
-            {
-                var result = await _mediator.Send(
-                    new GetSortedVehiclesByPrice.Query(
-                        sortOrder,
-                        sortCriteria,
-                        _filePaths.BaseFile
-                    ),
-                    cancellationToken
-                );
-                return Ok(result);
-            }
-            catch
-            {
-                return StatusCode(500, "Error sorting vehicles by price");
-            }
+            var result = await _mediator.Send(
+                new GetSortedVehiclesByPrice.Query(sortOrder, sortCriteria, _filePaths.BaseFile),
+                cancellationToken
+            );
+            return Ok(result);
         }
 
         [HttpGet(RouteKey.AverageRating)]
@@ -134,18 +89,11 @@ namespace Codeinsight.VehicleInsights.WebApi.Controllers
             CancellationToken cancellationToken
         )
         {
-            try
-            {
-                var result = await _mediator.Send(
-                    new GetVehiclesAverageRating.Query(_filePaths.BaseFile),
-                    cancellationToken
-                );
-                return Ok(result);
-            }
-            catch
-            {
-                return StatusCode(500, "Error retrieving vehicle average rating");
-            }
+            var result = await _mediator.Send(
+                new GetVehiclesAverageRating.Query(_filePaths.BaseFile),
+                cancellationToken
+            );
+            return Ok(result);
         }
 
         [HttpGet(RouteKey.CountByRating)]
@@ -153,18 +101,11 @@ namespace Codeinsight.VehicleInsights.WebApi.Controllers
             CancellationToken cancellationToken
         )
         {
-            try
-            {
-                var result = await _mediator.Send(
-                    new GetVehiclesCountBasedOnRating.Query(_filePaths.BaseFile),
-                    cancellationToken
-                );
-                return Ok(result);
-            }
-            catch
-            {
-                return StatusCode(500, "Error retrieving vehicle count based on rating");
-            }
+            var result = await _mediator.Send(
+                new GetVehiclesCountBasedOnRating.Query(_filePaths.BaseFile),
+                cancellationToken
+            );
+            return Ok(result);
         }
     }
 }

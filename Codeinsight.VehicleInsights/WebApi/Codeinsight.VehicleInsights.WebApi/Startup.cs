@@ -15,7 +15,7 @@ namespace Codeinsight.VehicleInsights.WebApi
             services.AddControllers();
             services.GetServices();
             services.AddMediatR(report =>
-                report.RegisterServicesFromAssembly(typeof(CarsDataHelper).Assembly)
+                report.RegisterServicesFromAssembly(typeof(CarsDataHelperService).Assembly)
             );
 
             services.Configure<FilePaths>(configuration.GetSection("FilePaths"));

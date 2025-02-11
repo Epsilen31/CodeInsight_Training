@@ -24,10 +24,13 @@ namespace Codeinsight.VehicleInsights.Services.Features
 
         public class Handler : IRequestHandler<Query, ICollection<CarDto>>
         {
-            private readonly ICarsDataHelper _reportHelper;
+            private readonly ICarsDataHelperServiceService _reportHelper;
             private readonly ILogger<GetSortedVehiclesByPrice> _logger;
 
-            public Handler(ILogger<GetSortedVehiclesByPrice> logger, ICarsDataHelper reportHelper)
+            public Handler(
+                ILogger<GetSortedVehiclesByPrice> logger,
+                ICarsDataHelperServiceService reportHelper
+            )
             {
                 _logger = logger;
                 _reportHelper = reportHelper;
@@ -65,10 +68,11 @@ namespace Codeinsight.VehicleInsights.Services.Features
                 catch (Exception exception)
                 {
                     _logger.LogError(
+                        exception,
                         "Error getting sorted vehicles by price: {Exception}",
                         exception.Message
                     );
-                    throw new Exception(exception.Message);
+                    throw new InvalidOperationException(exception.Message);
                 }
             }
 
