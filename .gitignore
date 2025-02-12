@@ -19,7 +19,6 @@ obj/
 
 # Ignore Visual Studio solution and project files
 *.csproj
-*.sln
 
 # Ignore build and debug logs
 *.log
