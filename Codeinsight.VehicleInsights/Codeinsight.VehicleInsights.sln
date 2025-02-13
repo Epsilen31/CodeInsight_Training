@@ -1,0 +1,45 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35707.178
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BusinessLogic", "BusinessLogic", "{44C742D0-5742-AAB5-D7C9-07773FCD4C1B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Codeinsight.VehicleInsights.Services", "BusinessLogic\Codeinsight.VehicleInsights.Services\Codeinsight.VehicleInsights.Services.csproj", "{F00679D3-4A7D-4CBB-BC66-B633325970E4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{881589EE-639B-0A35-DBCE-5D94E4FC90C0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Codeinsight.VehicleInsights.Core", "Common\Codeinsight.VehicleInsights.Core\Codeinsight.VehicleInsights.Core.csproj", "{115ED207-D27D-4886-B368-6C92803EE742}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebApi", "WebApi", "{6EDC7094-E22D-CF10-605B-B42C7FB8B0A8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Codeinsight.VehicleInsights.WebApi", "WebApi\Codeinsight.VehicleInsights.WebApi\Codeinsight.VehicleInsights.WebApi.csproj", "{39D4096F-3FA2-4B77-AA88-57515531D8E8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F00679D3-4A7D-4CBB-BC66-B633325970E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F00679D3-4A7D-4CBB-BC66-B633325970E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F00679D3-4A7D-4CBB-BC66-B633325970E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F00679D3-4A7D-4CBB-BC66-B633325970E4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{115ED207-D27D-4886-B368-6C92803EE742}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{115ED207-D27D-4886-B368-6C92803EE742}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{115ED207-D27D-4886-B368-6C92803EE742}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{115ED207-D27D-4886-B368-6C92803EE742}.Release|Any CPU.Build.0 = Release|Any CPU
+		{39D4096F-3FA2-4B77-AA88-57515531D8E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{39D4096F-3FA2-4B77-AA88-57515531D8E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{39D4096F-3FA2-4B77-AA88-57515531D8E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{39D4096F-3FA2-4B77-AA88-57515531D8E8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{F00679D3-4A7D-4CBB-BC66-B633325970E4} = {44C742D0-5742-AAB5-D7C9-07773FCD4C1B}
+		{115ED207-D27D-4886-B368-6C92803EE742} = {881589EE-639B-0A35-DBCE-5D94E4FC90C0}
+		{39D4096F-3FA2-4B77-AA88-57515531D8E8} = {6EDC7094-E22D-CF10-605B-B42C7FB8B0A8}
+	EndGlobalSection
+EndGlobal

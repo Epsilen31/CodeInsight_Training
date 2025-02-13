@@ -1,4 +1,4 @@
-using Codeinsight.WebApi;
+using Codeinsight.VehicleInsights.WebApi;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -6,6 +6,8 @@ builder.Services.ConfigureServices(builder.Configuration);
 
 var app = builder.Build();
 
-Startup.Configure(app);
+app.UseRouting();
+
+app.MapControllers();
 
 app.Run();
