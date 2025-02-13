@@ -18,17 +18,32 @@ namespace BillingAndSubscriptionSystem.WebApi.Controllers.Payments
         }
 
         [HttpPost(RouteKey.CreatePayment)]
-        public async Task<IActionResult> CreatePayment(PaymentDto payment)
+        public async Task<IActionResult> CreatePayment(
+            PaymentDto payment,
+            CancellationToken cancellationToken
+        )
         {
-            await _mediator.Send(new PaymentProcess.Query(payment));
+            await _mediator.Send(new PaymentProcess.Query(payment), cancellationToken);
             return Ok(new { Message = "Payment created successfully." });
         }
 
         [HttpGet(RouteKey.GetOverDuePayment)]
-        public async Task<IActionResult> GetOverduePayments(PaymentDto payment)
+        public async Task<IActionResult> GetOverduePayments(
+            PaymentDto payment,
+            CancellationToken cancellationToken
+        )
         {
-            var overduePayments = await _mediator.Send(new GetOverduePayments.Query(payment));
-            return Ok(overduePayments);
+            var overduePayments = await _mediator.Send(
+                new GetOverduePayments.Query(payment),
+                cancellationToken
+            );
+            return Ok(
+                new
+                {
+                    OverduePayments = overduePayments,
+                    Message = "Overdue payments fetched successfully.",
+                }
+            );
         }
     }
 }

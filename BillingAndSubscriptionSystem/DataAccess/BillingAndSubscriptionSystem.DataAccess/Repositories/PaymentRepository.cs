@@ -15,12 +15,12 @@ namespace BillingAndSubscriptionSystem.DataAccess.Repositories
             _context = context;
         }
 
-        public async Task ProcessPaymentAsync(Payment payment)
+        public async Task ProcessPaymentAsync(Payment payment, CancellationToken cancellationToken)
         {
-            await _context.Payments.AddAsync(payment);
+            await _context.Payments.AddAsync(payment, cancellationToken);
         }
 
-        public async Task<ICollection<Payment>> OverduePayments()
+        public async Task<ICollection<Payment>> OverduePayments(CancellationToken cancellationToken)
         {
             return await _context
                 .Payments.Where(payment => payment.PaymentStatus == PaymentStatus.Overdue)

@@ -9,5 +9,6 @@ namespace BillingAndSubscriptionSystem.Entities.Entities
         public DateTime PaymentDate { get; set; }
         public PaymentStatus PaymentStatus { get; set; }
         public int SubscriptionId { get; set; }
+        public virtual Subscription? Subscription { get; set; }
     }
 }

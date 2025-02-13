@@ -14,26 +14,39 @@ namespace BillingAndSubscriptionSystem.DataAccess.Repositories
             _context = context;
         }
 
-        public async Task CreateUserSubscriptionAsync(Subscription userSubscription)
+        public async Task CreateUserSubscriptionAsync(
+            Subscription userSubscription,
+            CancellationToken cancellationToken
+        )
         {
-            await _context.Subscriptions.AddAsync(userSubscription);
-            await _context.SaveChangesAsync();
+            await _context.Subscriptions.AddAsync(userSubscription, cancellationToken);
         }
 
-        public async Task UpdateSubscriptionAsync(Subscription userSubscription)
+        public async Task UpdateSubscriptionAsync(
+            Subscription userSubscription,
+            CancellationToken cancellationToken
+        )
         {
             _context.Subscriptions.Update(userSubscription);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task<Subscription> GetUserSubscriptionAsync(int userId)
+        public async Task<Subscription> GetUserSubscriptionAsync(
+            int userId,
+            CancellationToken cancellationToken
+        )
         {
-            return await _context.Subscriptions.FirstAsync(s => s.UserId == userId)!;
+            return await _context.Subscriptions.FirstAsync(
+                s => s.UserId == userId,
+                cancellationToken
+            )!;
         }
 
-        public async Task<ICollection<Subscription>> GetAllUserSubscriptionsAsync()
+        public async Task<ICollection<Subscription>> GetAllUserSubscriptionsAsync(
+            CancellationToken cancellationToken
+        )
         {
-            return await _context.Subscriptions.ToListAsync();
+            return await _context.Subscriptions.ToListAsync(cancellationToken);
         }
     }
 }

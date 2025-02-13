@@ -2,6 +2,7 @@ using BillingAndSubscriptionSystem.DataAccess;
 using BillingAndSubscriptionSystem.Entities.Entities;
 using BillingAndSubscriptionSystem.Services.DTOs;
 using MediatR;
+using Microsoft.Extensions.Logging;
 
 namespace BillingAndSubscriptionSystem.Services.Features
 {
@@ -20,27 +21,45 @@ namespace BillingAndSubscriptionSystem.Services.Features
         public class Handler : IRequestHandler<Query, Unit>
         {
             private readonly UnitOfWork _unitOfWork;
+            private readonly ILogger<UpdateUserSubscriptionPlan> _logger;
 
-            public Handler(UnitOfWork unitOfWork)
+            public Handler(UnitOfWork unitOfWork, ILogger<UpdateUserSubscriptionPlan> logger)
             {
                 _unitOfWork = unitOfWork;
+                _logger = logger;
             }
 
             public async Task<Unit> Handle(Query request, CancellationToken cancellationToken)
             {
-                ValidateRequest(request.Subscription);
-                var existingSubscription =
-                    await _unitOfWork.UserSubscriptionRepository.GetUserSubscriptionAsync(
-                        request.Subscription.SubscriptionId
-                    );
-                if (existingSubscription == null)
+                try
                 {
-                    throw new InvalidOperationException("Subscription not found");
-                }
+                    ValidateRequest(request.Subscription);
+                    var existingSubscription =
+                        await _unitOfWork.UserSubscriptionRepository.GetUserSubscriptionAsync(
+                            request.Subscription.SubscriptionId,
+                            cancellationToken
+                        );
+                    if (existingSubscription == null)
+                    {
+                        throw new InvalidOperationException("Subscription not found");
+                    }
 
-                var subscription = MapSubscription(request.Subscription);
-                await _unitOfWork.UserSubscriptionRepository.UpdateSubscriptionAsync(subscription);
-                return Unit.Value;
+                    var subscription = MapSubscription(request.Subscription);
+                    await _unitOfWork.UserSubscriptionRepository.UpdateSubscriptionAsync(
+                        subscription,
+                        cancellationToken
+                    );
+                    return Unit.Value;
+                }
+                catch (Exception exception)
+                {
+                    _logger.LogError(
+                        exception,
+                        "Error updating subscription plan : {Exception}",
+                        exception.Message
+                    );
+                    throw new InvalidOperationException("Error updating subscription plan");
+                }
             }
 
             private void ValidateRequest(SubscriptionDto subscription)

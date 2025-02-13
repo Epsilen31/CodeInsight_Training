@@ -14,7 +14,10 @@ namespace BillingAndSubscriptionSystem.DataAccess.Repositories
             _context = context;
         }
 
-        public async Task UpdateBillingDetails(Billing billingDetails)
+        public async Task UpdateBillingDetails(
+            Billing billingDetails,
+            CancellationToken cancellationToken
+        )
         {
             try
             {
@@ -32,9 +35,11 @@ namespace BillingAndSubscriptionSystem.DataAccess.Repositories
             }
         }
 
-        public async Task<ICollection<Billing>> GetAllUsersWithBillingDetails()
+        public async Task<ICollection<Billing>> GetAllUsersWithBillingDetails(
+            CancellationToken cancellationToken
+        )
         {
-            return await _context.Billings.AsNoTracking().ToListAsync();
+            return await _context.Billings.AsNoTracking().ToListAsync(cancellationToken);
         }
     }
 }

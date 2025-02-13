@@ -4,7 +4,7 @@ namespace BillingAndSubscriptionSystem.DataAccess.Contracts
 {
     public interface IPaymentRepository
     {
-        Task ProcessPaymentAsync(Payment payment);
-        Task<ICollection<Payment>> OverduePayments();
+        Task ProcessPaymentAsync(Payment payment, CancellationToken cancellationToken);
+        Task<ICollection<Payment>> OverduePayments(CancellationToken cancellationToken);
     }
 }

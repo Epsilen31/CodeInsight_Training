@@ -1,6 +1,7 @@
 using BillingAndSubscriptionSystem.DataAccess;
 using BillingAndSubscriptionSystem.Services.DTOs;
 using MediatR;
+using Microsoft.Extensions.Logging;
 
 namespace BillingAndSubscriptionSystem.Services.Features.Billing
 {
@@ -19,18 +20,35 @@ namespace BillingAndSubscriptionSystem.Services.Features.Billing
         public class Handler : IRequestHandler<Query, Unit>
         {
             private readonly UnitOfWork _unitOfWork;
+            private readonly ILogger<UpdateBillingDetails> _logger;
 
-            public Handler(UnitOfWork unitOfWork)
+            public Handler(UnitOfWork unitOfWork, ILogger<UpdateBillingDetails> logger)
             {
                 _unitOfWork = unitOfWork;
+                _logger = logger;
             }
 
             public async Task<Unit> Handle(Query request, CancellationToken cancellationToken)
             {
-                ValidateRequest(request.Billing);
-                var billingEntity = MapBilling(request.Billing);
-                await _unitOfWork.BillingRepository.UpdateBillingDetails(billingEntity);
-                return Unit.Value;
+                try
+                {
+                    ValidateRequest(request.Billing);
+                    var billingEntity = MapBilling(request.Billing);
+                    await _unitOfWork.BillingRepository.UpdateBillingDetails(
+                        billingEntity,
+                        cancellationToken
+                    );
+                    return Unit.Value;
+                }
+                catch (Exception exception)
+                {
+                    _logger.LogError(
+                        exception,
+                        "Error updating billing details: {Exception}",
+                        exception.Message
+                    );
+                    throw new InvalidOperationException("Error updating billing details");
+                }
             }
 
             private void ValidateRequest(BillingDto billing)

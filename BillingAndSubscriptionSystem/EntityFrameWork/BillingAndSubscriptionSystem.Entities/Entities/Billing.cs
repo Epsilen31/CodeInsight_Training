@@ -8,5 +8,7 @@ namespace BillingAndSubscriptionSystem.Entities.Entities
         public PaymentMethod PaymentMethod { get; set; }
         public string? BillingAddress { get; set; }
         public int UserId { get; set; }
+
+        public virtual User? User { get; set; }
     }
 }

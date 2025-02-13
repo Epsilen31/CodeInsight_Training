@@ -2,6 +2,7 @@ using BillingAndSubscriptionSystem.DataAccess;
 using BillingAndSubscriptionSystem.Entities.Entities;
 using BillingAndSubscriptionSystem.Services.DTOs;
 using MediatR;
+using Microsoft.Extensions.Logging;
 
 namespace BillingAndSubscriptionSystem.Services.Features
 {
@@ -20,10 +21,12 @@ namespace BillingAndSubscriptionSystem.Services.Features
         public class Handler : IRequestHandler<Query, Unit>
         {
             private readonly UnitOfWork _unitOfWork;
+            private readonly ILogger<CreateUserSubscriptionPlan> _logger;
 
-            public Handler(UnitOfWork unitOfWork)
+            public Handler(UnitOfWork unitOfWork, ILogger<CreateUserSubscriptionPlan> logger)
             {
                 _unitOfWork = unitOfWork;
+                _logger = logger;
             }
 
             public async Task<Unit> Handle(Query request, CancellationToken cancellationToken)
@@ -34,7 +37,8 @@ namespace BillingAndSubscriptionSystem.Services.Features
 
                     var existingSubscription =
                         await _unitOfWork.UserSubscriptionRepository.GetUserSubscriptionAsync(
-                            request.Subscription.UserId
+                            request.Subscription.UserId,
+                            cancellationToken
                         );
 
                     if (existingSubscription != null)
@@ -44,13 +48,19 @@ namespace BillingAndSubscriptionSystem.Services.Features
 
                     var subscription = MapSubscription(request.Subscription);
                     await _unitOfWork.UserSubscriptionRepository.CreateUserSubscriptionAsync(
-                        subscription
+                        subscription,
+                        cancellationToken
                     );
                     return Unit.Value;
                 }
-                catch (Exception ex)
+                catch (Exception exception)
                 {
-                    throw new InvalidOperationException(ex.Message);
+                    _logger.LogError(
+                        exception,
+                        "Unable to create subscription plan for user :{Exception}",
+                        exception.Message
+                    );
+                    throw new InvalidOperationException(exception.Message);
                 }
             }
 

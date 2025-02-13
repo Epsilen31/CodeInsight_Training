@@ -2,6 +2,7 @@ using BillingAndSubscriptionSystem.DataAccess;
 using BillingAndSubscriptionSystem.Entities.Entities;
 using BillingAndSubscriptionSystem.Services.DTOs;
 using MediatR;
+using Microsoft.Extensions.Logging;
 
 namespace BillingAndSubscriptionSystem.Services.Features.UserSubscription
 {
@@ -20,10 +21,12 @@ namespace BillingAndSubscriptionSystem.Services.Features.UserSubscription
         public class Handler : IRequestHandler<Query, ICollection<SubscriptionDto>>
         {
             private readonly UnitOfWork _unitOfWork;
+            private readonly ILogger<GetSubscriptionByUserId> _logger;
 
-            public Handler(UnitOfWork unitOfWork)
+            public Handler(UnitOfWork unitOfWork, ILogger<GetSubscriptionByUserId> logger)
             {
                 _unitOfWork = unitOfWork;
+                _logger = logger;
             }
 
             public async Task<ICollection<SubscriptionDto>> Handle(
@@ -31,22 +34,36 @@ namespace BillingAndSubscriptionSystem.Services.Features.UserSubscription
                 CancellationToken cancellationToken
             )
             {
-                ValidateRequest(request.Subscription);
-                var existingSubscription =
-                    await _unitOfWork.UserSubscriptionRepository.GetUserSubscriptionAsync(
-                        request.Subscription.UserId
-                    );
-                if (existingSubscription == null)
+                try
                 {
-                    throw new InvalidOperationException("Subscription not found");
-                }
+                    ValidateRequest(request.Subscription);
+                    var existingSubscription =
+                        await _unitOfWork.UserSubscriptionRepository.GetUserSubscriptionAsync(
+                            request.Subscription.UserId,
+                            cancellationToken
+                        );
+                    if (existingSubscription == null)
+                    {
+                        throw new InvalidOperationException("Subscription not found");
+                    }
 
-                var subscription = MapSubscription(request.Subscription);
-                var subscriptionData =
-                    await _unitOfWork.UserSubscriptionRepository.GetUserSubscriptionAsync(
-                        subscription.UserId
+                    var subscription = MapSubscription(request.Subscription);
+                    var subscriptionData =
+                        await _unitOfWork.UserSubscriptionRepository.GetUserSubscriptionAsync(
+                            subscription.UserId,
+                            cancellationToken
+                        );
+                    return [MapSubscriptionDto(subscriptionData)];
+                }
+                catch (Exception exception)
+                {
+                    _logger.LogError(
+                        exception,
+                        "An error occurred while getting user subscription :{Exception}",
+                        exception.Message
                     );
-                return [MapSubscriptionDto(subscriptionData)];
+                    throw new InvalidOperationException("Error getting user subscription");
+                }
             }
 
             private void ValidateRequest(SubscriptionDto subscription)
