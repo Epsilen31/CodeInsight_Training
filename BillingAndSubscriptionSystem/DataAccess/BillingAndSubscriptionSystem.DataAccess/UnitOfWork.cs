@@ -4,7 +4,7 @@ using BillingAndSubscriptionSystem.DataAccess.Repositories;
 
 namespace BillingAndSubscriptionSystem.DataAccess
 {
-    public class UnitOfWork : IUnitOfWork
+    public class UnitOfWork : IUnitOfWork, IDisposable
     {
         private readonly BillingDbContext _context;
 
@@ -26,15 +26,31 @@ namespace BillingAndSubscriptionSystem.DataAccess
         public UnitOfWork(BillingDbContext context)
         {
             _context = context;
-            _billingRepository = new BillingRepository(_context);
-            _userRepository = new UserRepository(_context);
-            _paymentRepository = new PaymentRepository(_context);
-            _userSubscriptionRepository = new UserSubscriptionRepository(_context);
         }
 
-        public async Task<int> SaveChangesAsync()
+        public Task<int> SaveChangesAsync(CancellationToken cancellationToken)
         {
-            return await _context.SaveChangesAsync();
+            return _context.SaveChangesAsync(cancellationToken);
+        }
+
+        private bool _disposed = false;
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposed)
+            {
+                if (disposing)
+                {
+                    _context.Dispose();
+                }
+                _disposed = true;
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
     }
 }

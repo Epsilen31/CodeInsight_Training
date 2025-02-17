@@ -8,19 +8,19 @@ using Microsoft.AspNetCore.Mvc;
 namespace BillingAndSubscriptionSystem.WebApi.Controllers
 {
     [ApiController]
-    [Route(RouteKey.MainRoute)]
-    public class BillingAndSubscriptionController : BaseController
+    [Route(RouteKey.UserSubscriptionRoute)]
+    public class UserSubscriptionController : BaseController
     {
         private readonly IMediator _mediator;
 
-        public BillingAndSubscriptionController(IMediator mediator)
+        public UserSubscriptionController(IMediator mediator)
         {
             _mediator = mediator;
         }
 
         [HttpPost(RouteKey.CreateUserSubscriptionPlan)]
         public async Task<IActionResult> CreateUserSubscriptionPlan(
-            SubscriptionDto subscriptionDto,
+            [FromBody] SubscriptionDto subscriptionDto,
             CancellationToken cancellationToken
         )
         {
@@ -33,10 +33,12 @@ namespace BillingAndSubscriptionSystem.WebApi.Controllers
 
         [HttpPut(RouteKey.UpdateUserSubscriptionPlan)]
         public async Task<IActionResult> UpdateUserSubscriptionPlan(
-            SubscriptionDto subscriptionDto,
+            int Id,
+            [FromBody] SubscriptionDto subscriptionDto,
             CancellationToken cancellationToken
         )
         {
+            subscriptionDto.SubscriptionId = Id;
             await _mediator.Send(
                 new UpdateUserSubscriptionPlan.Query(subscriptionDto),
                 cancellationToken
@@ -46,14 +48,15 @@ namespace BillingAndSubscriptionSystem.WebApi.Controllers
 
         [HttpGet(RouteKey.GetSubscriptionByUserId)]
         public async Task<IActionResult> GetSubscriptionByUserId(
-            int userId,
+            [FromRoute] int userId,
             CancellationToken cancellationToken
         )
         {
             var subscription = await _mediator.Send(
-                new GetSubscriptionByUserId.Query(new SubscriptionDto { UserId = userId }),
+                new GetSubscriptionByUserId.Query(userId),
                 cancellationToken
             );
+
             return Ok(
                 new
                 {

@@ -12,7 +12,7 @@ namespace BillingAndSubscriptionSystem.DataAccess.Contracts
             Subscription userSubscription,
             CancellationToken cancellationToken
         );
-        Task<Subscription> GetUserSubscriptionAsync(
+        Task<Subscription?> GetUserSubscriptionAsync(
             int userId,
             CancellationToken cancellationToken
         );

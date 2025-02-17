@@ -18,7 +18,8 @@ namespace BillingAndSubscriptionSystem.Context.Configurations
             builder
                 .HasOne(payment => payment.Subscription)
                 .WithMany(subscription => subscription.Payments)
-                .HasForeignKey(payment => payment.SubscriptionId);
+                .HasForeignKey(payment => payment.SubscriptionId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

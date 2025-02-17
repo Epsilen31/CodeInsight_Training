@@ -136,7 +136,7 @@ namespace BillingAndSubscriptionSystem.WebApi.Migrations
                     b.HasOne("BillingAndSubscriptionSystem.Entities.Entities.User", "User")
                         .WithMany("Billings")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("User");

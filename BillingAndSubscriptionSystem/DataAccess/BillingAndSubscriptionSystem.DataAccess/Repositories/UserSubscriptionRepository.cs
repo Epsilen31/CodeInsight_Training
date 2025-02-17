@@ -31,15 +31,14 @@ namespace BillingAndSubscriptionSystem.DataAccess.Repositories
             await _context.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task<Subscription> GetUserSubscriptionAsync(
+        public async Task<Subscription?> GetUserSubscriptionAsync(
             int userId,
             CancellationToken cancellationToken
         )
         {
-            return await _context.Subscriptions.FirstAsync(
-                s => s.UserId == userId,
-                cancellationToken
-            )!;
+            return await _context
+                .Subscriptions.Where(us => us.UserId == userId)
+                .SingleOrDefaultAsync(cancellationToken);
         }
 
         public async Task<ICollection<Subscription>> GetAllUserSubscriptionsAsync(

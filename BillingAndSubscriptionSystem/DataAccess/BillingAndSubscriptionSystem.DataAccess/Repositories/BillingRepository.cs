@@ -14,32 +14,29 @@ namespace BillingAndSubscriptionSystem.DataAccess.Repositories
             _context = context;
         }
 
-        public async Task UpdateBillingDetails(
+        public async Task UpdateBillingAsync(
             Billing billingDetails,
             CancellationToken cancellationToken
         )
         {
-            try
-            {
-                var existingBilling = await _context.Billings.FindAsync(billingDetails.Id);
-                if (existingBilling == null)
-                {
-                    throw new InvalidOperationException("Billing details not found");
-                }
-
-                _context.Entry(existingBilling).CurrentValues.SetValues(billingDetails);
-            }
-            catch (Exception ex)
-            {
-                throw new InvalidOperationException(ex.Message);
-            }
+            await _context
+                .Billings.Where(x => x.UserId == billingDetails.UserId)
+                .ExecuteUpdateAsync(ex =>
+                    ex.SetProperty(x => x.PaymentMethod, billingDetails.PaymentMethod)
+                        .SetProperty(x => x.BillingAddress, billingDetails.BillingAddress)
+                        .SetProperty(x => x.UserId, billingDetails.UserId)
+                );
         }
 
         public async Task<ICollection<Billing>> GetAllUsersWithBillingDetails(
+            int userId,
             CancellationToken cancellationToken
         )
         {
-            return await _context.Billings.AsNoTracking().ToListAsync(cancellationToken);
+            return await _context
+                .Billings.Where(billing => billing.UserId == userId)
+                .AsNoTracking()
+                .ToListAsync(cancellationToken);
         }
     }
 }

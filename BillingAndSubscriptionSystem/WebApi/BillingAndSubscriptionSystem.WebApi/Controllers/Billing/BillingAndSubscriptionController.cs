@@ -5,22 +5,22 @@ using BillingAndSubscriptionSystem.WebApi.Constants;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace BillingAndSubscriptionSystem.WebApi.Controllers.Billing
+namespace BillingAndSubscriptionSystem.WebApi.Controllers
 {
     [ApiController]
-    [Route(RouteKey.MainRoute)]
-    public class BillingAndSubscriptionController : BaseController
+    [Route(RouteKey.BillingRoute)]
+    public class BillingController : BaseController
     {
         private readonly IMediator _mediator;
 
-        public BillingAndSubscriptionController(IMediator mediator)
+        public BillingController(IMediator mediator)
         {
             _mediator = mediator;
         }
 
         [HttpPut(RouteKey.UpdateBilling)]
         public async Task<IActionResult> UpdateBilling(
-            BillingDto billingDto,
+            [FromBody] BillingDto billingDto,
             CancellationToken cancellationToken
         )
         {
@@ -30,14 +30,15 @@ namespace BillingAndSubscriptionSystem.WebApi.Controllers.Billing
 
         [HttpGet(RouteKey.GetUsersWithBilling)]
         public async Task<IActionResult> GetUsersWithBilling(
-            BillingDto billing,
+            [FromQuery] string userId,
             CancellationToken cancellationToken
         )
         {
             var usersWithBilling = await _mediator.Send(
-                new GetAllUsersWithBillingDetails.Query(billing),
+                new GetAllUsersWithBillingDetails.Query(int.Parse(userId)),
                 cancellationToken
             );
+
             return Ok(
                 new
                 {

@@ -1,3 +1,4 @@
+using BillingAndSubscriptionSystem.Core.Exceptions;
 using BillingAndSubscriptionSystem.DataAccess;
 using BillingAndSubscriptionSystem.Entities.Entities;
 using BillingAndSubscriptionSystem.Entities.Enums;
@@ -9,20 +10,20 @@ namespace BillingAndSubscriptionSystem.Services.Features.Payments
 {
     public class PaymentProcess
     {
-        public class Query : IRequest<Unit>
+        public class Query : IRequest<PaymentDto>
         {
-            public PaymentDto Payment { get; set; }
+            public PaymentDto Payment { get; }
 
             public Query(PaymentDto payment)
             {
-                Payment = payment ?? throw new ArgumentNullException(nameof(payment));
+                Payment = payment;
             }
         }
 
-        public class Handler : IRequestHandler<Query, Unit>
+        public class Handler : IRequestHandler<Query, PaymentDto>
         {
             private readonly UnitOfWork _unitOfWork;
-            public readonly ILogger<PaymentProcess> _logger;
+            private readonly ILogger<PaymentProcess> _logger;
 
             public Handler(UnitOfWork unitOfWork, ILogger<PaymentProcess> logger)
             {
@@ -30,25 +31,34 @@ namespace BillingAndSubscriptionSystem.Services.Features.Payments
                 _logger = logger;
             }
 
-            public async Task<Unit> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<PaymentDto> Handle(Query request, CancellationToken cancellationToken)
             {
                 try
                 {
-                    var createPaymentDetails = MapPayments(request.Payment);
+                    var paymentEntity = MapPayments(request.Payment);
                     await _unitOfWork.PaymentRepository.ProcessPaymentAsync(
-                        createPaymentDetails,
+                        paymentEntity,
                         cancellationToken
                     );
-                    return Unit.Value;
+                    await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+                    return new PaymentDto
+                    {
+                        Id = paymentEntity.Id,
+                        SubscriptionId = paymentEntity.SubscriptionId,
+                        Amount = paymentEntity.Amount,
+                        PaymentDate = paymentEntity.PaymentDate,
+                        PaymentStatus = paymentEntity.PaymentStatus,
+                    };
                 }
                 catch (Exception exception)
                 {
                     _logger.LogError(
                         exception,
-                        "An error occurred while processing payment: {Exception}",
-                        exception.Message
+                        "Error processing payment for Subscription ID: {SubscriptionId}",
+                        request.Payment.SubscriptionId
                     );
-                    throw new InvalidOperationException("Error processing payment");
+                    throw new CustomException("Error processing payment.", exception);
                 }
             }
 

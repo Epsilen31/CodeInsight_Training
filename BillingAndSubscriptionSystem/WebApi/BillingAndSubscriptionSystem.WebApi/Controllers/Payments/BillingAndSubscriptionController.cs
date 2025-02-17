@@ -4,22 +4,22 @@ using BillingAndSubscriptionSystem.WebApi.Constants;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace BillingAndSubscriptionSystem.WebApi.Controllers.Payments
+namespace BillingAndSubscriptionSystem.WebApi.Controllers
 {
     [ApiController]
-    [Route(RouteKey.MainRoute)]
-    public class BillingAndSubscriptionController : BaseController
+    [Route(RouteKey.PaymentRoute)]
+    public class PaymentController : BaseController
     {
         private readonly IMediator _mediator;
 
-        public BillingAndSubscriptionController(IMediator mediator)
+        public PaymentController(IMediator mediator)
         {
             _mediator = mediator;
         }
 
         [HttpPost(RouteKey.CreatePayment)]
         public async Task<IActionResult> CreatePayment(
-            PaymentDto payment,
+            [FromBody] PaymentDto payment,
             CancellationToken cancellationToken
         )
         {
@@ -29,14 +29,15 @@ namespace BillingAndSubscriptionSystem.WebApi.Controllers.Payments
 
         [HttpGet(RouteKey.GetOverDuePayment)]
         public async Task<IActionResult> GetOverduePayments(
-            PaymentDto payment,
+            [FromQuery] string subscriptionId,
             CancellationToken cancellationToken
         )
         {
             var overduePayments = await _mediator.Send(
-                new GetOverduePayments.Query(payment),
+                new GetOverduePayments.Query(int.Parse(subscriptionId)),
                 cancellationToken
             );
+
             return Ok(
                 new
                 {

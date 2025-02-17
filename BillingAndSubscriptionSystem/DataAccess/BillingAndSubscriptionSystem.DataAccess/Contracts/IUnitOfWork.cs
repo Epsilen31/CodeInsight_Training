@@ -6,5 +6,7 @@ namespace BillingAndSubscriptionSystem.DataAccess.Contracts
         IPaymentRepository PaymentRepository { get; }
         IBillingRepository BillingRepository { get; }
         IUserRepository UserRepository { get; }
+
+        Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     }
 }

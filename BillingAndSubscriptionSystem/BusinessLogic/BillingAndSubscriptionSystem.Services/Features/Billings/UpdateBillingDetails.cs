@@ -1,3 +1,4 @@
+using BillingAndSubscriptionSystem.Core.Exceptions;
 using BillingAndSubscriptionSystem.DataAccess;
 using BillingAndSubscriptionSystem.Services.DTOs;
 using MediatR;
@@ -34,20 +35,21 @@ namespace BillingAndSubscriptionSystem.Services.Features.Billing
                 {
                     ValidateRequest(request.Billing);
                     var billingEntity = MapBilling(request.Billing);
-                    await _unitOfWork.BillingRepository.UpdateBillingDetails(
+                    await _unitOfWork.BillingRepository.UpdateBillingAsync(
                         billingEntity,
                         cancellationToken
                     );
+                    await _unitOfWork.SaveChangesAsync(cancellationToken);
                     return Unit.Value;
                 }
                 catch (Exception exception)
                 {
                     _logger.LogError(
                         exception,
-                        "Error updating billing details: {Exception}",
+                        "Error updating billing details Exception: {Exception}",
                         exception.Message
                     );
-                    throw new InvalidOperationException("Error updating billing details");
+                    throw new CustomException("Error updating billing details", exception);
                 }
             }
 

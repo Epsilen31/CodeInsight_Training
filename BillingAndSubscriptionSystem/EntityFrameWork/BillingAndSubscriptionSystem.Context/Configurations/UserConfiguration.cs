@@ -12,7 +12,8 @@ namespace BillingAndSubscriptionSystem.Context.Configurations
             builder.HasKey(user => user.Id);
             builder.Property(user => user.Id).ValueGeneratedOnAdd();
             builder.Property(user => user.Name).IsRequired().HasMaxLength(50);
-            builder.Property(user => user.Email).IsUnicode().HasMaxLength(50);
+            builder.Property(user => user.Email).HasMaxLength(50);
+            builder.HasIndex(user => user.Email).IsUnique();
             builder.Property(user => user.Phone).HasMaxLength(15);
         }
     }

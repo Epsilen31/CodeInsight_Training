@@ -1,3 +1,4 @@
+using BillingAndSubscriptionSystem.Core.Exceptions;
 using BillingAndSubscriptionSystem.DataAccess;
 using BillingAndSubscriptionSystem.Services.DTOs;
 using MediatR;
@@ -9,11 +10,11 @@ namespace BillingAndSubscriptionSystem.Services.Features.Payments
     {
         public class Query : IRequest<ICollection<PaymentDto>>
         {
-            public PaymentDto Payment { get; set; }
+            public int UserId { get; }
 
-            public Query(PaymentDto payment)
+            public Query(int userId)
             {
-                Payment = payment;
+                UserId = userId;
             }
         }
 
@@ -24,8 +25,8 @@ namespace BillingAndSubscriptionSystem.Services.Features.Payments
 
             public Handler(UnitOfWork unitOfWork, ILogger<GetOverduePayments> logger)
             {
-                _logger = logger;
                 _unitOfWork = unitOfWork;
+                _logger = logger;
             }
 
             public async Task<ICollection<PaymentDto>> Handle(
@@ -35,37 +36,40 @@ namespace BillingAndSubscriptionSystem.Services.Features.Payments
             {
                 try
                 {
-                    var overduePayments = await _unitOfWork.PaymentRepository.OverduePayments(
+                    var overduePayments = await _unitOfWork.PaymentRepository.OverduePaymentsAsync(
                         cancellationToken
                     );
 
-                    if (overduePayments != null)
+                    if (overduePayments == null || overduePayments.Count == 0)
                     {
-                        return
-                        [
-                            .. overduePayments.Select(payment => new PaymentDto
-                            {
-                                Id = payment.Id,
-                                SubscriptionId = payment.SubscriptionId,
-                                Amount = payment.Amount,
-                                PaymentDate = payment.PaymentDate,
-                                PaymentStatus = payment.PaymentStatus,
-                            }),
-                        ];
-                    }
-                    else
-                    {
+                        _logger.LogWarning(
+                            "No overdue payments found for UserId: {UserId}",
+                            request.UserId
+                        );
                         return [];
                     }
+
+                    var paymentDetail = overduePayments
+                        .Select(payment => new PaymentDto
+                        {
+                            Id = payment.Id,
+                            SubscriptionId = payment.SubscriptionId,
+                            Amount = payment.Amount,
+                            PaymentDate = payment.PaymentDate,
+                            PaymentStatus = payment.PaymentStatus,
+                        })
+                        .ToList();
+
+                    return paymentDetail;
                 }
                 catch (Exception exception)
                 {
                     _logger.LogError(
                         exception,
-                        "Error fetching overdue payments: {Exception}",
+                        "Error fetching overdue payments: {Message}",
                         exception.Message
                     );
-                    throw new InvalidOperationException("Error fetching overdue payments");
+                    throw new CustomException("Error fetching overdue payments.", exception);
                 }
             }
         }

@@ -4,8 +4,9 @@ namespace BillingAndSubscriptionSystem.DataAccess.Contracts
 {
     public interface IBillingRepository
     {
-        Task UpdateBillingDetails(Billing billingDetails, CancellationToken cancellationToken);
+        Task UpdateBillingAsync(Billing billingDetails, CancellationToken cancellationToken);
         Task<ICollection<Billing>> GetAllUsersWithBillingDetails(
+            int userId,
             CancellationToken cancellationToken
         );
     }

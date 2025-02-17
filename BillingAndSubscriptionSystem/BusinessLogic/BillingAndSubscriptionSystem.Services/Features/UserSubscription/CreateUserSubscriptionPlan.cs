@@ -1,3 +1,4 @@
+using BillingAndSubscriptionSystem.Core.Exceptions;
 using BillingAndSubscriptionSystem.DataAccess;
 using BillingAndSubscriptionSystem.Entities.Entities;
 using BillingAndSubscriptionSystem.Services.DTOs;
@@ -8,17 +9,18 @@ namespace BillingAndSubscriptionSystem.Services.Features
 {
     public class CreateUserSubscriptionPlan
     {
-        public class Query : IRequest<Unit>
+        public class Query : IRequest<SubscriptionDto>
         {
-            public SubscriptionDto Subscription { get; set; }
+            public SubscriptionDto Subscription { get; }
 
             public Query(SubscriptionDto subscription)
             {
-                Subscription = subscription;
+                Subscription =
+                    subscription ?? throw new ArgumentNullException(nameof(subscription));
             }
         }
 
-        public class Handler : IRequestHandler<Query, Unit>
+        public class Handler : IRequestHandler<Query, SubscriptionDto>
         {
             private readonly UnitOfWork _unitOfWork;
             private readonly ILogger<CreateUserSubscriptionPlan> _logger;
@@ -29,7 +31,10 @@ namespace BillingAndSubscriptionSystem.Services.Features
                 _logger = logger;
             }
 
-            public async Task<Unit> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<SubscriptionDto> Handle(
+                Query request,
+                CancellationToken cancellationToken
+            )
             {
                 try
                 {
@@ -43,32 +48,48 @@ namespace BillingAndSubscriptionSystem.Services.Features
 
                     if (existingSubscription != null)
                     {
-                        throw new InvalidOperationException("User already has a subscription plan");
+                        throw new CustomException("User already has a subscription plan.", null);
                     }
 
-                    var subscription = MapSubscription(request.Subscription);
+                    var subscriptionEntity = MapSubscription(request.Subscription);
                     await _unitOfWork.UserSubscriptionRepository.CreateUserSubscriptionAsync(
-                        subscription,
+                        subscriptionEntity,
                         cancellationToken
                     );
-                    return Unit.Value;
+                    await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+                    return new SubscriptionDto
+                    {
+                        UserId = subscriptionEntity.UserId,
+                        PlanType = subscriptionEntity.PlanType,
+                        StartDate = subscriptionEntity.StartDate,
+                        EndDate = subscriptionEntity.EndDate,
+                    };
                 }
                 catch (Exception exception)
                 {
                     _logger.LogError(
                         exception,
-                        "Unable to create subscription plan for user :{Exception}",
+                        "Error creating subscription plan for User ID {UserId}: {Message}",
+                        request.Subscription.UserId,
                         exception.Message
                     );
-                    throw new InvalidOperationException(exception.Message);
+                    throw new CustomException("Error creating subscription plan.", exception);
                 }
             }
 
             private void ValidateRequest(SubscriptionDto subscription)
             {
-                if (subscription == null)
+                if (subscription.UserId <= 0)
                 {
-                    throw new InvalidOperationException(nameof(subscription));
+                    throw new CustomException("Invalid User ID.", null);
+                }
+                if (subscription.StartDate >= subscription.EndDate)
+                {
+                    throw new CustomException(
+                        "Subscription Start Date must be before End Date.",
+                        null
+                    );
                 }
             }
 

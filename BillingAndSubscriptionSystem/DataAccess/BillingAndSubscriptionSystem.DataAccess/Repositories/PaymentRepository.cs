@@ -20,11 +20,13 @@ namespace BillingAndSubscriptionSystem.DataAccess.Repositories
             await _context.Payments.AddAsync(payment, cancellationToken);
         }
 
-        public async Task<ICollection<Payment>> OverduePayments(CancellationToken cancellationToken)
+        public async Task<ICollection<Payment>> OverduePaymentsAsync(
+            CancellationToken cancellationToken
+        )
         {
             return await _context
                 .Payments.Where(payment => payment.PaymentStatus == PaymentStatus.Overdue)
-                .ToListAsync();
+                .ToListAsync(cancellationToken);
         }
     }
 }

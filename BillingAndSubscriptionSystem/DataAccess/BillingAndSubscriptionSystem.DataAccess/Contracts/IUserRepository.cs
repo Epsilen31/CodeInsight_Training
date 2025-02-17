@@ -4,10 +4,10 @@ namespace BillingAndSubscriptionSystem.DataAccess.Contracts
 {
     public interface IUserRepository
     {
-        Task<ICollection<User>> GetAllUsers();
-        Task<User> GetUserById(int id);
-        Task AddUser(User user);
-        Task UpdateUser(User user);
-        Task DeleteUser(int id);
+        Task<ICollection<User>> GetAllUsersAsync();
+        Task<User?> GetUserByIdAsync(int id);
+        Task AddUserAsync(User user);
+        Task UpdateUserAsync(User user);
+        Task<bool> DeleteUserAsync(int id);
     }
 }

@@ -1,3 +1,4 @@
+using BillingAndSubscriptionSystem.Core.Exceptions;
 using BillingAndSubscriptionSystem.DataAccess;
 using BillingAndSubscriptionSystem.Services.DTOs;
 using MediatR;
@@ -9,11 +10,11 @@ namespace BillingAndSubscriptionSystem.Services.Features.Billings
     {
         public class Query : IRequest<ICollection<BillingDto>>
         {
-            public BillingDto Billing { get; set; }
+            public int UserId { get; }
 
-            public Query(BillingDto billing)
+            public Query(int userId)
             {
-                Billing = billing;
+                UserId = userId;
             }
         }
 
@@ -35,32 +36,34 @@ namespace BillingAndSubscriptionSystem.Services.Features.Billings
             {
                 try
                 {
-                    ValidateRequest(request.Billing);
+                    if (request.UserId <= 0)
+                    {
+                        throw new CustomException("Invalid user ID.", null);
+                    }
+
                     var billingDetails =
                         await _unitOfWork.BillingRepository.GetAllUsersWithBillingDetails(
+                            request.UserId,
                             cancellationToken
                         );
-                    var details = billingDetails.Select(MapBilling).ToList();
-                    return details;
+
+                    if (billingDetails == null || billingDetails.Count == 0)
+                    {
+                        return [];
+                    }
+                    return [.. billingDetails.Select(MapBilling)];
                 }
                 catch (Exception exception)
                 {
                     _logger.LogError(
                         exception,
-                        "Error fetching users with billing details:{Exception}",
+                        "Error fetching users with billing details: {ExceptionMessage}",
                         exception.Message
                     );
-                    throw new InvalidOperationException(
-                        "Error fetching users with billing details"
+                    throw new CustomException(
+                        "An error occurred while fetching users with billing details.",
+                        exception
                     );
-                }
-            }
-
-            private void ValidateRequest(BillingDto billing)
-            {
-                if (billing.UserId <= 0)
-                {
-                    throw new InvalidOperationException("Invalid user id");
                 }
             }
 

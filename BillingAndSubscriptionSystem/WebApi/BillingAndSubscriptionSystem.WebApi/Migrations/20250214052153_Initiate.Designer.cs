@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BillingAndSubscriptionSystem.WebApi.Migrations
 {
     [DbContext(typeof(BillingDbContext))]
-    [Migration("20250213124408_Init")]
-    partial class Init
+    [Migration("20250214052153_Initiate")]
+    partial class Initiate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -139,7 +139,7 @@ namespace BillingAndSubscriptionSystem.WebApi.Migrations
                     b.HasOne("BillingAndSubscriptionSystem.Entities.Entities.User", "User")
                         .WithMany("Billings")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("User");

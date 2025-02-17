@@ -16,7 +16,8 @@ namespace BillingAndSubscriptionSystem.Context.Configurations
             builder
                 .HasOne(billing => billing.User)
                 .WithMany(billing => billing.Billings)
-                .HasForeignKey(billing => billing.UserId);
+                .HasForeignKey(billing => billing.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

@@ -1,5 +1,4 @@
 using BillingAndSubscriptionSystem.DataAccess;
-using BillingAndSubscriptionSystem.DataAccess.Contracts;
 
 namespace BillingAndSubscriptionSystem.WebApi.Extensions
 {
@@ -7,7 +6,7 @@ namespace BillingAndSubscriptionSystem.WebApi.Extensions
     {
         public static void GetServices(this IServiceCollection services)
         {
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<UnitOfWork>();
         }
     }
 }

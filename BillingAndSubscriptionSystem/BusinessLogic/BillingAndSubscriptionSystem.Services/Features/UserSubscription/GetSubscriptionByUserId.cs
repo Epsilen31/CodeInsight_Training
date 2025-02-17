@@ -1,3 +1,4 @@
+using BillingAndSubscriptionSystem.Core.Exceptions;
 using BillingAndSubscriptionSystem.DataAccess;
 using BillingAndSubscriptionSystem.Entities.Entities;
 using BillingAndSubscriptionSystem.Services.DTOs;
@@ -8,17 +9,21 @@ namespace BillingAndSubscriptionSystem.Services.Features.UserSubscription
 {
     public class GetSubscriptionByUserId
     {
-        public class Query : IRequest<ICollection<SubscriptionDto>>
+        public class Query : IRequest<List<SubscriptionDto>>
         {
-            public SubscriptionDto Subscription { get; set; }
+            public int UserId { get; }
 
-            public Query(SubscriptionDto subscription)
+            public Query(int userId)
             {
-                Subscription = subscription;
+                if (userId <= 0)
+                {
+                    throw new ArgumentException("Invalid User ID", nameof(userId));
+                }
+                UserId = userId;
             }
         }
 
-        public class Handler : IRequestHandler<Query, ICollection<SubscriptionDto>>
+        public class Handler : IRequestHandler<Query, List<SubscriptionDto>>
         {
             private readonly UnitOfWork _unitOfWork;
             private readonly ILogger<GetSubscriptionByUserId> _logger;
@@ -29,67 +34,39 @@ namespace BillingAndSubscriptionSystem.Services.Features.UserSubscription
                 _logger = logger;
             }
 
-            public async Task<ICollection<SubscriptionDto>> Handle(
+            public async Task<List<SubscriptionDto>> Handle(
                 Query request,
                 CancellationToken cancellationToken
             )
             {
                 try
                 {
-                    ValidateRequest(request.Subscription);
-                    var existingSubscription =
+                    var subscription =
                         await _unitOfWork.UserSubscriptionRepository.GetUserSubscriptionAsync(
-                            request.Subscription.UserId,
+                            request.UserId,
                             cancellationToken
                         );
-                    if (existingSubscription == null)
+
+                    if (subscription == null)
                     {
-                        throw new InvalidOperationException("Subscription not found");
+                        throw new CustomException(
+                            $"No subscription found for User ID {request.UserId}",
+                            null
+                        );
                     }
 
-                    var subscription = MapSubscription(request.Subscription);
-                    var subscriptionData =
-                        await _unitOfWork.UserSubscriptionRepository.GetUserSubscriptionAsync(
-                            subscription.UserId,
-                            cancellationToken
-                        );
-                    return [MapSubscriptionDto(subscriptionData)];
+                    return [MapSubscriptionDto(subscription)];
                 }
                 catch (Exception exception)
                 {
                     _logger.LogError(
                         exception,
-                        "An error occurred while getting user subscription :{Exception}",
+                        "Error fetching subscription for User ID {UserId}: {Message}",
+                        request.UserId,
                         exception.Message
                     );
-                    throw new InvalidOperationException("Error getting user subscription");
+                    throw new CustomException("Error getting user subscription.", exception);
                 }
-            }
-
-            private void ValidateRequest(SubscriptionDto subscription)
-            {
-                if (subscription == null)
-                {
-                    throw new ArgumentNullException(nameof(subscription));
-                }
-
-                if (subscription.UserId <= 0)
-                {
-                    throw new InvalidOperationException("Invalid user id");
-                }
-            }
-
-            private Subscription MapSubscription(SubscriptionDto subscription)
-            {
-                return new Subscription
-                {
-                    Id = subscription.SubscriptionId,
-                    UserId = subscription.UserId,
-                    PlanType = subscription.PlanType,
-                    StartDate = subscription.StartDate,
-                    EndDate = subscription.EndDate,
-                    SubscriptionStatus = subscription.SubscriptionStatus,
-                };
             }
 
             private SubscriptionDto MapSubscriptionDto(Subscription subscription)

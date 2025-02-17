@@ -1,5 +1,5 @@
+using BillingAndSubscriptionSystem.Core.Exceptions;
 using BillingAndSubscriptionSystem.DataAccess;
-using BillingAndSubscriptionSystem.Entities.Entities;
 using BillingAndSubscriptionSystem.Services.DTOs;
 using MediatR;
 using Microsoft.Extensions.Logging;
@@ -8,7 +8,7 @@ namespace BillingAndSubscriptionSystem.Services.Features
 {
     public class UpdateUserSubscriptionPlan
     {
-        public class Query : IRequest<Unit>
+        public class Query : IRequest<SubscriptionDto>
         {
             public SubscriptionDto Subscription { get; set; }
 
@@ -18,7 +18,7 @@ namespace BillingAndSubscriptionSystem.Services.Features
             }
         }
 
-        public class Handler : IRequestHandler<Query, Unit>
+        public class Handler : IRequestHandler<Query, SubscriptionDto>
         {
             private readonly UnitOfWork _unitOfWork;
             private readonly ILogger<UpdateUserSubscriptionPlan> _logger;
@@ -29,66 +29,77 @@ namespace BillingAndSubscriptionSystem.Services.Features
                 _logger = logger;
             }
 
-            public async Task<Unit> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<SubscriptionDto> Handle(
+                Query request,
+                CancellationToken cancellationToken
+            )
             {
                 try
                 {
                     ValidateRequest(request.Subscription);
+
                     var existingSubscription =
                         await _unitOfWork.UserSubscriptionRepository.GetUserSubscriptionAsync(
                             request.Subscription.SubscriptionId,
                             cancellationToken
                         );
+
                     if (existingSubscription == null)
                     {
-                        throw new InvalidOperationException("Subscription not found");
+                        throw new CustomException(
+                            $"Subscription with ID {request.Subscription.SubscriptionId} not found.",
+                            null
+                        );
                     }
 
-                    var subscription = MapSubscription(request.Subscription);
+                    existingSubscription.PlanType = request.Subscription.PlanType;
+                    existingSubscription.StartDate = request.Subscription.StartDate;
+                    existingSubscription.EndDate = request.Subscription.EndDate;
+                    existingSubscription.SubscriptionStatus =
+                        request.Subscription.SubscriptionStatus == 0
+                            ? Entities.Enums.SubscriptionStatus.Active
+                            : Entities.Enums.SubscriptionStatus.Inactive;
+
                     await _unitOfWork.UserSubscriptionRepository.UpdateSubscriptionAsync(
-                        subscription,
+                        existingSubscription,
                         cancellationToken
                     );
-                    return Unit.Value;
+
+                    await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+                    return new SubscriptionDto
+                    {
+                        SubscriptionId = existingSubscription.Id,
+                        UserId = existingSubscription.UserId,
+                        PlanType = existingSubscription.PlanType,
+                        StartDate = existingSubscription.StartDate,
+                        EndDate = existingSubscription.EndDate,
+                        SubscriptionStatus = existingSubscription.SubscriptionStatus,
+                    };
                 }
                 catch (Exception exception)
                 {
                     _logger.LogError(
                         exception,
-                        "Error updating subscription plan : {Exception}",
+                        "Error updating subscription plan: {Exception}",
                         exception.Message
                     );
-                    throw new InvalidOperationException("Error updating subscription plan");
+                    throw new CustomException(
+                        $"Error updating subscription plan: {exception.Message}",
+                        null
+                    );
                 }
             }
 
             private void ValidateRequest(SubscriptionDto subscription)
             {
-                if (subscription == null)
+                if (subscription == null || subscription.SubscriptionId <= 0)
                 {
-                    throw new ArgumentNullException(nameof(subscription));
+                    throw new CustomException(
+                        "Invalid subscription ID. Please provide a valid ID.",
+                        null
+                    );
                 }
-
-                if (subscription.SubscriptionId <= 0)
-                {
-                    throw new InvalidOperationException("Invalid subscription id");
-                }
-            }
-
-            private Subscription MapSubscription(SubscriptionDto subscription)
-            {
-                return new Subscription
-                {
-                    Id = subscription.SubscriptionId,
-                    UserId = subscription.UserId,
-                    PlanType = subscription.PlanType,
-                    StartDate = subscription.StartDate,
-                    EndDate = subscription.EndDate,
-                    SubscriptionStatus =
-                        subscription.SubscriptionStatus == 0
-                            ? Entities.Enums.SubscriptionStatus.Active
-                            : Entities.Enums.SubscriptionStatus.Inactive,
-                };
             }
         }
     }
