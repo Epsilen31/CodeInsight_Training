@@ -32,7 +32,10 @@ namespace BillingAndSubscriptionSystem.Services.Features.Users
             {
                 try
                 {
-                    var success = await _unitOfWork.UserRepository.DeleteUserAsync(request.UserId);
+                    var success = await _unitOfWork.UserRepository.DeleteUserAsync(
+                        request.UserId,
+                        cancellationToken
+                    );
 
                     if (success)
                     {

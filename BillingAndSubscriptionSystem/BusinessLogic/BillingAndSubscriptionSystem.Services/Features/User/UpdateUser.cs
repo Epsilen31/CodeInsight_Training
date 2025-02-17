@@ -34,7 +34,8 @@ namespace BillingAndSubscriptionSystem.Services.Features.Users
                 try
                 {
                     var existingUser = await _unitOfWork.UserRepository.GetUserByIdAsync(
-                        request.User.Id
+                        request.User.Id,
+                        cancellationToken
                     );
                     if (existingUser == null)
                     {
@@ -45,7 +46,10 @@ namespace BillingAndSubscriptionSystem.Services.Features.Users
                     existingUser.Email = request.User.Email;
                     existingUser.Phone = request.User.Phone;
 
-                    await _unitOfWork.UserRepository.UpdateUserAsync(existingUser);
+                    await _unitOfWork.UserRepository.UpdateUserAsync(
+                        existingUser,
+                        cancellationToken
+                    );
                     await _unitOfWork.SaveChangesAsync(cancellationToken);
 
                     var updatedUserDto = new UserDto

@@ -31,7 +31,9 @@ namespace BillingAndSubscriptionSystem.Services.Features.Users
             {
                 try
                 {
-                    var users = await _unitOfWork.UserRepository.GetAllUsersAsync();
+                    var users = await _unitOfWork.UserRepository.GetAllUsersAsync(
+                        cancellationToken
+                    );
 
                     if (users == null || users.Count == 0)
                     {

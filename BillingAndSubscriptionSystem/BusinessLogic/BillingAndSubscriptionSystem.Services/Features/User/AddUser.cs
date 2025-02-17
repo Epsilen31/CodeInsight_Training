@@ -40,7 +40,7 @@ namespace BillingAndSubscriptionSystem.Services.Features.Users
                         Email = request.User.Email,
                         Phone = request.User.Phone,
                     };
-                    await _unitOfWork.UserRepository.AddUserAsync(userEntity);
+                    await _unitOfWork.UserRepository.AddUserAsync(userEntity, cancellationToken);
                     await _unitOfWork.SaveChangesAsync(cancellationToken);
                     return Unit.Value;
                 }

@@ -33,7 +33,10 @@ namespace BillingAndSubscriptionSystem.Services.Features.Users
             {
                 try
                 {
-                    var user = await _unitOfWork.UserRepository.GetUserByIdAsync(request.UserId);
+                    var user = await _unitOfWork.UserRepository.GetUserByIdAsync(
+                        request.UserId,
+                        cancellationToken
+                    );
 
                     if (user == null)
                     {

@@ -27,8 +27,14 @@ namespace BillingAndSubscriptionSystem.DataAccess.Repositories
             CancellationToken cancellationToken
         )
         {
-            _context.Subscriptions.Update(userSubscription);
-            await _context.SaveChangesAsync(cancellationToken);
+            await _context.Subscriptions.ExecuteUpdateAsync(
+                s =>
+                    s.SetProperty(u => u.PlanType, userSubscription.PlanType)
+                        .SetProperty(u => u.SubscriptionStatus, userSubscription.SubscriptionStatus)
+                        .SetProperty(u => u.StartDate, userSubscription.StartDate)
+                        .SetProperty(u => u.EndDate, userSubscription.EndDate),
+                cancellationToken
+            );
         }
 
         public async Task<Subscription?> GetUserSubscriptionAsync(
