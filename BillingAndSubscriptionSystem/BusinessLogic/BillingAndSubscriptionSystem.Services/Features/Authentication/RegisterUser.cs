@@ -9,17 +9,17 @@ namespace BillingAndSubscriptionSystem.Services.Features.Authentication
 {
     public class RegisterUser
     {
-        public class Query : IRequest<UserDto>
+        public class Command : IRequest<UserDto>
         {
             public UserDto User { get; set; }
 
-            public Query(UserDto user)
+            public Command(UserDto user)
             {
                 User = user;
             }
         }
 
-        public class Handler : IRequestHandler<Query, UserDto>
+        public class Handler : IRequestHandler<Command, UserDto>
         {
             private readonly UnitOfWork _unitOfWork;
             private readonly ILogger<RegisterUser> _logger;
@@ -30,7 +30,7 @@ namespace BillingAndSubscriptionSystem.Services.Features.Authentication
                 _logger = logger;
             }
 
-            public async Task<UserDto> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<UserDto> Handle(Command request, CancellationToken cancellationToken)
             {
                 try
                 {
@@ -42,10 +42,6 @@ namespace BillingAndSubscriptionSystem.Services.Features.Authentication
                         _logger.LogError("Email and password are required.");
                         throw new CustomException("Email and password are required.", null);
                     }
-
-                    Console.WriteLine(
-                        $"Email and password are {request.User.Email} and {request.User.Password}"
-                    );
 
                     var existingUser = (
                         await _unitOfWork.UserRepository.GetAllUsersAsync(cancellationToken)

@@ -21,7 +21,7 @@ namespace BillingAndSubscriptionSystem.WebApi.Controllers.Auth
         [HttpPost(RouteKey.Register)]
         public async Task<IActionResult> Register([FromBody] UserDto userDto)
         {
-            await _mediator.Send(new RegisterUser.Query(userDto));
+            await _mediator.Send(new RegisterUser.Command(userDto));
             return Ok(new { message = "User Signup Successful" });
         }
     }

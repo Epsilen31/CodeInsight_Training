@@ -10,17 +10,17 @@ namespace BillingAndSubscriptionSystem.Services.Features.Authentication
 {
     public class LoginUser
     {
-        public class Query : IRequest<LoginDto>
+        public class Command : IRequest<LoginDto>
         {
             public LoginDto Login { get; set; }
 
-            public Query(LoginDto loginDto)
+            public Command(LoginDto loginDto)
             {
                 Login = loginDto;
             }
         }
 
-        public class Handler : IRequestHandler<Query, LoginDto>
+        public class Handler : IRequestHandler<Command, LoginDto>
         {
             private readonly UnitOfWork _unitOfWork;
             private readonly ILogger<LoginUser> _logger;
@@ -40,7 +40,7 @@ namespace BillingAndSubscriptionSystem.Services.Features.Authentication
                 _redisService = redisService;
             }
 
-            public async Task<LoginDto> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<LoginDto> Handle(Command request, CancellationToken cancellationToken)
             {
                 try
                 {

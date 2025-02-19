@@ -8,17 +8,17 @@ namespace BillingAndSubscriptionSystem.Services.Features.Billing
 {
     public class UpdateBillingDetails
     {
-        public class Query : IRequest<Unit>
+        public class Command : IRequest<Unit>
         {
             public BillingDto Billing { get; set; }
 
-            public Query(BillingDto billing)
+            public Command(BillingDto billing)
             {
                 Billing = billing;
             }
         }
 
-        public class Handler : IRequestHandler<Query, Unit>
+        public class Handler : IRequestHandler<Command, Unit>
         {
             private readonly UnitOfWork _unitOfWork;
             private readonly ILogger<UpdateBillingDetails> _logger;
@@ -29,7 +29,7 @@ namespace BillingAndSubscriptionSystem.Services.Features.Billing
                 _logger = logger;
             }
 
-            public async Task<Unit> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
             {
                 try
                 {

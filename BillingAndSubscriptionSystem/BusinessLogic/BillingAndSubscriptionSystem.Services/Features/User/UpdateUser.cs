@@ -8,17 +8,17 @@ namespace BillingAndSubscriptionSystem.Services.Features.Users
 {
     public class UpdateUser
     {
-        public class Query : IRequest<UserDto?>
+        public class Command : IRequest<UserDto?>
         {
             public UserDto User { get; }
 
-            public Query(UserDto user)
+            public Command(UserDto user)
             {
                 User = user;
             }
         }
 
-        public class Handler : IRequestHandler<Query, UserDto?>
+        public class Handler : IRequestHandler<Command, UserDto?>
         {
             private readonly UnitOfWork _unitOfWork;
             private readonly ILogger<UpdateUser> _logger;
@@ -29,7 +29,7 @@ namespace BillingAndSubscriptionSystem.Services.Features.Users
                 _logger = logger;
             }
 
-            public async Task<UserDto?> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<UserDto?> Handle(Command request, CancellationToken cancellationToken)
             {
                 try
                 {

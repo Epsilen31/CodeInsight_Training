@@ -25,7 +25,7 @@ namespace BillingAndSubscriptionSystem.WebApi.Controllers
             CancellationToken cancellationToken
         )
         {
-            await _mediator.Send(new PaymentProcess.Query(payment), cancellationToken);
+            await _mediator.Send(new PaymentProcess.Command(payment), cancellationToken);
             return Ok(new { Message = "Payment created successfully." });
         }
 

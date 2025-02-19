@@ -9,17 +9,17 @@ namespace BillingAndSubscriptionSystem.Services.Features.Users
 {
     public class AddUser
     {
-        public class Query : IRequest<Unit>
+        public class Command : IRequest<Unit>
         {
             public UserDto User { get; }
 
-            public Query(UserDto user)
+            public Command(UserDto user)
             {
                 User = user;
             }
         }
 
-        public class Handler : IRequestHandler<Query, Unit>
+        public class Handler : IRequestHandler<Command, Unit>
         {
             private readonly UnitOfWork _unitOfWork;
             private readonly ILogger<AddUser> _logger;
@@ -30,7 +30,7 @@ namespace BillingAndSubscriptionSystem.Services.Features.Users
                 _logger = logger;
             }
 
-            public async Task<Unit> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
             {
                 try
                 {

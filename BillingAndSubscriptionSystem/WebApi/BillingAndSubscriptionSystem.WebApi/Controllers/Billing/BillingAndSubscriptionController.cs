@@ -26,7 +26,7 @@ namespace BillingAndSubscriptionSystem.WebApi.Controllers
             CancellationToken cancellationToken
         )
         {
-            await _mediator.Send(new UpdateBillingDetails.Query(billingDto), cancellationToken);
+            await _mediator.Send(new UpdateBillingDetails.Command(billingDto), cancellationToken);
             return Ok(new { Message = "Billing updated successfully." });
         }
 

@@ -7,17 +7,17 @@ namespace BillingAndSubscriptionSystem.Services.Features.Users
 {
     public class DeleteUser
     {
-        public class Query : IRequest<bool>
+        public class Command : IRequest<bool>
         {
             public int UserId { get; }
 
-            public Query(int userId)
+            public Command(int userId)
             {
                 UserId = userId;
             }
         }
 
-        public class Handler : IRequestHandler<Query, bool>
+        public class Handler : IRequestHandler<Command, bool>
         {
             private readonly UnitOfWork _unitOfWork;
             private readonly ILogger<DeleteUser> _logger;
@@ -28,7 +28,7 @@ namespace BillingAndSubscriptionSystem.Services.Features.Users
                 _logger = logger;
             }
 
-            public async Task<bool> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<bool> Handle(Command request, CancellationToken cancellationToken)
             {
                 try
                 {

@@ -18,7 +18,6 @@ namespace BillingAndSubscriptionSystem.WebApi.Authentication
         protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
         {
             var token = Request.Headers.Authorization.FirstOrDefault()?.Split(" ").Last();
-            Console.WriteLine($"token: {token}");
 
             if (string.IsNullOrEmpty(token))
             {

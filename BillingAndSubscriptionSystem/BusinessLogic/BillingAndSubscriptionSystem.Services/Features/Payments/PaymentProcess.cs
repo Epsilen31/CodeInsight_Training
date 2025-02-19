@@ -10,17 +10,17 @@ namespace BillingAndSubscriptionSystem.Services.Features.Payments
 {
     public class PaymentProcess
     {
-        public class Query : IRequest<PaymentDto>
+        public class Command : IRequest<PaymentDto>
         {
             public PaymentDto Payment { get; }
 
-            public Query(PaymentDto payment)
+            public Command(PaymentDto payment)
             {
                 Payment = payment;
             }
         }
 
-        public class Handler : IRequestHandler<Query, PaymentDto>
+        public class Handler : IRequestHandler<Command, PaymentDto>
         {
             private readonly UnitOfWork _unitOfWork;
             private readonly ILogger<PaymentProcess> _logger;
@@ -31,7 +31,10 @@ namespace BillingAndSubscriptionSystem.Services.Features.Payments
                 _logger = logger;
             }
 
-            public async Task<PaymentDto> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<PaymentDto> Handle(
+                Command request,
+                CancellationToken cancellationToken
+            )
             {
                 try
                 {

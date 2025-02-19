@@ -32,7 +32,6 @@ namespace BillingAndSubscriptionSystem.WebApi.Controllers.Users
             CancellationToken cancellationToken
         )
         {
-            Console.WriteLine($"id: {userId}");
             var user = await _mediator.Send(new GetUserById.Query(userId), cancellationToken);
             if (user == null)
             {
@@ -47,7 +46,7 @@ namespace BillingAndSubscriptionSystem.WebApi.Controllers.Users
             CancellationToken cancellationToken
         )
         {
-            await _mediator.Send(new AddUser.Query(userDto), cancellationToken);
+            await _mediator.Send(new AddUser.Command(userDto), cancellationToken);
             return Ok(new { Message = "User added successfully" });
         }
 
@@ -59,7 +58,7 @@ namespace BillingAndSubscriptionSystem.WebApi.Controllers.Users
         )
         {
             userDto.Id = userId;
-            var result = await _mediator.Send(new UpdateUser.Query(userDto), cancellationToken);
+            var result = await _mediator.Send(new UpdateUser.Command(userDto), cancellationToken);
 
             if (result != null)
             {
@@ -77,7 +76,7 @@ namespace BillingAndSubscriptionSystem.WebApi.Controllers.Users
             CancellationToken cancellationToken
         )
         {
-            var result = await _mediator.Send(new DeleteUser.Query(userId), cancellationToken);
+            var result = await _mediator.Send(new DeleteUser.Command(userId), cancellationToken);
 
             if (result)
             {
