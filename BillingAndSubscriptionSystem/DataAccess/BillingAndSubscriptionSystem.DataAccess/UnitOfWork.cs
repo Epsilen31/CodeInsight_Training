@@ -4,7 +4,7 @@ using BillingAndSubscriptionSystem.DataAccess.Repositories;
 
 namespace BillingAndSubscriptionSystem.DataAccess
 {
-    public class UnitOfWork : IUnitOfWork, IDisposable
+    public class IUnitOfWork : IUnitOfWork, IDisposable
     {
         private readonly BillingDbContext _context;
 

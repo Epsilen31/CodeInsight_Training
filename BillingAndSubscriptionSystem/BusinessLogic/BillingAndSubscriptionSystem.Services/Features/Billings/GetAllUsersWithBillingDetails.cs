@@ -20,12 +20,12 @@ namespace BillingAndSubscriptionSystem.Services.Features.Billings
 
         public class Handler : IRequestHandler<Query, ICollection<BillingDto>>
         {
-            private readonly UnitOfWork _unitOfWork;
+            private readonly IUnitOfWork _unitOfWork;
             private readonly ILogger<GetAllUsersWithBillingDetails> _logger;
 
-            public Handler(UnitOfWork unitOfWork, ILogger<GetAllUsersWithBillingDetails> logger)
+            public Handler(IUnitOfWork unitOfWork, ILogger<GetAllUsersWithBillingDetails> logger)
             {
-                _unitOfWork = unitOfWork;
+                _IUnitOfWork = unitOfWork;
                 _logger = logger;
             }
 

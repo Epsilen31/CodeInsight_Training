@@ -15,12 +15,12 @@ namespace BillingAndSubscriptionSystem.Services.Features.Users
 
         public class Handler : IRequestHandler<Query, ICollection<User>>
         {
-            private readonly UnitOfWork _unitOfWork;
+            private readonly IUnitOfWork _unitOfWork;
             private readonly ILogger<GetAllUsers> _logger;
 
-            public Handler(UnitOfWork unitOfWork, ILogger<GetAllUsers> logger)
+            public Handler(IUnitOfWork unitOfWork, ILogger<GetAllUsers> logger)
             {
-                _unitOfWork = unitOfWork;
+                _IUnitOfWork = unitOfWork;
                 _logger = logger;
             }
 

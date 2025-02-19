@@ -1,5 +1,6 @@
 using BillingAndSubscriptionSystem.Services.DTOs;
 using BillingAndSubscriptionSystem.Services.Features.Users;
+using BillingAndSubscriptionSystem.WebApi.Authorization.Policy;
 using BillingAndSubscriptionSystem.WebApi.Constants;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -70,6 +71,7 @@ namespace BillingAndSubscriptionSystem.WebApi.Controllers.Users
             }
         }
 
+        [Authorize(Policy = RolePolicyRules.AdminOnly)]
         [HttpDelete(RouteKey.DeleteUser)]
         public async Task<IActionResult> DeleteUser(
             [FromRoute] int userId,

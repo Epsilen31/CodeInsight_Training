@@ -22,10 +22,10 @@ namespace BillingAndSubscriptionSystem.Services.Features.Payments
 
         public class Handler : IRequestHandler<Command, PaymentDto>
         {
-            private readonly UnitOfWork _unitOfWork;
+            private readonly IUnitOfWork _unitOfWork;
             private readonly ILogger<PaymentProcess> _logger;
 
-            public Handler(UnitOfWork unitOfWork, ILogger<PaymentProcess> logger)
+            public Handler(IUnitOfWork unitOfWork, ILogger<PaymentProcess> logger)
             {
                 _unitOfWork = unitOfWork;
                 _logger = logger;

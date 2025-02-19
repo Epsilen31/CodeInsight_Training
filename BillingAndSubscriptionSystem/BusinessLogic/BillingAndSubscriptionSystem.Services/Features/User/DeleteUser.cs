@@ -19,10 +19,10 @@ namespace BillingAndSubscriptionSystem.Services.Features.Users
 
         public class Handler : IRequestHandler<Command, bool>
         {
-            private readonly UnitOfWork _unitOfWork;
+            private readonly IUnitOfWork _unitOfWork;
             private readonly ILogger<DeleteUser> _logger;
 
-            public Handler(UnitOfWork unitOfWork, ILogger<DeleteUser> logger)
+            public Handler(IUnitOfWork unitOfWork, ILogger<DeleteUser> logger)
             {
                 _unitOfWork = unitOfWork;
                 _logger = logger;

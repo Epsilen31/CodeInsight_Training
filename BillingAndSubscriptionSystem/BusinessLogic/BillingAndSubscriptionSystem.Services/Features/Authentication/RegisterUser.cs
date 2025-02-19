@@ -21,10 +21,10 @@ namespace BillingAndSubscriptionSystem.Services.Features.Authentication
 
         public class Handler : IRequestHandler<Command, UserDto>
         {
-            private readonly UnitOfWork _unitOfWork;
+            private readonly IUnitOfWork _unitOfWork;
             private readonly ILogger<RegisterUser> _logger;
 
-            public Handler(UnitOfWork unitOfWork, ILogger<RegisterUser> logger)
+            public Handler(IUnitOfWork unitOfWork, ILogger<RegisterUser> logger)
             {
                 _unitOfWork = unitOfWork;
                 _logger = logger;

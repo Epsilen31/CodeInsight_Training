@@ -20,12 +20,12 @@ namespace BillingAndSubscriptionSystem.Services.Features.Payments
 
         public class Handler : IRequestHandler<Query, ICollection<PaymentDto>>
         {
-            private readonly UnitOfWork _unitOfWork;
+            private readonly IUnitOfWork _unitOfWork;
             private readonly ILogger<GetOverduePayments> _logger;
 
-            public Handler(UnitOfWork unitOfWork, ILogger<GetOverduePayments> logger)
+            public Handler(IUnitOfWork unitOfWork, ILogger<GetOverduePayments> logger)
             {
-                _unitOfWork = unitOfWork;
+                _IUnitOfWork = unitOfWork;
                 _logger = logger;
             }
 
