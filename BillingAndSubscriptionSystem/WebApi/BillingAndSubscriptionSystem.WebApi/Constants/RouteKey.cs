@@ -28,5 +28,10 @@ namespace BillingAndSubscriptionSystem.WebApi.Constants
         public const string AddUser = "AddUser";
         public const string UpdateUser = "UpdateUser/{userId}";
         public const string DeleteUser = "DeleteUser/{userId}";
+
+        // Auth Routes
+        public const string AuthRoute = MainRoute + "/Auth";
+        public const string Login = "Login";
+        public const string Register = "Register";
     }
 }

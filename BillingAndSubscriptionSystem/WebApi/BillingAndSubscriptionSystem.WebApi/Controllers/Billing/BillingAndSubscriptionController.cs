@@ -3,10 +3,12 @@ using BillingAndSubscriptionSystem.Services.Features.Billing;
 using BillingAndSubscriptionSystem.Services.Features.Billings;
 using BillingAndSubscriptionSystem.WebApi.Constants;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BillingAndSubscriptionSystem.WebApi.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route(RouteKey.BillingRoute)]
     public class BillingController : BaseController

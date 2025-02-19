@@ -45,6 +45,8 @@ namespace BillingAndSubscriptionSystem.Services.Features.Users
                     existingUser.Name = request.User.Name;
                     existingUser.Email = request.User.Email;
                     existingUser.Phone = request.User.Phone;
+                    existingUser.Password = request.User.Password;
+                    existingUser.Role = request.User.Role ?? string.Empty;
 
                     await _unitOfWork.UserRepository.UpdateUserAsync(
                         existingUser,
@@ -58,6 +60,7 @@ namespace BillingAndSubscriptionSystem.Services.Features.Users
                         Name = existingUser.Name,
                         Email = existingUser.Email,
                         Phone = existingUser.Phone,
+                        Password = existingUser.Password,
                     };
 
                     return updatedUserDto;

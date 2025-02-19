@@ -2,10 +2,12 @@ using BillingAndSubscriptionSystem.Services.DTOs;
 using BillingAndSubscriptionSystem.Services.Features.Payments;
 using BillingAndSubscriptionSystem.WebApi.Constants;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BillingAndSubscriptionSystem.WebApi.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route(RouteKey.PaymentRoute)]
     public class PaymentController : BaseController

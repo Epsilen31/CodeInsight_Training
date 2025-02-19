@@ -74,6 +74,24 @@ namespace BillingAndSubscriptionSystem.WebApi.Migrations
                     b.ToTable("Payments", (string)null);
                 });
 
+            modelBuilder.Entity("BillingAndSubscriptionSystem.Entities.Entities.Role", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("RoleName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Roles", (string)null);
+                });
+
             modelBuilder.Entity("BillingAndSubscriptionSystem.Entities.Entities.Subscription", b =>
                 {
                     b.Property<int>("Id")
@@ -114,7 +132,6 @@ namespace BillingAndSubscriptionSystem.WebApi.Migrations
 
                     b.Property<string>("Email")
                         .HasMaxLength(50)
-                        .IsUnicode(true)
                         .HasColumnType("varchar(50)");
 
                     b.Property<string>("Name")
@@ -122,11 +139,24 @@ namespace BillingAndSubscriptionSystem.WebApi.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("varchar(50)");
 
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
                     b.Property<string>("Phone")
                         .HasMaxLength(15)
                         .HasColumnType("varchar(15)");
 
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("Email")
+                        .IsUnique();
+
+                    b.HasIndex("RoleId");
 
                     b.ToTable("Users", (string)null);
                 });
@@ -162,6 +192,22 @@ namespace BillingAndSubscriptionSystem.WebApi.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("BillingAndSubscriptionSystem.Entities.Entities.User", b =>
+                {
+                    b.HasOne("BillingAndSubscriptionSystem.Entities.Entities.Role", "Role")
+                        .WithMany("Users")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Role");
+                });
+
+            modelBuilder.Entity("BillingAndSubscriptionSystem.Entities.Entities.Role", b =>
+                {
+                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("BillingAndSubscriptionSystem.Entities.Entities.Subscription", b =>

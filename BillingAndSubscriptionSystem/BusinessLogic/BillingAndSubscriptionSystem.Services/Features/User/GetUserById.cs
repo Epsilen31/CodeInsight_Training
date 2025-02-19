@@ -48,6 +48,8 @@ namespace BillingAndSubscriptionSystem.Services.Features.Users
                         Name = user.Name,
                         Email = user.Email,
                         Phone = user.Phone,
+                        Password = user.Password,
+                        Role = user.RoleId == 1 ? "Admin" : "User",
                     };
                     return userDto;
                 }

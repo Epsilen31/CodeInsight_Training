@@ -5,13 +5,13 @@ using BillingAndSubscriptionSystem.Services.DTOs;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace BillingAndSubscriptionSystem.Services.Features.Users
+namespace BillingAndSubscriptionSystem.Services.Features.Authentication
 {
-    public class AddUser
+    public class RegisterUser
     {
-        public class Query : IRequest<Unit>
+        public class Query : IRequest<UserDto>
         {
-            public UserDto User { get; }
+            public UserDto User { get; set; }
 
             public Query(UserDto user)
             {
@@ -19,18 +19,18 @@ namespace BillingAndSubscriptionSystem.Services.Features.Users
             }
         }
 
-        public class Handler : IRequestHandler<Query, Unit>
+        public class Handler : IRequestHandler<Query, UserDto>
         {
             private readonly UnitOfWork _unitOfWork;
-            private readonly ILogger<AddUser> _logger;
+            private readonly ILogger<RegisterUser> _logger;
 
-            public Handler(UnitOfWork unitOfWork, ILogger<AddUser> logger)
+            public Handler(UnitOfWork unitOfWork, ILogger<RegisterUser> logger)
             {
                 _unitOfWork = unitOfWork;
                 _logger = logger;
             }
 
-            public async Task<Unit> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<UserDto> Handle(Query request, CancellationToken cancellationToken)
             {
                 try
                 {
@@ -39,9 +39,13 @@ namespace BillingAndSubscriptionSystem.Services.Features.Users
                         || string.IsNullOrEmpty(request.User.Password)
                     )
                     {
-                        _logger.LogWarning("Email and password are required.");
+                        _logger.LogError("Email and password are required.");
                         throw new CustomException("Email and password are required.", null);
                     }
+
+                    Console.WriteLine(
+                        $"Email and password are {request.User.Email} and {request.User.Password}"
+                    );
 
                     var existingUser = (
                         await _unitOfWork.UserRepository.GetAllUsersAsync(cancellationToken)
@@ -59,21 +63,29 @@ namespace BillingAndSubscriptionSystem.Services.Features.Users
                     var hashedPassword = BCrypt.Net.BCrypt.HashPassword(request.User.Password);
                     var newUser = new User
                     {
-                        Name = request.User.Name,
                         Email = request.User.Email,
-                        Phone = request.User.Phone,
                         Password = hashedPassword,
+                        Name = request.User.Name,
+                        Phone = request.User.Phone,
                         Role = request.User.Role ?? new Role { RoleName = "Admin" },
                     };
 
                     await _unitOfWork.UserRepository.AddUserAsync(newUser, cancellationToken);
                     await _unitOfWork.SaveChangesAsync(cancellationToken);
-                    return Unit.Value;
+
+                    return new UserDto { Email = newUser.Email };
                 }
                 catch (Exception exception)
                 {
-                    _logger.LogError(exception, "Error adding user: {Message}", exception.Message);
-                    throw new CustomException("Error adding user.", exception);
+                    _logger.LogError(
+                        exception,
+                        "Error occurred while registering the user {Message}",
+                        exception.Message
+                    );
+                    throw new CustomException(
+                        "Error occurred while registering the user.",
+                        exception
+                    );
                 }
             }
         }

@@ -15,6 +15,12 @@ namespace BillingAndSubscriptionSystem.Context.Configurations
             builder.Property(user => user.Email).HasMaxLength(50);
             builder.HasIndex(user => user.Email).IsUnique();
             builder.Property(user => user.Phone).HasMaxLength(15);
+            builder.Property(user => user.Password).IsRequired().HasMaxLength(100);
+            builder
+                .HasOne(user => user.Role)
+                .WithMany(role => role.Users)
+                .HasForeignKey(user => user.RoleId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

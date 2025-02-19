@@ -15,11 +15,13 @@ namespace BillingAndSubscriptionSystem.Context
             modelBuilder.ApplyConfiguration(new BillingConfiguration());
             modelBuilder.ApplyConfiguration(new PaymentConfiguration());
             modelBuilder.ApplyConfiguration(new SubscriptionConfiguration());
+            modelBuilder.ApplyConfiguration(new RoleConfiguration());
         }
 
         public DbSet<User> Users { get; set; }
         public DbSet<Billing> Billings { get; set; }
         public DbSet<Payment> Payments { get; set; }
         public DbSet<Subscription> Subscriptions { get; set; }
+        public DbSet<Role> Roles { get; set; }
     }
 }
