@@ -30,17 +30,23 @@ namespace BillingAndSubscriptionSystem.WebApi.Authentication
                 return AuthenticateResult.Fail("Unauthorized - Token Not Found or Expired");
             }
 
+            var principal = CreatePrincipal(cachedToken);
+            var ticket = new AuthenticationTicket(principal, Scheme.Name);
+            return AuthenticateResult.Success(ticket);
+        }
+
+        private ClaimsPrincipal CreatePrincipal(string token)
+        {
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Name, cachedToken),
+                new Claim(ClaimTypes.Name, token),
                 new Claim(ClaimTypes.Authentication, token),
             };
 
             var identity = new ClaimsIdentity(claims, Scheme.Name);
             var principal = new ClaimsPrincipal(identity);
-            var ticket = new AuthenticationTicket(principal, Scheme.Name);
-
-            return AuthenticateResult.Success(ticket);
+            Thread.CurrentPrincipal = principal;
+            return principal;
         }
     }
 }

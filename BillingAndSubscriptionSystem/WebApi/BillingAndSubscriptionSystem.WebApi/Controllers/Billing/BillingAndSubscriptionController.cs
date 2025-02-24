@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BillingAndSubscriptionSystem.WebApi.Controllers
 {
-    [Authorize]
     [ApiController]
     [Route(RouteKey.BillingRoute)]
     public class BillingController : BaseController
@@ -20,6 +19,7 @@ namespace BillingAndSubscriptionSystem.WebApi.Controllers
             _mediator = mediator;
         }
 
+        [Authorize]
         [HttpPut(RouteKey.UpdateBilling)]
         public async Task<IActionResult> UpdateBilling(
             [FromBody] BillingDto billingDto,
@@ -30,6 +30,7 @@ namespace BillingAndSubscriptionSystem.WebApi.Controllers
             return Ok(new { Message = "Billing updated successfully." });
         }
 
+        [Authorize]
         [HttpGet(RouteKey.GetUsersWithBilling)]
         public async Task<IActionResult> GetUsersWithBilling(
             [FromQuery] string userId,

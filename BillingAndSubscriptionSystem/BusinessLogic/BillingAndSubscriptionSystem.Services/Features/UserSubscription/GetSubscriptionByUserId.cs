@@ -1,5 +1,6 @@
 using BillingAndSubscriptionSystem.Core.Exceptions;
 using BillingAndSubscriptionSystem.DataAccess;
+using BillingAndSubscriptionSystem.DataAccess.Contracts;
 using BillingAndSubscriptionSystem.Entities.Entities;
 using BillingAndSubscriptionSystem.Services.DTOs;
 using MediatR;
@@ -30,7 +31,7 @@ namespace BillingAndSubscriptionSystem.Services.Features.UserSubscription
 
             public Handler(IUnitOfWork unitOfWork, ILogger<GetSubscriptionByUserId> logger)
             {
-                _IUnitOfWork = unitOfWork;
+                _unitOfWork = unitOfWork;
                 _logger = logger;
             }
 

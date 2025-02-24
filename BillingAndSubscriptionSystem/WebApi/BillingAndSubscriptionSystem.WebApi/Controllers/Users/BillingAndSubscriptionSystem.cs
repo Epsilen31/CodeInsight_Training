@@ -1,5 +1,6 @@
 using BillingAndSubscriptionSystem.Services.DTOs;
 using BillingAndSubscriptionSystem.Services.Features.Users;
+using BillingAndSubscriptionSystem.WebApi.Authorization.AdminAttribute;
 using BillingAndSubscriptionSystem.WebApi.Authorization.Policy;
 using BillingAndSubscriptionSystem.WebApi.Constants;
 using MediatR;
@@ -8,7 +9,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BillingAndSubscriptionSystem.WebApi.Controllers.Users
 {
-    [Authorize]
     [ApiController]
     [Route(RouteKey.UserRoute)]
     public class BillingAndSubscriptionSystem : BaseController
@@ -20,6 +20,7 @@ namespace BillingAndSubscriptionSystem.WebApi.Controllers.Users
             _mediator = mediator;
         }
 
+        [Authorize]
         [HttpGet(RouteKey.GetUsers)]
         public async Task<IActionResult> GetAllUsers(CancellationToken cancellationToken)
         {
@@ -27,6 +28,7 @@ namespace BillingAndSubscriptionSystem.WebApi.Controllers.Users
             return Ok(new { Message = "Users retrieved successfully", Users = users });
         }
 
+        [Authorize]
         [HttpGet(RouteKey.GetUserById)]
         public async Task<IActionResult> GetUserById(
             [FromRoute] int userId,
@@ -41,6 +43,8 @@ namespace BillingAndSubscriptionSystem.WebApi.Controllers.Users
             return Ok(new { Message = "User retrieved successfully", User = user });
         }
 
+        [Authorize]
+        [AdminRoleAuthorization(RolePolicyRules.ADMIN_ROLE)]
         [HttpPost(RouteKey.AddUser)]
         public async Task<IActionResult> AddUser(
             [FromBody] UserDto userDto,
@@ -51,6 +55,7 @@ namespace BillingAndSubscriptionSystem.WebApi.Controllers.Users
             return Ok(new { Message = "User added successfully" });
         }
 
+        [Authorize]
         [HttpPut(RouteKey.UpdateUser)]
         public async Task<IActionResult> UpdateUser(
             int userId,
@@ -71,7 +76,8 @@ namespace BillingAndSubscriptionSystem.WebApi.Controllers.Users
             }
         }
 
-        [Authorize(Policy = RolePolicyRules.AdminOnly)]
+        [Authorize]
+        [Authorize(Policy = RolePolicyRules.ADMIN_ROLE)]
         [HttpDelete(RouteKey.DeleteUser)]
         public async Task<IActionResult> DeleteUser(
             [FromRoute] int userId,

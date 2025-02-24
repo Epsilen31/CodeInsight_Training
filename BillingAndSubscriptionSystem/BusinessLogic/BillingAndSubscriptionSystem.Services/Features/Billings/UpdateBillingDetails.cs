@@ -1,5 +1,5 @@
 using BillingAndSubscriptionSystem.Core.Exceptions;
-using BillingAndSubscriptionSystem.DataAccess;
+using BillingAndSubscriptionSystem.DataAccess.Contracts;
 using BillingAndSubscriptionSystem.Services.DTOs;
 using MediatR;
 using Microsoft.Extensions.Logging;

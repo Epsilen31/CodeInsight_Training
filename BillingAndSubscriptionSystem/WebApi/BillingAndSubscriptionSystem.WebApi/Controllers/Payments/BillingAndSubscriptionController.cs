@@ -1,5 +1,7 @@
 using BillingAndSubscriptionSystem.Services.DTOs;
 using BillingAndSubscriptionSystem.Services.Features.Payments;
+using BillingAndSubscriptionSystem.WebApi.Authorization.AdminAttribute;
+using BillingAndSubscriptionSystem.WebApi.Authorization.Policy;
 using BillingAndSubscriptionSystem.WebApi.Constants;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -7,7 +9,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BillingAndSubscriptionSystem.WebApi.Controllers
 {
-    [Authorize]
     [ApiController]
     [Route(RouteKey.PaymentRoute)]
     public class PaymentController : BaseController
@@ -19,6 +20,7 @@ namespace BillingAndSubscriptionSystem.WebApi.Controllers
             _mediator = mediator;
         }
 
+        [Authorize]
         [HttpPost(RouteKey.CreatePayment)]
         public async Task<IActionResult> CreatePayment(
             [FromBody] PaymentDto payment,
@@ -29,6 +31,7 @@ namespace BillingAndSubscriptionSystem.WebApi.Controllers
             return Ok(new { Message = "Payment created successfully." });
         }
 
+        [RoleAuthorization(RolePolicyRules.ADMIN_ROLE)]
         [HttpGet(RouteKey.GetOverDuePayment)]
         public async Task<IActionResult> GetOverduePayments(
             [FromQuery] string subscriptionId,

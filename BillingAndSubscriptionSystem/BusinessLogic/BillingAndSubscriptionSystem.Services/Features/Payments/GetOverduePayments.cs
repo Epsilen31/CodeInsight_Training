@@ -1,5 +1,5 @@
 using BillingAndSubscriptionSystem.Core.Exceptions;
-using BillingAndSubscriptionSystem.DataAccess;
+using BillingAndSubscriptionSystem.DataAccess.Contracts;
 using BillingAndSubscriptionSystem.Services.DTOs;
 using MediatR;
 using Microsoft.Extensions.Logging;
@@ -25,7 +25,7 @@ namespace BillingAndSubscriptionSystem.Services.Features.Payments
 
             public Handler(IUnitOfWork unitOfWork, ILogger<GetOverduePayments> logger)
             {
-                _IUnitOfWork = unitOfWork;
+                _unitOfWork = unitOfWork;
                 _logger = logger;
             }
 

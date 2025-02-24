@@ -4,6 +4,7 @@ using BillingAndSubscriptionSystem.Context;
 using BillingAndSubscriptionSystem.Core.Exceptions;
 using BillingAndSubscriptionSystem.Core.Settings;
 using BillingAndSubscriptionSystem.Services.Contracts;
+using BillingAndSubscriptionSystem.WebApi.Authorization.Policy;
 using BillingAndSubscriptionSystem.WebApi.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -76,7 +77,10 @@ namespace BillingAndSubscriptionSystem.WebApi
                     }
                 );
 
-            services.AddAuthorization();
+            services.AddAuthorization(options =>
+            {
+                RolePolicyRules.RegisterPolicies(options);
+            });
         }
     }
 }

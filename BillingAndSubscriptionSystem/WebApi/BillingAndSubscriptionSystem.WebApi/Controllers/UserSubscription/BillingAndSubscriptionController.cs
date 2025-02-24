@@ -1,6 +1,8 @@
 using BillingAndSubscriptionSystem.Services.DTOs;
 using BillingAndSubscriptionSystem.Services.Features;
 using BillingAndSubscriptionSystem.Services.Features.UserSubscription;
+using BillingAndSubscriptionSystem.WebApi.Authorization.AdminAttribute;
+using BillingAndSubscriptionSystem.WebApi.Authorization.Policy;
 using BillingAndSubscriptionSystem.WebApi.Constants;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -8,7 +10,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BillingAndSubscriptionSystem.WebApi.Controllers
 {
-    [Authorize]
     [ApiController]
     [Route(RouteKey.UserSubscriptionRoute)]
     public class UserSubscriptionController : BaseController
@@ -20,6 +21,7 @@ namespace BillingAndSubscriptionSystem.WebApi.Controllers
             _mediator = mediator;
         }
 
+        [Authorize]
         [HttpPost(RouteKey.CreateUserSubscriptionPlan)]
         public async Task<IActionResult> CreateUserSubscriptionPlan(
             [FromBody] SubscriptionDto subscriptionDto,
@@ -33,6 +35,7 @@ namespace BillingAndSubscriptionSystem.WebApi.Controllers
             return Ok(new { Message = "Subscription created successfully." });
         }
 
+        [Authorize]
         [HttpPut(RouteKey.UpdateUserSubscriptionPlan)]
         public async Task<IActionResult> UpdateUserSubscriptionPlan(
             int Id,
@@ -48,6 +51,8 @@ namespace BillingAndSubscriptionSystem.WebApi.Controllers
             return Ok(new { Message = "Subscription updated successfully." });
         }
 
+        [Authorize]
+        [RoleAuthorization(RolePolicyRules.ADMIN_ROLE)]
         [HttpGet(RouteKey.GetSubscriptionByUserId)]
         public async Task<IActionResult> GetSubscriptionByUserId(
             [FromRoute] int userId,
