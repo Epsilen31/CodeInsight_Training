@@ -2,6 +2,7 @@ using BillingAndSubscriptionSystem.Core.Exceptions;
 using BillingAndSubscriptionSystem.DataAccess.Contracts;
 using BillingAndSubscriptionSystem.Entities.Entities;
 using BillingAndSubscriptionSystem.Services.DTOs;
+using MapsterMapper;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
@@ -22,10 +23,12 @@ namespace BillingAndSubscriptionSystem.Services.Features.Users
         public class Handler : IRequestHandler<Command, Unit>
         {
             private readonly IUnitOfWork _unitOfWork;
-            private readonly ILogger<AddUser> _logger;
+            private readonly IMapper _mapper;
+            private readonly ILogger<Handler> _logger;
 
-            public Handler(IUnitOfWork unitOfWork, ILogger<AddUser> logger)
+            public Handler(IUnitOfWork unitOfWork, ILogger<Handler> logger, IMapper mapper)
             {
+                _mapper = mapper;
                 _unitOfWork = unitOfWork;
                 _logger = logger;
             }
@@ -57,14 +60,16 @@ namespace BillingAndSubscriptionSystem.Services.Features.Users
                     }
 
                     var hashedPassword = BCrypt.Net.BCrypt.HashPassword(request.User.Password);
-                    var newUser = new User
-                    {
-                        Name = request.User.Name,
-                        Email = request.User.Email,
-                        Phone = request.User.Phone,
-                        Password = hashedPassword,
-                        Role = request.User.Role ?? new Role { RoleName = "Admin" },
-                    };
+                    // var newUser = new User
+                    // {
+                    //     Name = request.User.Name,
+                    //     Email = request.User.Email,
+                    //     Phone = request.User.Phone,
+                    //     Password = hashedPassword,
+                    //     Role = request.User.Role ?? new Role { RoleName = "Admin" },
+                    // };
+
+                    var newUser = _mapper.Map<User>(request.User);
 
                     await _unitOfWork.UserRepository.AddUserAsync(newUser, cancellationToken);
                     await _unitOfWork.SaveChangesAsync(cancellationToken);

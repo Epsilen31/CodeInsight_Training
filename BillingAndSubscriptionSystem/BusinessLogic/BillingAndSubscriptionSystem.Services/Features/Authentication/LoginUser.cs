@@ -23,13 +23,13 @@ namespace BillingAndSubscriptionSystem.Services.Features.Authentication
         public class Handler : IRequestHandler<Command, LoginDto>
         {
             private readonly IUnitOfWork _unitOfWork;
-            private readonly ILogger<LoginUser> _logger;
+            private readonly ILogger<Handler> _logger;
             private readonly IRedisService _redisService;
             private readonly ITokenService _tokenService;
 
             public Handler(
                 IUnitOfWork unitOfWork,
-                ILogger<LoginUser> logger,
+                ILogger<Handler> logger,
                 ITokenService tokenService,
                 IRedisService redisService
             )

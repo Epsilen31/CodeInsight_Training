@@ -1,6 +1,7 @@
 using BillingAndSubscriptionSystem.Core.Exceptions;
 using BillingAndSubscriptionSystem.DataAccess.Contracts;
 using BillingAndSubscriptionSystem.Services.DTOs;
+using MapsterMapper;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
@@ -21,12 +22,14 @@ namespace BillingAndSubscriptionSystem.Services.Features.Payments
         public class Handler : IRequestHandler<Query, ICollection<PaymentDto>>
         {
             private readonly IUnitOfWork _unitOfWork;
-            private readonly ILogger<GetOverduePayments> _logger;
+            private readonly IMapper _mapper;
+            private readonly ILogger<Handler> _logger;
 
-            public Handler(IUnitOfWork unitOfWork, ILogger<GetOverduePayments> logger)
+            public Handler(IUnitOfWork unitOfWork, ILogger<Handler> logger, IMapper mapper)
             {
                 _unitOfWork = unitOfWork;
                 _logger = logger;
+                _mapper = mapper;
             }
 
             public async Task<ICollection<PaymentDto>> Handle(
@@ -49,16 +52,7 @@ namespace BillingAndSubscriptionSystem.Services.Features.Payments
                         return [];
                     }
 
-                    var paymentDetail = overduePayments
-                        .Select(payment => new PaymentDto
-                        {
-                            Id = payment.Id,
-                            SubscriptionId = payment.SubscriptionId,
-                            Amount = payment.Amount,
-                            PaymentDate = payment.PaymentDate,
-                            PaymentStatus = payment.PaymentStatus,
-                        })
-                        .ToList();
+                    var paymentDetail = overduePayments.Select(_mapper.Map<PaymentDto>).ToList();
 
                     return paymentDetail;
                 }

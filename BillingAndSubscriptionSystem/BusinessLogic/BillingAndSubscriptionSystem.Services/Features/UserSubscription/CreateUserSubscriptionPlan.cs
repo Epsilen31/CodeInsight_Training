@@ -1,8 +1,8 @@
 using BillingAndSubscriptionSystem.Core.Exceptions;
-using BillingAndSubscriptionSystem.DataAccess;
 using BillingAndSubscriptionSystem.DataAccess.Contracts;
 using BillingAndSubscriptionSystem.Entities.Entities;
 using BillingAndSubscriptionSystem.Services.DTOs;
+using MapsterMapper;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
@@ -24,10 +24,12 @@ namespace BillingAndSubscriptionSystem.Services.Features
         public class Handler : IRequestHandler<Query, SubscriptionDto>
         {
             private readonly IUnitOfWork _unitOfWork;
-            private readonly ILogger<CreateUserSubscriptionPlan> _logger;
+            private readonly IMapper _mapper;
+            private readonly ILogger<Handler> _logger;
 
-            public Handler(IUnitOfWork unitOfWork, ILogger<CreateUserSubscriptionPlan> logger)
+            public Handler(IUnitOfWork unitOfWork, ILogger<Handler> logger, IMapper mapper)
             {
+                _mapper = mapper;
                 _unitOfWork = unitOfWork;
                 _logger = logger;
             }
@@ -59,13 +61,14 @@ namespace BillingAndSubscriptionSystem.Services.Features
                     );
                     await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-                    return new SubscriptionDto
-                    {
-                        UserId = subscriptionEntity.UserId,
-                        PlanType = subscriptionEntity.PlanType,
-                        StartDate = subscriptionEntity.StartDate,
-                        EndDate = subscriptionEntity.EndDate,
-                    };
+                    // return new SubscriptionDto
+                    // {
+                    //     UserId = subscriptionEntity.UserId,
+                    //     PlanType = subscriptionEntity.PlanType,
+                    //     StartDate = subscriptionEntity.StartDate,
+                    //     EndDate = subscriptionEntity.EndDate,
+                    // };
+                    return _mapper.Map<SubscriptionDto>(subscriptionEntity);
                 }
                 catch (Exception exception)
                 {
@@ -96,13 +99,16 @@ namespace BillingAndSubscriptionSystem.Services.Features
 
             private Subscription MapSubscription(SubscriptionDto subscription)
             {
-                return new Subscription
-                {
-                    UserId = subscription.UserId,
-                    PlanType = subscription.PlanType,
-                    StartDate = subscription.StartDate,
-                    EndDate = subscription.EndDate,
-                };
+                // return new Subscription
+                // {
+                //     UserId = subscription.UserId,
+                //     PlanType = subscription.PlanType,
+                //     StartDate = subscription.StartDate,
+                //     EndDate = subscription.EndDate,
+                // }
+                // ;
+
+                return _mapper.Map<Subscription>(subscription);
             }
         }
     }

@@ -1,7 +1,7 @@
 using BillingAndSubscriptionSystem.Core.Exceptions;
-using BillingAndSubscriptionSystem.DataAccess;
 using BillingAndSubscriptionSystem.DataAccess.Contracts;
 using BillingAndSubscriptionSystem.Services.DTOs;
+using MapsterMapper;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
@@ -22,12 +22,14 @@ namespace BillingAndSubscriptionSystem.Services.Features.Users
         public class Handler : IRequestHandler<Query, UserDto?>
         {
             private readonly IUnitOfWork _unitOfWork;
-            private readonly ILogger<GetUserById> _logger;
+            private readonly IMapper _mapper;
+            private readonly ILogger<Handler> _logger;
 
-            public Handler(IUnitOfWork unitOfWork, ILogger<GetUserById> logger)
+            public Handler(IUnitOfWork unitOfWork, ILogger<Handler> logger, IMapper mapper)
             {
                 _unitOfWork = unitOfWork;
                 _logger = logger;
+                _mapper = mapper;
             }
 
             public async Task<UserDto?> Handle(Query request, CancellationToken cancellationToken)
@@ -43,15 +45,16 @@ namespace BillingAndSubscriptionSystem.Services.Features.Users
                     {
                         return null;
                     }
-                    var userDto = new UserDto
-                    {
-                        Id = user.Id,
-                        Name = user.Name,
-                        Email = user.Email,
-                        Phone = user.Phone,
-                        Password = user.Password,
-                        Role = user.RoleId == 1 ? "Admin" : "User",
-                    };
+                    // var userDto = new UserDto
+                    // {
+                    //     Id = user.Id,
+                    //     Name = user.Name,
+                    //     Email = user.Email,
+                    //     Phone = user.Phone,
+                    //     Password = user.Password,
+                    //     Role = user.RoleId == 1 ? "Admin" : "User",
+                    // };
+                    var userDto = _mapper.Map<UserDto>(user);
                     return userDto;
                 }
                 catch (Exception exception)

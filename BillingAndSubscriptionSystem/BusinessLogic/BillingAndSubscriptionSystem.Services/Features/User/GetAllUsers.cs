@@ -16,9 +16,9 @@ namespace BillingAndSubscriptionSystem.Services.Features.Users
         public class Handler : IRequestHandler<Query, ICollection<User>>
         {
             private readonly IUnitOfWork _unitOfWork;
-            private readonly ILogger<GetAllUsers> _logger;
+            private readonly ILogger<Handler> _logger;
 
-            public Handler(IUnitOfWork unitOfWork, ILogger<GetAllUsers> logger)
+            public Handler(IUnitOfWork unitOfWork, ILogger<Handler> logger)
             {
                 _unitOfWork = unitOfWork;
                 _logger = logger;

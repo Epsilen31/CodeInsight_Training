@@ -1,6 +1,7 @@
 using BillingAndSubscriptionSystem.Core.Exceptions;
 using BillingAndSubscriptionSystem.DataAccess.Contracts;
 using BillingAndSubscriptionSystem.Services.DTOs;
+using MapsterMapper;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
@@ -21,10 +22,12 @@ namespace BillingAndSubscriptionSystem.Services.Features.Users
         public class Handler : IRequestHandler<Command, UserDto?>
         {
             private readonly IUnitOfWork _unitOfWork;
-            private readonly ILogger<UpdateUser> _logger;
+            private readonly IMapper _mapper;
+            private readonly ILogger<Handler> _logger;
 
-            public Handler(IUnitOfWork unitOfWork, ILogger<UpdateUser> logger)
+            public Handler(IUnitOfWork unitOfWork, ILogger<Handler> logger, IMapper mapper)
             {
+                _mapper = mapper;
                 _unitOfWork = unitOfWork;
                 _logger = logger;
             }
@@ -54,15 +57,16 @@ namespace BillingAndSubscriptionSystem.Services.Features.Users
                     );
                     await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-                    var updatedUserDto = new UserDto
-                    {
-                        Id = existingUser.Id,
-                        Name = existingUser.Name,
-                        Email = existingUser.Email,
-                        Phone = existingUser.Phone,
-                        Password = existingUser.Password,
-                    };
+                    // var updatedUserDto = new UserDto
+                    // {
+                    //     Id = existingUser.Id,
+                    //     Name = existingUser.Name,
+                    //     Email = existingUser.Email,
+                    //     Phone = existingUser.Phone,
+                    //     Password = existingUser.Password,
+                    // };
 
+                    var updatedUserDto = _mapper.Map<UserDto>(existingUser);
                     return updatedUserDto;
                 }
                 catch (Exception exception)

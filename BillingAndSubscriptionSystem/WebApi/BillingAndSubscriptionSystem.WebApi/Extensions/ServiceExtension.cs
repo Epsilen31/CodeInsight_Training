@@ -7,6 +7,7 @@ using BillingAndSubscriptionSystem.Services.Contracts;
 using BillingAndSubscriptionSystem.Services.Services;
 using BillingAndSubscriptionSystem.WebApi.Authorization;
 using BillingAndSubscriptionSystem.WebApi.Authorization.AdminAttribute.Handler;
+using MapsterMapper;
 using Microsoft.AspNetCore.Authorization;
 
 namespace BillingAndSubscriptionSystem.WebApi.Extensions
@@ -23,6 +24,7 @@ namespace BillingAndSubscriptionSystem.WebApi.Extensions
             services.AddSingleton<IAuthorizationHandler, AdminHandler>();
             services.AddSingleton<BackGroundQueue>();
             services.AddHostedService<BackGroundService>();
+            services.AddSingleton<IMapper, Mapper>();
         }
     }
 }

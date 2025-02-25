@@ -1,8 +1,8 @@
 using BillingAndSubscriptionSystem.Core.Exceptions;
-using BillingAndSubscriptionSystem.DataAccess;
 using BillingAndSubscriptionSystem.DataAccess.Contracts;
 using BillingAndSubscriptionSystem.Entities.Entities;
 using BillingAndSubscriptionSystem.Services.DTOs;
+using MapsterMapper;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
@@ -27,12 +27,14 @@ namespace BillingAndSubscriptionSystem.Services.Features.UserSubscription
         public class Handler : IRequestHandler<Query, List<SubscriptionDto>>
         {
             private readonly IUnitOfWork _unitOfWork;
-            private readonly ILogger<GetSubscriptionByUserId> _logger;
+            private readonly IMapper _mapper;
+            private readonly ILogger<Handler> _logger;
 
-            public Handler(IUnitOfWork unitOfWork, ILogger<GetSubscriptionByUserId> logger)
+            public Handler(IUnitOfWork unitOfWork, ILogger<Handler> logger, IMapper mapper)
             {
                 _unitOfWork = unitOfWork;
                 _logger = logger;
+                _mapper = mapper;
             }
 
             public async Task<List<SubscriptionDto>> Handle(
@@ -72,15 +74,17 @@ namespace BillingAndSubscriptionSystem.Services.Features.UserSubscription
 
             private SubscriptionDto MapSubscriptionDto(Subscription subscription)
             {
-                return new SubscriptionDto
-                {
-                    SubscriptionId = subscription.Id,
-                    UserId = subscription.UserId,
-                    PlanType = subscription.PlanType,
-                    StartDate = subscription.StartDate,
-                    EndDate = subscription.EndDate,
-                    SubscriptionStatus = subscription.SubscriptionStatus,
-                };
+                // return new SubscriptionDto
+                // {
+                //     SubscriptionId = subscription.Id,
+                //     UserId = subscription.UserId,
+                //     PlanType = subscription.PlanType,
+                //     StartDate = subscription.StartDate,
+                //     EndDate = subscription.EndDate,
+                //     SubscriptionStatus = subscription.SubscriptionStatus,
+                // };
+
+                return _mapper.Map<SubscriptionDto>(subscription);
             }
         }
     }

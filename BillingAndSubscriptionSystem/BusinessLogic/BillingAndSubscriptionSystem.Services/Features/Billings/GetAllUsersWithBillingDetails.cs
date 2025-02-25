@@ -1,6 +1,7 @@
 using BillingAndSubscriptionSystem.Core.Exceptions;
 using BillingAndSubscriptionSystem.DataAccess.Contracts;
 using BillingAndSubscriptionSystem.Services.DTOs;
+using MapsterMapper;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
@@ -21,12 +22,18 @@ namespace BillingAndSubscriptionSystem.Services.Features.Billings
         public class Handler : IRequestHandler<Query, ICollection<BillingDto>>
         {
             private readonly IUnitOfWork _unitOfWork;
+            private readonly IMapper _mapper;
             private readonly ILogger<GetAllUsersWithBillingDetails> _logger;
 
-            public Handler(IUnitOfWork unitOfWork, ILogger<GetAllUsersWithBillingDetails> logger)
+            public Handler(
+                IUnitOfWork unitOfWork,
+                ILogger<GetAllUsersWithBillingDetails> logger,
+                IMapper mapper
+            )
             {
                 _unitOfWork = unitOfWork;
                 _logger = logger;
+                _mapper = mapper;
             }
 
             public async Task<ICollection<BillingDto>> Handle(
@@ -69,12 +76,14 @@ namespace BillingAndSubscriptionSystem.Services.Features.Billings
 
             private BillingDto MapBilling(Entities.Entities.Billing billing)
             {
-                return new BillingDto
-                {
-                    UserId = billing.UserId,
-                    BillingAddress = billing.BillingAddress,
-                    PaymentMethod = billing.PaymentMethod,
-                };
+                // return new BillingDto
+                // {
+                //     UserId = billing.UserId,
+                //     BillingAddress = billing.BillingAddress,
+                //     PaymentMethod = billing.PaymentMethod,
+                // };
+
+                return _mapper.Map<BillingDto>(billing);
             }
         }
     }

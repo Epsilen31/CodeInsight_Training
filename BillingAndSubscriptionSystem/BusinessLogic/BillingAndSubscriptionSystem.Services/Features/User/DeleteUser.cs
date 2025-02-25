@@ -1,5 +1,4 @@
 using BillingAndSubscriptionSystem.Core.Exceptions;
-using BillingAndSubscriptionSystem.DataAccess;
 using BillingAndSubscriptionSystem.DataAccess.Contracts;
 using MediatR;
 using Microsoft.Extensions.Logging;
@@ -21,9 +20,9 @@ namespace BillingAndSubscriptionSystem.Services.Features.Users
         public class Handler : IRequestHandler<Command, bool>
         {
             private readonly IUnitOfWork _unitOfWork;
-            private readonly ILogger<DeleteUser> _logger;
+            private readonly ILogger<Handler> _logger;
 
-            public Handler(IUnitOfWork unitOfWork, ILogger<DeleteUser> logger)
+            public Handler(IUnitOfWork unitOfWork, ILogger<Handler> logger)
             {
                 _unitOfWork = unitOfWork;
                 _logger = logger;
