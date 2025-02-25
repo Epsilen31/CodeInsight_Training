@@ -59,7 +59,6 @@ namespace BillingAndSubscriptionSystem.Services.Features.Authentication
                         );
                     }
 
-                    var hashedPassword = BCrypt.Net.BCrypt.HashPassword(request.User.Password);
                     // var newUser = new User
                     // {
                     //     Email = request.User.Email,

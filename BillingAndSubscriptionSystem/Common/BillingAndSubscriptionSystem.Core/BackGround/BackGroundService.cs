@@ -20,17 +20,17 @@ namespace BillingAndSubscriptionSystem.Core.BackGround
             _logger = logger;
         }
 
-        protected override async Task ExecuteAsync(CancellationToken cancellationToken)
+        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             _logger.LogInformation("Queued Processor Background Service is starting.");
 
-            while (!cancellationToken.IsCancellationRequested)
+            while (!stoppingToken.IsCancellationRequested)
             {
-                var workItem = await _taskQueue.DequeueAsync(cancellationToken);
+                var workItem = await _taskQueue.DequeueAsync(stoppingToken);
 
                 try
                 {
-                    await workItem(_serviceProvider, cancellationToken);
+                    await workItem(_serviceProvider, stoppingToken);
                 }
                 catch (Exception exception)
                 {

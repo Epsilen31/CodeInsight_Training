@@ -15,6 +15,10 @@ namespace BillingAndSubscriptionSystem.Services.Mapster
                     (source, target) =>
                     {
                         target.RoleId = int.TryParse(source.Role, out int roleId) ? roleId : 0;
+                        if (!string.IsNullOrEmpty(source.Password))
+                        {
+                            target.Password = BCrypt.Net.BCrypt.HashPassword(source.Password);
+                        }
                     }
                 );
 
@@ -24,7 +28,8 @@ namespace BillingAndSubscriptionSystem.Services.Mapster
                 .AfterMapping(
                     (source, target) =>
                     {
-                        target.Role = source.Role?.Id.ToString();
+                        target.Role = source.Role != null ? source.Role.Id.ToString() : null;
+                        target.Password = null; // not sending hashed passwords back to clients
                     }
                 );
         }

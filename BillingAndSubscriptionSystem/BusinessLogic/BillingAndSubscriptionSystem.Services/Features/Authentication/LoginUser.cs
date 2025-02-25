@@ -62,8 +62,6 @@ namespace BillingAndSubscriptionSystem.Services.Features.Authentication
 
                     var serializedUser = Newtonsoft.Json.JsonConvert.SerializeObject(user);
 
-                    var tokenExpiry = TimeSpan.FromHours(1);
-
                     await _redisService.SetValueAsync(token, serializedUser, cancellationToken);
 
                     return new LoginDto { Token = token };

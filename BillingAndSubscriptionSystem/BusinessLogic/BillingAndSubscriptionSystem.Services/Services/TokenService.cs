@@ -1,6 +1,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using BillingAndSubscriptionSystem.Core.Exceptions;
 using BillingAndSubscriptionSystem.Services.Contracts;
 using BillingAndSubscriptionSystem.Services.DTOs;
 using Microsoft.Extensions.Configuration;
@@ -22,7 +23,7 @@ namespace BillingAndSubscriptionSystem.Services.Services
             var secretKey = _configuration["Jwt:Secret"];
             if (string.IsNullOrEmpty(secretKey))
             {
-                throw new Exception("JWT Secret is not configured.");
+                throw new CustomException("JWT Secret is not configured.", null);
             }
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
@@ -55,7 +56,7 @@ namespace BillingAndSubscriptionSystem.Services.Services
             var secretKey = _configuration["Jwt:Secret"];
             if (string.IsNullOrEmpty(secretKey))
             {
-                throw new Exception("JWT Secret is not configured.");
+                throw new CustomException("JWT Secret is not configured.", null);
             }
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
@@ -73,11 +74,7 @@ namespace BillingAndSubscriptionSystem.Services.Services
                 ClockSkew = TimeSpan.Zero,
             };
 
-            var claimsPrincipal = tokenHandler.ValidateToken(
-                token,
-                validationParameters,
-                out SecurityToken validatedToken
-            );
+            var claimsPrincipal = tokenHandler.ValidateToken(token, validationParameters, out _);
             return claimsPrincipal != null;
         }
     }
