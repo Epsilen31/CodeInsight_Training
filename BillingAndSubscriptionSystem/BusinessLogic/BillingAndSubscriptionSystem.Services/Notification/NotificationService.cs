@@ -1,16 +1,17 @@
 using BillingAndSubscriptionSystem.Core.Exceptions;
 using BillingAndSubscriptionSystem.Core.Hubs;
+using BillingAndSubscriptionSystem.Services.Contracts;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 
 namespace BillingAndSubscriptionSystem.Services.Notification
 {
-    public class NotificationSet
+    public class NotificationService : INotificationService
     {
         private readonly IHubContext<NotificationHub> _notificationHubContext;
         private readonly ILogger<NotificationHub> _logger;
 
-        public NotificationSet(
+        public NotificationService(
             IHubContext<NotificationHub> notificationHubContext,
             ILogger<NotificationHub> logger
         )
