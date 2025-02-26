@@ -4,8 +4,12 @@ using BillingAndSubscriptionSystem.Context;
 using BillingAndSubscriptionSystem.Core.Exceptions;
 using BillingAndSubscriptionSystem.Core.Settings;
 using BillingAndSubscriptionSystem.Services.Contracts;
+using BillingAndSubscriptionSystem.Services.Services;
+using BillingAndSubscriptionSystem.WebApi.Authentication;
 using BillingAndSubscriptionSystem.WebApi.Authorization.Policy;
 using BillingAndSubscriptionSystem.WebApi.Extensions;
+using Mapster;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -63,6 +67,7 @@ namespace BillingAndSubscriptionSystem.WebApi
             services
                 .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
+                {
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateIssuer = true,
@@ -74,12 +79,51 @@ namespace BillingAndSubscriptionSystem.WebApi
                         IssuerSigningKey = new SymmetricSecurityKey(
                             Encoding.UTF8.GetBytes(secretKey)
                         ),
-                    }
+                    };
+
+                    options.Events = new JwtBearerEvents
+                    {
+                        OnMessageReceived = context =>
+                        {
+                            var accessToken = context.Request.Query["token"];
+                            var path = context.HttpContext.Request.Path;
+
+                            if (
+                                !string.IsNullOrEmpty(accessToken)
+                                && path.StartsWithSegments("/notificationHub")
+                            )
+                            {
+                                context.Token = accessToken;
+                            }
+                            return Task.CompletedTask;
+                        },
+                    };
+                });
+
+            services
+                .AddAuthentication(options =>
+                {
+                    options.DefaultAuthenticateScheme = "JwtAndRedisAuthenticationScheme";
+                    options.DefaultChallengeScheme = "JwtAndRedisAuthenticationScheme";
+                })
+                .AddScheme<AuthenticationSchemeOptions, CustomAuthenticationHandler>(
+                    "JwtAndRedisAuthenticationScheme",
+                    options => { }
                 );
 
             services.AddAuthorization(options =>
             {
                 RolePolicyRules.RegisterPolicies(options);
+            });
+
+            var config = TypeAdapterConfig.GlobalSettings;
+            config.Scan(typeof(MapsterService).Assembly);
+
+            services.AddSignalR(options =>
+            {
+                options.KeepAliveInterval = TimeSpan.FromSeconds(60);
+                options.HandshakeTimeout = TimeSpan.FromSeconds(60);
+                options.EnableDetailedErrors = true;
             });
         }
     }

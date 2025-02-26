@@ -10,7 +10,7 @@ namespace BillingAndSubscriptionSystem.Services.Mapster
         {
             // Mapping SubscriptionDto → Subscription
             config
-                .ForType<SubscriptionDto, Subscription>()
+                .NewConfig<SubscriptionDto, Subscription>()
                 .AfterMapping(
                     (source, target) =>
                     {
@@ -20,7 +20,7 @@ namespace BillingAndSubscriptionSystem.Services.Mapster
 
             // Mapping Subscription → SubscriptionDto
             config
-                .ForType<Subscription, SubscriptionDto>()
+                .NewConfig<Subscription, SubscriptionDto>()
                 .AfterMapping(
                     (source, target) =>
                     {

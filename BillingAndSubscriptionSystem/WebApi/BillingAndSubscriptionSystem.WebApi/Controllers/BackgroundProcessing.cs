@@ -1,4 +1,5 @@
 using BillingAndSubscriptionSystem.Core.BackGround;
+using BillingAndSubscriptionSystem.Core.Exceptions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -33,14 +34,12 @@ namespace BillingAndSubscriptionSystem.WebApi.Controllers
                     async (serviceProvider, cancellationToken) =>
                     {
                         await Task.Delay(2000, cancellationToken);
-                        Console.WriteLine($"Task Processed: {taskName}");
                     }
                 );
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
-                Console.WriteLine(ex.Message);
-                throw;
+                throw new CustomException(exception.Message, null);
             }
 
             return Accepted(new { Message = "Task is being processed in the background." });

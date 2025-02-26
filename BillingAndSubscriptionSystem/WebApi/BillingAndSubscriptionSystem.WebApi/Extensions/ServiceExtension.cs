@@ -1,9 +1,11 @@
 using BillingAndSubscriptionSystem.Core.BackGround;
 using BillingAndSubscriptionSystem.Core.Cache;
 using BillingAndSubscriptionSystem.Core.Contracts;
+using BillingAndSubscriptionSystem.Core.Hubs;
 using BillingAndSubscriptionSystem.DataAccess;
 using BillingAndSubscriptionSystem.DataAccess.Contracts;
 using BillingAndSubscriptionSystem.Services.Contracts;
+using BillingAndSubscriptionSystem.Services.Notification;
 using BillingAndSubscriptionSystem.Services.Services;
 using BillingAndSubscriptionSystem.WebApi.Authorization;
 using BillingAndSubscriptionSystem.WebApi.Authorization.AdminAttribute.Handler;
@@ -25,6 +27,7 @@ namespace BillingAndSubscriptionSystem.WebApi.Extensions
             services.AddSingleton<BackGroundQueue>();
             services.AddHostedService<BackGroundService>();
             services.AddSingleton<IMapper, Mapper>();
+            services.AddScoped<NotificationSet>();
         }
     }
 }

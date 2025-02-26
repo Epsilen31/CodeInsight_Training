@@ -20,12 +20,17 @@ namespace BillingAndSubscriptionSystem.WebApi.Authentication
 
         protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
         {
+            // Check if token is present in the request header
             var token = Request.Headers.Authorization.FirstOrDefault()?.Split(" ").Last();
+
+            // if there is no token in the header then it will cheack in the query paremeter
+            token ??= Request.Query["token"].FirstOrDefault();
 
             if (string.IsNullOrEmpty(token))
                 return AuthenticateResult.Fail("Unauthorized - No Token Provided");
 
             var cachedToken = await _redisService.GetValueAsync(token, CancellationToken.None);
+
             if (cachedToken == null)
                 return AuthenticateResult.Fail("Unauthorized - Token Not Found or Expired");
 
@@ -34,6 +39,9 @@ namespace BillingAndSubscriptionSystem.WebApi.Authentication
                 return AuthenticateResult.Fail("Unauthorized - Invalid Token");
 
             var principal = CreatePrincipal(cachedToken);
+
+            Context.User = principal;
+            Thread.CurrentPrincipal = principal;
             var ticket = new AuthenticationTicket(principal, Scheme.Name);
             return AuthenticateResult.Success(ticket);
         }
@@ -44,11 +52,11 @@ namespace BillingAndSubscriptionSystem.WebApi.Authentication
             {
                 new Claim(ClaimTypes.Name, token),
                 new Claim(ClaimTypes.Authentication, token),
+                new Claim(ClaimTypes.NameIdentifier, token),
             };
 
             var identity = new ClaimsIdentity(claims, Scheme.Name);
             var principal = new ClaimsPrincipal(identity);
-            Thread.CurrentPrincipal = principal;
             return principal;
         }
     }
