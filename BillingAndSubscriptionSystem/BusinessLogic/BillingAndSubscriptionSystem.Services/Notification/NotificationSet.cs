@@ -30,7 +30,11 @@ namespace BillingAndSubscriptionSystem.Services.Notification
             {
                 await _notificationHubContext
                     .Clients.Group(userId)
-                    .SendAsync("ReceiveNotification", message);
+                    .SendAsync(
+                        "ReceiveNotification",
+                        message,
+                        cancellationToken: CancellationToken.None
+                    );
             }
             catch (Exception exception)
             {
@@ -42,7 +46,11 @@ namespace BillingAndSubscriptionSystem.Services.Notification
         {
             try
             {
-                await _notificationHubContext.Clients.All.SendAsync("ReceiveNotification", message);
+                await _notificationHubContext.Clients.All.SendAsync(
+                    "ReceiveNotification",
+                    message,
+                    cancellationToken: CancellationToken.None
+                );
             }
             catch (Exception exception)
             {

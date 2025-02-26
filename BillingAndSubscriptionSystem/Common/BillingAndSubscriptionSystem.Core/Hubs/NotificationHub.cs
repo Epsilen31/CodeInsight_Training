@@ -88,43 +88,5 @@ namespace BillingAndSubscriptionSystem.Core.Hubs
                 _logger.LogError(ex, "Unhandled error during user disconnection.");
             }
         }
-
-        public async Task SendNotificationToUser(string userId, string message)
-        {
-            if (string.IsNullOrEmpty(userId))
-            {
-                _logger.LogError("SendNotificationToUser failed: UserId is null or empty.");
-                return;
-            }
-
-            try
-            {
-                _logger.LogInformation($"Sending notification to user {userId}: {message}");
-                await Clients.Group(userId).SendAsync("ReceiveNotification", message);
-            }
-            catch (Exception exception)
-            {
-                _logger.LogError(exception, $"Error sending notification to user {userId}");
-            }
-        }
-
-        public async Task BroadcastNotification(string message)
-        {
-            if (string.IsNullOrWhiteSpace(message))
-            {
-                _logger.LogWarning("BroadcastNotification received an empty message. Ignoring.");
-                return;
-            }
-
-            try
-            {
-                _logger.LogInformation($"Broadcasting notification: {message}");
-                await Clients.All.SendAsync("ReceiveNotification", message);
-            }
-            catch (Exception excepton)
-            {
-                _logger.LogError(excepton, "Error broadcasting notification.");
-            }
-        }
     }
 }
