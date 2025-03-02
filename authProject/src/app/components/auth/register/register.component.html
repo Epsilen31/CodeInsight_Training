@@ -1,0 +1,47 @@
+<div class="auth-container">
+  <div class="auth-box">
+    <h2>Register</h2>
+    <form [formGroup]="registerForm" (ngSubmit)="register()">
+      <input
+        type="text"
+        placeholder="Full Name"
+        formControlName="name"
+        required
+      />
+
+      <input
+        type="email"
+        placeholder="Email"
+        formControlName="email"
+        required
+      />
+      <input type="text" placeholder="Phone Number" formControlName="phone" />
+
+      <div class="password-container">
+        <input
+          [type]="passwordFieldType"
+          placeholder="Password"
+          formControlName="password"
+          required
+        />
+        <span class="eye-icon" (click)="togglePassword()">
+          <i
+            class="fas"
+            [ngClass]="{
+              'fa-eye': passwordFieldType === 'text',
+              'fa-eye-slash': passwordFieldType === 'password'
+            }"
+          ></i>
+        </span>
+      </div>
+      <select formControlName="role">
+        <option value="Admin">Admin</option>
+        <option value="User">User</option>
+      </select>
+
+      <button type="submit" [disabled]="registerForm.invalid">Register</button>
+    </form>
+
+    <p>Already have an account? <a routerLink="/login">Login</a></p>
+  </div>
+</div>

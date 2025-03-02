@@ -1,0 +1,36 @@
+<div class="auth-container">
+  <div class="auth-box">
+    <h2>Login</h2>
+    <form [formGroup]="loginForm" (ngSubmit)="login()">
+      <input
+        type="text"
+        placeholder="Email"
+        formControlName="email"
+        name="email"
+        required
+      />
+
+      <div class="password-container">
+        <input
+          [type]="passwordFieldType"
+          placeholder="Password"
+          formControlName="password"
+          name="password"
+          required
+        />
+        <span class="eye-icon" (click)="togglePassword()">
+          <i
+            class="fas"
+            [ngClass]="{
+              'fa-eye': passwordFieldType === 'text',
+              'fa-eye-slash': passwordFieldType === 'password'
+            }"
+          ></i>
+        </span>
+      </div>
+
+      <button type="submit" [disabled]="loginForm.invalid">Login</button>
+    </form>
+    <p>Don't have an account? <a routerLink="/register">Register</a></p>
+  </div>
+</div>
