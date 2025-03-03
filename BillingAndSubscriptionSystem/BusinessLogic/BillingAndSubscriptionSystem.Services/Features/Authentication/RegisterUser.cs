@@ -62,13 +62,14 @@ namespace BillingAndSubscriptionSystem.Services.Features.Authentication
                     // var newUser = new User
                     // {
                     //     Email = request.User.Email,
-                    //     Password = hashedPassword,
+                    //     Password = request.User.Password,
                     //     Name = request.User.Name,
                     //     Phone = request.User.Phone,
                     //     Role = request.User.Role ?? new Role { RoleName = "Admin" },
                     // };
 
                     var newUser = _mapper.Map<User>(request.User);
+                    newUser.Role ??= new Role { RoleName = "Admin" };
 
                     await _unitOfWork.UserRepository.AddUserAsync(newUser, cancellationToken);
                     await _unitOfWork.SaveChangesAsync(cancellationToken);

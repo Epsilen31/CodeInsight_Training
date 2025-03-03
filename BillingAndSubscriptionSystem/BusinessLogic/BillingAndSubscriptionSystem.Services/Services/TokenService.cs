@@ -32,7 +32,7 @@ namespace BillingAndSubscriptionSystem.Services.Services
             var claims = new[]
             {
                 new Claim(ClaimTypes.Email, user.Email ?? string.Empty),
-                new Claim(ClaimTypes.Role, user.Role ?? "Admin"),
+                new Claim(ClaimTypes.Role, user.Password ?? string.Empty),
             };
 
             var tokenExpiration = DateTime.UtcNow.AddHours(1);

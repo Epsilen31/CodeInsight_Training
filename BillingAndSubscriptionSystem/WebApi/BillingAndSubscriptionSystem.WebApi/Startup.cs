@@ -57,6 +57,19 @@ namespace BillingAndSubscriptionSystem.WebApi
                 )
             );
 
+            services.AddCors(options =>
+            {
+                options.AddPolicy(
+                    "AllowSpecificOrigin",
+                    builder =>
+                        builder
+                            .WithOrigins("http://localhost:4200")
+                            .AllowAnyHeader()
+                            .AllowAnyMethod()
+                            .AllowCredentials()
+                );
+            });
+
             services.AddStackExchangeRedisCache(options =>
             {
                 options.Configuration =
