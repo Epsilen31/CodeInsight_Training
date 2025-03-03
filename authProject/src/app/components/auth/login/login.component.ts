@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
+import { IUserSession } from '../../../models/UserSession ';
+import { ILogin } from '../../../models/login';
+import { IErrorResponse } from '../../../models/error';
 
 @Component({
   selector: 'app-login',
@@ -14,7 +17,7 @@ export class LoginComponent implements OnInit {
   passwordFieldType: string = 'password';
 
   constructor(
-    private router: Router,
+    private readonly _route: Router,
     private fb: FormBuilder,
     private authService: AuthService
   ) {}
@@ -39,21 +42,22 @@ export class LoginComponent implements OnInit {
       console.log('Login function triggered');
 
       this.authService.login(this.loginForm.value).subscribe({
-        next: (response) => {
-          console.log('Login Successful:', response);
-          this.authService.storeUser(response.token, {
+        next: (response: ILogin): void => {
+          const userSession: IUserSession = {
             name: response.name,
             email: response.email,
             role: response.role,
-          });
+          };
 
-          this.router.navigate(['/dashboard']);
+          this.authService.storeUserSession(response.token, userSession);
+
+          this._route.navigate(['/dashboard']);
         },
-        error: (error) => {
+        error: (error: IErrorResponse): void => {
           console.error('Login Failed:', error);
           this.isSubmitting = false;
         },
-        complete: () => {
+        complete: (): void => {
           this.isSubmitting = false;
         },
       });

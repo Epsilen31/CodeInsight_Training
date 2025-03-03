@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
+import { Role } from '../../../libs/enums/role';
+import { IErrorResponse } from '../../../models/error';
 
 @Component({
   selector: 'app-register',
@@ -14,7 +16,7 @@ export class RegisterComponent implements OnInit {
   passwordFieldType: string = 'password';
 
   constructor(
-    private router: Router,
+    private readonly _router: Router,
     private fb: FormBuilder,
     private authService: AuthService
   ) {}
@@ -30,7 +32,9 @@ export class RegisterComponent implements OnInit {
   }
 
   getRoleId(): number {
-    return this.registerForm.get('role')?.value === 'Admin' ? 1 : 2;
+    return this.registerForm.get('role')?.value === 'Admin'
+      ? Role.Admin
+      : Role.User;
   }
 
   togglePassword(): void {
@@ -49,10 +53,10 @@ export class RegisterComponent implements OnInit {
       console.log('register', updatedFormData);
 
       this.authService.register(updatedFormData).subscribe({
-        next: () => {
-          this.router.navigate(['/login']);
+        next: (): void => {
+          this._router.navigate(['/login']);
         },
-        error: (error) => {
+        error: (error: IErrorResponse): void => {
           console.error('Registration Failed:', error);
         },
       });
