@@ -1,11 +1,13 @@
 <nav class="navbar">
-  <div>MyApp</div>
-  <div class="user-menu">
-    <span>{{ userName }}</span>
-    <div class="dropdown">
-      <button>▼</button>
-      <div class="dropdown-content">
-        <a (click)="logout()">Logout</a>
+  <div class="container">
+    <div>MyApp</div>
+    <div class="user-menu">
+      <span>{{ user }}</span>
+      <div class="dropdown">
+        <button>▼</button>
+        <div class="dropdown-content">
+          <a (click)="logout()">Logout</a>
+        </div>
       </div>
     </div>
   </div>

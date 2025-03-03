@@ -8,12 +8,14 @@ import { Router } from '@angular/router';
   styleUrl: './nav-bar.component.scss',
 })
 export class NavBarComponent {
-  userName = localStorage.getItem('user') || 'Guest';
+  storedUser = sessionStorage.getItem('user');
+  user = this.storedUser ? JSON.parse(this.storedUser).name : 'Guest';
 
   constructor(private router: Router) {}
 
-  logout() {
-    localStorage.removeItem('user');
+  logout(): void {
+    sessionStorage.removeItem('user');
+    sessionStorage.removeItem('token');
     this.router.navigate(['/login']);
   }
 }

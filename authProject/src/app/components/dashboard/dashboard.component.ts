@@ -7,5 +7,6 @@ import { Component } from '@angular/core';
   styleUrl: './dashboard.component.scss',
 })
 export class DashboardComponent {
-  userName = localStorage.getItem('user') || 'Guest';
+  storedUser = sessionStorage.getItem('user');
+  user = this.storedUser ? JSON.parse(this.storedUser).name : undefined;
 }

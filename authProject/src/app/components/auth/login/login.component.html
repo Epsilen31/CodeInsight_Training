@@ -29,7 +29,9 @@
         </span>
       </div>
 
-      <button type="submit" [disabled]="loginForm.invalid">Login</button>
+      <button type="submit" [disabled]="loginForm.invalid || isSubmitting">
+        Login
+      </button>
     </form>
     <p>Don't have an account? <a routerLink="/register">Register</a></p>
   </div>

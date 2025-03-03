@@ -44,27 +44,51 @@ namespace BillingAndSubscriptionSystem.Services.Features.Authentication
             {
                 try
                 {
+                    // ✅ Fetch all users (now includes roles)
                     var users = await _unitOfWork.UserRepository.GetAllUsersAsync(
                         cancellationToken
                     );
-                    var user = users.FirstOrDefault(user => user.Email == request.Login.Email);
 
-                    if (user == null)
+                    // ✅ Find the user and map to `UserDto`
+                    var userDto = users
+                        .Where(user => user.Email == request.Login.Email)
+                        .Select(user => new UserDto
+                        {
+                            Id = user.Id,
+                            Name = user.Name,
+                            Email = user.Email,
+                            Phone = user.Phone,
+                            Password = user.Password,
+                            Role = user.Role != null ? user.Role.RoleName : "User",
+                        })
+                        .FirstOrDefault();
+
+                    if (userDto == null)
                         throw new CustomException("User not found.", null);
 
-                    if (!BCrypt.Net.BCrypt.Verify(request.Login.Password, user.Password))
+                    if (!BCrypt.Net.BCrypt.Verify(request.Login.Password, userDto.Password))
                         throw new CustomException("Invalid password.", null);
-
-                    if (user.Email == null)
-                        throw new CustomException("User email is Empty.", null);
 
                     var token = _tokenService.GenerateToken(request.Login);
 
-                    var serializedUser = Newtonsoft.Json.JsonConvert.SerializeObject(user);
+                    var serializedUser = Newtonsoft.Json.JsonConvert.SerializeObject(
+                        new
+                        {
+                            userDto.Id,
+                            userDto.Email,
+                            userDto.Role,
+                        }
+                    );
 
                     await _redisService.SetValueAsync(token, serializedUser, cancellationToken);
 
-                    return new LoginDto { Token = token };
+                    return new LoginDto
+                    {
+                        Token = token,
+                        Email = userDto.Email,
+                        Name = userDto.Name,
+                        Role = userDto.Role,
+                    };
                 }
                 catch (Exception exception)
                 {

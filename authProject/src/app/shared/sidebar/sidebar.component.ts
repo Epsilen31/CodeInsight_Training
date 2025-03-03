@@ -7,5 +7,11 @@ import { Component } from '@angular/core';
   styleUrl: './sidebar.component.scss',
 })
 export class SidebarComponent {
+  isSidebarOpen = true;
+  isSidebarCollapsed = false;
   menuItems = ['Billing', 'Subscriptions', 'Payments', 'Users'];
+
+  toggleSidebar() {
+    this.isSidebarCollapsed = !this.isSidebarCollapsed;
+  }
 }

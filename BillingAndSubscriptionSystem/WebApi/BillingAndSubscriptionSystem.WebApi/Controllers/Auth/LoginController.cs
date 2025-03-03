@@ -20,8 +20,21 @@ namespace BillingAndSubscriptionSystem.WebApi.Controllers.Auth
         [HttpPost(RouteKey.Login)]
         public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
         {
-            var result = await _mediator.Send(new LoginUser.Command(loginDto));
-            return Ok(new { message = "Login Successful", result = result });
+            var loginResult = await _mediator.Send(new LoginUser.Command(loginDto));
+            if (loginResult == null || string.IsNullOrEmpty(loginResult.Token))
+            {
+                return Unauthorized("Invalid credentials");
+            }
+
+            return Ok(
+                new
+                {
+                    Token = loginResult.Token,
+                    Name = loginResult.Name,
+                    Email = loginResult.Email,
+                    Role = loginResult.Role,
+                }
+            );
         }
     }
 }

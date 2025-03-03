@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { IUser } from '../models/user';
 
 @Injectable({
@@ -13,30 +13,53 @@ export class AuthService {
 
   constructor(private http: HttpClient, private router: Router) {}
 
-  login(data: { email: string; password: string }): Observable<any> {
-    return this.http.post(`${this.apiUrl}/login`, data);
+  login(data: {
+    email: string;
+    password: string;
+  }): Observable<{ token: string; email: string; name: string; role: string }> {
+    return this.http.post<{
+      token: string;
+      email: string;
+      name: string;
+      role: string;
+    }>(`${this.apiUrl}/login`, data, {
+      headers: { 'Content-Type': 'application/json' },
+    });
   }
 
   register(user: IUser): Observable<any> {
     return this.http.post(`${this.apiUrl}/register`, user);
   }
 
-  storeUser(token: string, username: string): void {
+  storeUser(
+    token: string,
+    user: { name: string; email: string; role: string }
+  ): void {
     sessionStorage.setItem('token', token);
-    sessionStorage.setItem('user', username);
+    sessionStorage.setItem('user', JSON.stringify(user));
+
+    console.log('Token Stored:', sessionStorage.getItem('token'));
+    console.log('User Data Stored:', sessionStorage.getItem('user'));
   }
 
   isLoggedIn(): boolean {
     return !!sessionStorage.getItem('token');
   }
 
-  getUser(): string | null {
-    return sessionStorage.getItem('user');
-  }
+  // getUser(): { name: string; email: string; role: string } | null {
+  //   const userData = sessionStorage.getItem('user');
+  //   return userData ? JSON.parse(userData) : null;
+  // }
+
+  // getUserRole(): string | null {
+  //   const user = this.getUser();
+  //   return user ? user.role : null;
+  // }
 
   logout(): void {
-    sessionStorage.removeItem('token');
-    sessionStorage.removeItem('user');
-    this.router.navigate(['/login']);
+    sessionStorage.clear();
+    this.router.navigate(['/login']).then(() => {
+      window.location.reload();
+    });
   }
 }

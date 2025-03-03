@@ -29,6 +29,10 @@ export class RegisterComponent implements OnInit {
     });
   }
 
+  getRoleId(): number {
+    return this.registerForm.get('role')?.value === 'Admin' ? 1 : 2;
+  }
+
   togglePassword(): void {
     this.passwordFieldType =
       this.passwordFieldType === 'password' ? 'text' : 'password';
@@ -36,14 +40,20 @@ export class RegisterComponent implements OnInit {
 
   register(): void {
     if (this.registerForm.valid) {
-      this.authService.register(this.registerForm.value).subscribe({
+      const { role, ...formData } = this.registerForm.value;
+      const updatedFormData = {
+        ...formData,
+        roleId: this.getRoleId(),
+      };
+
+      console.log('register', updatedFormData);
+
+      this.authService.register(updatedFormData).subscribe({
         next: () => {
-          alert('Registration successful! Please log in.');
           this.router.navigate(['/login']);
         },
         error: (error) => {
           console.error('Registration Failed:', error);
-          alert('Registration failed, please try again.');
         },
       });
     }

@@ -31,19 +31,30 @@ export class LoginComponent implements OnInit {
       this.passwordFieldType === 'password' ? 'text' : 'password';
   }
 
+  isSubmitting: boolean = false;
+
   login(): void {
-    if (this.loginForm.valid) {
+    if (this.loginForm.valid && !this.isSubmitting) {
+      this.isSubmitting = true;
+      console.log('Login function triggered');
+
       this.authService.login(this.loginForm.value).subscribe({
         next: (response) => {
-          this.authService.storeUser(
-            response.token,
-            this.loginForm.value.username
-          );
+          console.log('Login Successful:', response);
+          this.authService.storeUser(response.token, {
+            name: response.name,
+            email: response.email,
+            role: response.role,
+          });
+
           this.router.navigate(['/dashboard']);
         },
         error: (error) => {
           console.error('Login Failed:', error);
-          alert('Invalid credentials, please try again.');
+          this.isSubmitting = false;
+        },
+        complete: () => {
+          this.isSubmitting = false;
         },
       });
     }

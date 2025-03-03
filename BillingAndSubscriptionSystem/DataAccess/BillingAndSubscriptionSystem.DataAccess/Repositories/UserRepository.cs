@@ -16,7 +16,7 @@ namespace BillingAndSubscriptionSystem.DataAccess.Repositories
 
         public async Task<ICollection<User>> GetAllUsersAsync(CancellationToken cancellationToken)
         {
-            return await _context.Users.ToListAsync(cancellationToken);
+            return await _context.Users.Include(u => u.Role).ToListAsync(cancellationToken);
         }
 
         public async Task<User?> GetUserByIdAsync(int id, CancellationToken cancellationToken)
