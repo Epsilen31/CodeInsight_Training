@@ -23,6 +23,13 @@ namespace BillingAndSubscriptionSystem.DataAccess
         public IBillingRepository BillingRepository =>
             _billingRepository ??= new BillingRepository(_context);
 
+        private IMenuRepository? _menuRepository;
+        public IMenuRepository MenuRepository => _menuRepository ??= new MenuRepository(_context);
+
+        private ISubMenuRepository? _subMenuRepository;
+        public ISubMenuRepository SubMenuRepository =>
+            _subMenuRepository ??= new SubMenuRepository(_context);
+
         public UnitOfWork(BillingDbContext context)
         {
             _context = context;

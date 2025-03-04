@@ -16,6 +16,8 @@ namespace BillingAndSubscriptionSystem.Context
             modelBuilder.ApplyConfiguration(new PaymentConfiguration());
             modelBuilder.ApplyConfiguration(new SubscriptionConfiguration());
             modelBuilder.ApplyConfiguration(new RoleConfiguration());
+            modelBuilder.ApplyConfiguration(new MenuConfiguration());
+            modelBuilder.ApplyConfiguration(new SubMenuConfiguration());
         }
 
         public DbSet<User> Users { get; set; }
@@ -23,5 +25,7 @@ namespace BillingAndSubscriptionSystem.Context
         public DbSet<Payment> Payments { get; set; }
         public DbSet<Subscription> Subscriptions { get; set; }
         public DbSet<Role> Roles { get; set; }
+        public DbSet<Menu> Menus { get; set; }
+        public DbSet<SubMenu> SubMenus { get; set; }
     }
 }

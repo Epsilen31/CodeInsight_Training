@@ -4,6 +4,7 @@ using BillingAndSubscriptionSystem.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BillingAndSubscriptionSystem.WebApi.Migrations
 {
     [DbContext(typeof(BillingDbContext))]
-    partial class BillingDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250304075322_AddNewEntityTable")]
+    partial class AddNewEntityTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -55,25 +58,24 @@ namespace BillingAndSubscriptionSystem.WebApi.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("tinyint(1)");
-
-                    b.Property<string>("Path")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<string>("Role")
-                        .IsRequired()
+                    b.Property<string>("Icon")
                         .HasMaxLength(50)
                         .HasColumnType("varchar(50)");
 
+                    b.Property<int?>("ParentId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Path")
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)");
+
                     b.Property<string>("Title")
-                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ParentId");
 
                     b.ToTable("Menus", (string)null);
                 });
@@ -121,41 +123,6 @@ namespace BillingAndSubscriptionSystem.WebApi.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Roles", (string)null);
-                });
-
-            modelBuilder.Entity("BillingAndSubscriptionSystem.Entities.Entities.SubMenu", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("tinyint(1)");
-
-                    b.Property<int>("MenuId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Path")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<string>("Role")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MenuId");
-
-                    b.ToTable("SubMenus", (string)null);
                 });
 
             modelBuilder.Entity("BillingAndSubscriptionSystem.Entities.Entities.Subscription", b =>
@@ -238,6 +205,16 @@ namespace BillingAndSubscriptionSystem.WebApi.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("BillingAndSubscriptionSystem.Entities.Entities.Menu", b =>
+                {
+                    b.HasOne("BillingAndSubscriptionSystem.Entities.Entities.Menu", "Parent")
+                        .WithMany("Children")
+                        .HasForeignKey("ParentId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Parent");
+                });
+
             modelBuilder.Entity("BillingAndSubscriptionSystem.Entities.Entities.Payment", b =>
                 {
                     b.HasOne("BillingAndSubscriptionSystem.Entities.Entities.Subscription", "Subscription")
@@ -247,17 +224,6 @@ namespace BillingAndSubscriptionSystem.WebApi.Migrations
                         .IsRequired();
 
                     b.Navigation("Subscription");
-                });
-
-            modelBuilder.Entity("BillingAndSubscriptionSystem.Entities.Entities.SubMenu", b =>
-                {
-                    b.HasOne("BillingAndSubscriptionSystem.Entities.Entities.Menu", "Menu")
-                        .WithMany("SubMenus")
-                        .HasForeignKey("MenuId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Menu");
                 });
 
             modelBuilder.Entity("BillingAndSubscriptionSystem.Entities.Entities.Subscription", b =>
@@ -284,7 +250,7 @@ namespace BillingAndSubscriptionSystem.WebApi.Migrations
 
             modelBuilder.Entity("BillingAndSubscriptionSystem.Entities.Entities.Menu", b =>
                 {
-                    b.Navigation("SubMenus");
+                    b.Navigation("Children");
                 });
 
             modelBuilder.Entity("BillingAndSubscriptionSystem.Entities.Entities.Role", b =>

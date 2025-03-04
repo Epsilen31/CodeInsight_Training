@@ -33,5 +33,13 @@ namespace BillingAndSubscriptionSystem.WebApi.Constants
         public const string AuthRoute = MainRoute + "/Auth";
         public const string Login = "Login";
         public const string Register = "Register";
+
+        // Menu Routes
+        public const string MenuRoute = MainRoute + "/Menu";
+        public const string GetSidebarMenu = "GetSidebarMenu";
+
+        // SubMenu Routes
+        public const string SubMenuRoute = MainRoute + "/SubMenu";
+        public const string GetAllSubMenu = "GetAllSubMenu";
     }
 }
