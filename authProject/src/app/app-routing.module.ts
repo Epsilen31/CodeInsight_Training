@@ -4,6 +4,8 @@ import { RegisterComponent } from './components/auth/register/register.component
 import { LoginComponent } from './components/auth/login/login.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { AuthGuard } from './core/guard/auth.guard';
+import { BillingSubscriptionComponent } from './billing-subscription.component';
+import { BillingSubscriptionSystemRoutingModule } from './billing-subscription-system-routing';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -11,8 +13,19 @@ const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   {
     path: 'dashboard',
-    component: DashboardComponent,
+    component: BillingSubscriptionComponent,
     canActivate: [AuthGuard],
+    children: [
+      { path: '', component: DashboardComponent },
+      {
+        path: 'billing-subscription',
+        loadChildren: () =>
+          import('./billing-subscription-system-routing').then(
+            (m): typeof BillingSubscriptionSystemRoutingModule =>
+              m.BillingSubscriptionSystemRoutingModule
+          ),
+      },
+    ],
   },
   { path: '**', redirectTo: 'login' },
 ];

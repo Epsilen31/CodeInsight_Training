@@ -1,4 +1,6 @@
+using System.Text.Json;
 using BillingAndSubscriptionSystem.Core.Contracts;
+using BillingAndSubscriptionSystem.Core.TokenDatas;
 using Microsoft.Extensions.Caching.Distributed;
 
 namespace BillingAndSubscriptionSystem.Core.Cache
@@ -12,24 +14,33 @@ namespace BillingAndSubscriptionSystem.Core.Cache
             _cache = redisFactory.GetCache();
         }
 
-        public async Task SetValueAsync(
+        public async Task SetTokenDataAsync(
             string key,
-            string value,
+            TokenData tokenData,
             CancellationToken cancellationToken,
             TimeSpan? expiry = null
         )
         {
+            var jsonData = JsonSerializer.Serialize(tokenData);
+
             var options = new DistributedCacheEntryOptions();
             if (expiry.HasValue)
             {
                 options.AbsoluteExpirationRelativeToNow = expiry;
             }
-            await _cache.SetStringAsync(key, value, options, cancellationToken);
+            await _cache.SetStringAsync(key, jsonData, options, cancellationToken);
         }
 
-        public async Task<string> GetValueAsync(string key, CancellationToken cancellationToken)
+        public async Task<TokenData?> GetTokenDataAsync(
+            string key,
+            CancellationToken cancellationToken
+        )
         {
-            return await _cache.GetStringAsync(key, cancellationToken) ?? string.Empty;
+            var jsonData = await _cache.GetStringAsync(key, cancellationToken);
+            if (string.IsNullOrEmpty(jsonData))
+                return null;
+
+            return JsonSerializer.Deserialize<TokenData>(jsonData);
         }
     }
 }

@@ -20,25 +20,22 @@ namespace BillingAndSubscriptionSystem.WebApi.Authentication
 
         protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
         {
-            // Check if token is present in the request header
             var token = Request.Headers.Authorization.FirstOrDefault()?.Split(" ").Last();
-
-            // if there is no token in the header then it will cheack in the query paremeter
             token ??= Request.Query["token"].FirstOrDefault();
 
             if (string.IsNullOrEmpty(token))
                 return AuthenticateResult.Fail("Unauthorized - No Token Provided");
 
-            var cachedToken = await _redisService.GetValueAsync(token, CancellationToken.None);
+            var tokenData = await _redisService.GetTokenDataAsync(token, CancellationToken.None);
 
-            if (cachedToken == null)
+            if (tokenData == null || string.IsNullOrEmpty(tokenData.Token))
                 return AuthenticateResult.Fail("Unauthorized - Token Not Found or Expired");
 
-            bool validToken = _tokenService.VerifyToken(token);
+            bool validToken = _tokenService.VerifyToken(tokenData.Token);
             if (!validToken)
                 return AuthenticateResult.Fail("Unauthorized - Invalid Token");
 
-            var principal = CreatePrincipal(cachedToken);
+            var principal = CreatePrincipal(tokenData.Token, tokenData.Role);
 
             Context.User = principal;
             Thread.CurrentPrincipal = principal;
@@ -46,18 +43,18 @@ namespace BillingAndSubscriptionSystem.WebApi.Authentication
             return AuthenticateResult.Success(ticket);
         }
 
-        private ClaimsPrincipal CreatePrincipal(string token)
+        private ClaimsPrincipal CreatePrincipal(string token, string role)
         {
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, token),
                 new Claim(ClaimTypes.Authentication, token),
                 new Claim(ClaimTypes.NameIdentifier, token),
+                new Claim(ClaimTypes.Role, role),
             };
 
             var identity = new ClaimsIdentity(claims, Scheme.Name);
-            var principal = new ClaimsPrincipal(identity);
-            return principal;
+            return new ClaimsPrincipal(identity);
         }
     }
 }

@@ -18,7 +18,7 @@ namespace BillingAndSubscriptionSystem.WebApi.Authorization.AdminAttribute.Handl
 
             var adminClaim = context.User.FindFirst(claim =>
                 claim.Type == ClaimTypes.Role
-                && claim.Value.Equals("Admin", StringComparison.OrdinalIgnoreCase)
+                && string.Equals(claim.Value, "Admin", StringComparison.OrdinalIgnoreCase)
             );
 
             if (adminClaim != null)

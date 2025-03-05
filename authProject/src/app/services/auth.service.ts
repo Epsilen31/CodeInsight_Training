@@ -1,39 +1,31 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { IUser } from '../models/user';
 import { SessionHelperService } from '../core/session-helper.service';
 import { IUserSession } from '../models/UserSession ';
-import { ILogin } from '../models/login';
-import { IRegisterResponse } from '../models/Register';
-import { environment } from '../../environments/environment';
+import { ILogin, IRegisterUser } from '../models/auth';
+import { HttpClientService } from '../core/http-client.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   constructor(
-    private http: HttpClient,
-    private sessionService: SessionHelperService
+    private readonly _httpClient: HttpClientService,
+    private readonly _sessionService: SessionHelperService
   ) {}
 
-  login(data: { email: string; password: string }): Observable<ILogin> {
-    return this.http.post<ILogin>(`${environment.baseurl}/Auth/login`, data, {
-      headers: { 'Content-Type': 'application/json' },
-    });
+  login(data: ILogin): Observable<ILogin> {
+    return this._httpClient.post<ILogin>('Auth/login', data);
   }
 
-  register(user: IUser): Observable<IRegisterResponse> {
-    return this.http.post<IRegisterResponse>(
-      `${environment.baseurl}/Auth/register`,
-      user
-    );
+  register(user: IRegisterUser): Observable<IRegisterUser> {
+    return this._httpClient.post<IRegisterUser>('Auth/register', user);
   }
 
   storeUserSession(token: string, user: IUserSession): void {
-    this.sessionService.storeUser(token, user);
+    this._sessionService.storeUser(token, user);
   }
   isLoggedIn(): boolean {
-    return this.sessionService.isLoggedIn();
+    return this._sessionService.isLoggedIn();
   }
 }

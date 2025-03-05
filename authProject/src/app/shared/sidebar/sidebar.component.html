@@ -1,9 +1,17 @@
-<div
-  class="sidebar"
-  [class.collapsed]="isSidebarCollapsed"
-  [class.open]="isSidebarOpen"
->
-  <ul>
-    <li *ngFor="let item of menuItems">{{ item }}</li>
-  </ul>
+<div class="sidebar">
+  <nav *ngIf="menuItems.length">
+    <ul>
+      <li *ngFor="let item of menuItems" [class.open]="item.isDropdownOpen">
+        <a (click)="toggleDropdown(item)">
+          {{ item.title }}
+        </a>
+
+        <ul *ngIf="item.isDropdownOpen">
+          <li *ngFor="let subItem of item.subMenus">
+            <a [href]="subItem.path">{{ subItem.title }}</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
 </div>

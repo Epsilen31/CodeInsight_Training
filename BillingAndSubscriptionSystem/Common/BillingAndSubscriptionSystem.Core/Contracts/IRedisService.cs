@@ -1,13 +1,16 @@
+using BillingAndSubscriptionSystem.Core.TokenDatas;
+
 namespace BillingAndSubscriptionSystem.Core.Contracts
 {
     public interface IRedisService
     {
-        Task SetValueAsync(
+        Task SetTokenDataAsync(
             string key,
-            string value,
+            TokenData tokenData,
             CancellationToken cancellationToken,
             TimeSpan? expiry = null
         );
-        Task<string> GetValueAsync(string key, CancellationToken cancellationToken);
+
+        Task<TokenData?> GetTokenDataAsync(string key, CancellationToken cancellationToken);
     }
 }

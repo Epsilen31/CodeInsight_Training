@@ -32,17 +32,14 @@ namespace BillingAndSubscriptionSystem.Services.Services
             var claims = new[]
             {
                 new Claim(ClaimTypes.Email, user.Email ?? string.Empty),
-                new Claim(ClaimTypes.Role, user.Password ?? string.Empty),
+                new Claim(ClaimTypes.Role, user.Role ?? "User"),
             };
 
             var tokenExpiration = DateTime.UtcNow.AddHours(1);
 
-            var issuer = _configuration["Jwt:Issuer"];
-            var audience = _configuration["Jwt:Audience"];
-
             var token = new JwtSecurityToken(
-                issuer: issuer,
-                audience: audience,
+                issuer: _configuration["Jwt:Issuer"],
+                audience: _configuration["Jwt:Audience"],
                 claims: claims,
                 expires: tokenExpiration,
                 signingCredentials: signingCredentials
@@ -74,8 +71,27 @@ namespace BillingAndSubscriptionSystem.Services.Services
                 ClockSkew = TimeSpan.Zero,
             };
 
-            var claimsPrincipal = tokenHandler.ValidateToken(token, validationParameters, out _);
-            return claimsPrincipal != null;
+            try
+            {
+                var claimsPrincipal = tokenHandler.ValidateToken(
+                    token,
+                    validationParameters,
+                    out _
+                );
+                return claimsPrincipal != null;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public string? GetClaimFromToken(string token, string claimType)
+        {
+            var handler = new JwtSecurityTokenHandler();
+            var jwtToken = handler.ReadToken(token) as JwtSecurityToken;
+
+            return jwtToken?.Claims.FirstOrDefault(claim => claim.Type == claimType)?.Value;
         }
     }
 }

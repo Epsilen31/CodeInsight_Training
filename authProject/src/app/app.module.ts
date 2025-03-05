@@ -9,9 +9,24 @@ import { NavBarComponent } from './shared/nav-bar/nav-bar.component';
 import { provideHttpClient } from '@angular/common/http';
 import { SharedModule } from './shared/shared.module';
 import { AuthModule } from './components/auth/auth.module';
+import { BillingComponent } from './components/billing/billing.component';
+import { SubscriptionComponent } from './components/subscription/subscription.component';
+import { PaymentsComponent } from './components/payments/payments.component';
+import { UserComponent } from './components/user/user.component';
+import { BillingSubscriptionComponent } from './billing-subscription.component';
 
 @NgModule({
-  declarations: [AppComponent, DashboardComponent, NavBarComponent],
+  declarations: [
+    AppComponent,
+    DashboardComponent,
+    NavBarComponent,
+    BillingComponent,
+    SubscriptionComponent,
+    PaymentsComponent,
+    UserComponent,
+    BillingSubscriptionComponent,
+    BillingSubscriptionComponent,
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,

@@ -6,5 +6,6 @@ namespace BillingAndSubscriptionSystem.Services.Contracts
     {
         string GenerateToken(LoginDto user);
         bool VerifyToken(string token);
+        string? GetClaimFromToken(string token, string claimType);
     }
 }

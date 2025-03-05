@@ -3,8 +3,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
 import { IUserSession } from '../../../models/UserSession ';
-import { ILogin } from '../../../models/login';
 import { IErrorResponse } from '../../../models/error';
+import { ILogin } from '../../../models/auth';
 
 @Component({
   selector: 'app-login',
@@ -18,12 +18,12 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private readonly _route: Router,
-    private fb: FormBuilder,
-    private authService: AuthService
+    private readonly _fb: FormBuilder,
+    private readonly _authService: AuthService
   ) {}
 
   ngOnInit(): void {
-    this.loginForm = this.fb.group({
+    this.loginForm = this._fb.group({
       email: ['', Validators.required],
       password: ['', Validators.required],
     });
@@ -41,7 +41,7 @@ export class LoginComponent implements OnInit {
       this.isSubmitting = true;
       console.log('Login function triggered');
 
-      this.authService.login(this.loginForm.value).subscribe({
+      this._authService.login(this.loginForm.value).subscribe({
         next: (response: ILogin): void => {
           const userSession: IUserSession = {
             name: response.name,
@@ -49,7 +49,7 @@ export class LoginComponent implements OnInit {
             role: response.role,
           };
 
-          this.authService.storeUserSession(response.token, userSession);
+          this._authService.storeUserSession(response.token, userSession);
 
           this._route.navigate(['/dashboard']);
         },

@@ -17,12 +17,12 @@ export class RegisterComponent implements OnInit {
 
   constructor(
     private readonly _router: Router,
-    private fb: FormBuilder,
-    private authService: AuthService
+    private readonly _fb: FormBuilder,
+    private readonly _authService: AuthService
   ) {}
 
   ngOnInit(): void {
-    this.registerForm = this.fb.group({
+    this.registerForm = this._fb.group({
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       phone: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
@@ -52,7 +52,7 @@ export class RegisterComponent implements OnInit {
 
       console.log('register', updatedFormData);
 
-      this.authService.register(updatedFormData).subscribe({
+      this._authService.register(updatedFormData).subscribe({
         next: (): void => {
           this._router.navigate(['/login']);
         },
