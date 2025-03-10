@@ -1,0 +1,21 @@
+<div class="card flex justify-center">
+  <p-dialog
+    header="Error"
+    [(visible)]="visible"
+    [modal]="true"
+    [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
+    [style]="{ width: '50vw' }"
+    [draggable]="false"
+    [resizable]="false"
+  >
+    <p>{{ errorMessage || "Default Error Message" }}</p>
+    <p-footer>
+      <button
+        pButton
+        type="button"
+        label="Close"
+        (click)="closeDialog()"
+      ></button>
+    </p-footer>
+  </p-dialog>
+</div>

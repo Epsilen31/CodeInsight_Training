@@ -1,0 +1,35 @@
+<div class="h-screen w-screen flex flex-col overflow-y-hidden">
+  <header class="bg-gray-800 w-full h-16 fixed top-0 left-0 z-50">
+    <app-nav-bar (toggleSidebar)="toggleLeftSidebar()"></app-nav-bar>
+  </header>
+
+  <div class="flex flex-grow pt-16 bg-[#d1d6de]">
+    <aside
+      class="bg-[#012a5b] text-white fixed top-16 left-0 transition-all duration-300"
+      [ngClass]="{
+        'w-20': isLeftSidebarCollapsed,
+        'w-64': !isLeftSidebarCollapsed
+      }"
+      style="height: 100vh"
+    >
+      <app-sidebar
+        [isLeftSidebarCollapsed]="isLeftSidebarCollapsed"
+      ></app-sidebar>
+    </aside>
+
+    <main
+      class="flex-grow overflow-y-hidden p-6 bg-white"
+      [ngClass]="{
+        'ml-20': isLeftSidebarCollapsed,
+        'ml-64': !isLeftSidebarCollapsed
+      }"
+      style="
+        height: calc(100vh - 4rem);
+        min-height: 100vh;
+        background-color: #d1d6de;
+      "
+    >
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+</div>

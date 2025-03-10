@@ -1,18 +1,24 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { MenuService } from '../../services/menu.service';
 import { IErrorResponse } from '../../models/error';
 import { IMenu, ISubMenu } from '../../models/sidebar';
+import { DashboardService } from '../../services/dashboard.service';
 
 @Component({
   selector: 'app-sidebar',
-  standalone: false,
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.scss'],
+  standalone: false,
 })
 export class SidebarComponent implements OnInit {
+  @Input() isLeftSidebarCollapsed = false;
+  @Output() toggleLeftSidebar = new EventEmitter<boolean>();
   menuItems: IMenu[] = [];
 
-  constructor(private readonly _menuService: MenuService) {}
+  constructor(
+    private readonly _menuService: MenuService,
+    private readonly _dashboardService: DashboardService
+  ) {}
 
   ngOnInit(): void {
     this._menuService.getAllMenu().subscribe({
@@ -28,6 +34,7 @@ export class SidebarComponent implements OnInit {
               : [],
           })
         );
+        console.log('Menu items:', this.menuItems);
       },
       error: (error: IErrorResponse): void => {
         console.error('Error fetching menu items:', error);
@@ -35,7 +42,19 @@ export class SidebarComponent implements OnInit {
     });
   }
 
-  toggleDropdown(menuItem: IMenu): void {
+  // toggleCollapse(): void {
+  //   this.isLeftSidebarCollapsed = !this.isLeftSidebarCollapsed;
+  //   this.toggleLeftSidebar.emit(this.isLeftSidebarCollapsed);
+  // }
+
+  toggleDropdown(menuItem: IMenu, event: Event): void {
+    event.stopPropagation();
     menuItem.isDropdownOpen = !menuItem.isDropdownOpen;
+  }
+
+  handleSubmenuClick(subMenuItem: ISubMenu): void {
+    if (subMenuItem.title.includes('Get All Users')) {
+      this._dashboardService.setActiveComponent('UserComponent');
+    }
   }
 }

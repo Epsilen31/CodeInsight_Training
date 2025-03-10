@@ -22,7 +22,8 @@ namespace BillingAndSubscriptionSystem.Core.Hubs
                 if (Context.User?.Identity?.IsAuthenticated != true)
                 {
                     _logger.LogWarning(
-                        $"Unauthorized WebSocket connection attempt: {Context.ConnectionId}"
+                        "Unauthorized WebSocket connection attempt: {ConnectionId}",
+                        Context.ConnectionId
                     );
                     Context.Abort();
                     return;
@@ -37,13 +38,16 @@ namespace BillingAndSubscriptionSystem.Core.Hubs
                 {
                     await Groups.AddToGroupAsync(Context.ConnectionId, userId);
                     _logger.LogInformation(
-                        $"User {userId} (ConnectionId: {Context.ConnectionId}) connected to NotificationHub."
+                        "User {UserId} (ConnectionId: {ConnectionId}) connected to NotificationHub.",
+                        userId,
+                        Context.ConnectionId
                     );
                 }
                 else
                 {
                     _logger.LogError(
-                        $"User ID is missing for ConnectionId {Context.ConnectionId}. Disconnecting user."
+                        "User ID is missing for ConnectionId {ConnectionId}. Disconnecting user.",
+                        Context.ConnectionId
                     );
                     Context.Abort();
                 }
@@ -52,7 +56,11 @@ namespace BillingAndSubscriptionSystem.Core.Hubs
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"Error during WebSocket connection: {Context.ConnectionId}");
+                _logger.LogError(
+                    ex,
+                    "Error during WebSocket connection {ConnectionId}",
+                    Context.ConnectionId
+                );
             }
         }
 
@@ -71,7 +79,9 @@ namespace BillingAndSubscriptionSystem.Core.Hubs
                     {
                         await Groups.RemoveFromGroupAsync(Context.ConnectionId, userId);
                         _logger.LogInformation(
-                            $"User {userId} (ConnectionId: {Context.ConnectionId}) disconnected from NotificationHub."
+                            "User {UserId} {ConnectionId} disconnected from NotificationHub.",
+                            userId,
+                            Context.ConnectionId
                         );
                     }
                 }

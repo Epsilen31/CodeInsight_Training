@@ -1,17 +1,49 @@
-<div class="sidebar">
-  <nav *ngIf="menuItems.length">
-    <ul>
-      <li *ngFor="let item of menuItems" [class.open]="item.isDropdownOpen">
-        <a (click)="toggleDropdown(item)">
-          {{ item.title }}
-        </a>
+<div
+  class="bg-[#012a5b] text-white fixed transition-all duration-300 top-16 left-0"
+  [ngClass]="{
+    'w-20': isLeftSidebarCollapsed,
+    'w-64': !isLeftSidebarCollapsed
+  }"
+  style="height: calc(100vh - 4rem)"
+>
+  <!-- Sidebar Menu -->
+  <ul class="mt-6 space-y-1">
+    <li *ngFor="let item of menuItems">
+      <div
+        class="flex items-center px-4 py-3 cursor-pointer hover:bg-indigo-700 transition rounded-md gap-x-2"
+        (click)="toggleDropdown(item, $event)"
+        (keydown.enter)="toggleDropdown(item, $event)"
+      >
+        <i [class]="item.icon"></i>
 
-        <ul *ngIf="item.isDropdownOpen">
-          <li *ngFor="let subItem of item.subMenus">
-            <a [href]="subItem.path">{{ subItem.title }}</a>
-          </li>
-        </ul>
-      </li>
-    </ul>
-  </nav>
+        <span *ngIf="!isLeftSidebarCollapsed">{{ item.title }}</span>
+
+        <i
+          *ngIf="item.subMenus.length > 0"
+          class="transition-transform duration-300"
+          [ngClass]="item.isDropdownOpen ? 'rotate-180' : 'rotate-0'"
+          [class]="'fal fa-chevron-down'"
+        ></i>
+      </div>
+
+      <ul
+        class="pl-6 space-y-1 mt-1 overflow-hidden transition-all duration-300"
+        [ngClass]="{
+          'max-h-0 opacity-0': !item.isDropdownOpen,
+          'max-h-40 opacity-100': item.isDropdownOpen
+        }"
+      >
+        <li *ngFor="let sub of item.subMenus">
+          <a
+            class="block px-4 py-2 text-gray-300 hover:bg-indigo-700 transition rounded-md"
+            [routerLink]="sub.path"
+            routerLinkActive="bg-indigo-800"
+            (click)="handleSubmenuClick(sub)"
+          >
+            {{ sub.title }}
+          </a>
+        </li>
+      </ul>
+    </li>
+  </ul>
 </div>

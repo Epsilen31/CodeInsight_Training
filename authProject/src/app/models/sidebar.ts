@@ -13,6 +13,7 @@ export interface IMenu {
   role: string;
   subMenus: ISubMenu[];
   isDropdownOpen?: boolean;
+  icon?: string;
 }
 
 export interface IMenuResponse {
