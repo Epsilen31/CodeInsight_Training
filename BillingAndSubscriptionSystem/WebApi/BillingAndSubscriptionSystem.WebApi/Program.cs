@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using BillingAndSubscriptionSystem.Core.Hubs;
 using BillingAndSubscriptionSystem.WebApi;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,7 +22,7 @@ app.UseWebSockets();
 app.UseAuthentication();
 app.UseAuthorization();
 
-// app.MapHub<NotificationHub>("/notificationHub").RequireAuthorization();
+app.MapHub<NotificationHub>("/notificationHub").RequireAuthorization();
 app.MapControllers();
 
 app.Run();

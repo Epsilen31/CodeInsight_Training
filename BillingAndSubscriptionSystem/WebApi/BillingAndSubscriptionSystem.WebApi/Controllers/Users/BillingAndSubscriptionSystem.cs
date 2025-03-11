@@ -1,3 +1,4 @@
+using BillingAndSubscriptionSystem.Services.Contracts;
 using BillingAndSubscriptionSystem.Services.DTOs;
 using BillingAndSubscriptionSystem.Services.Features.Users;
 using BillingAndSubscriptionSystem.Services.Notification;
@@ -16,12 +17,15 @@ namespace BillingAndSubscriptionSystem.WebApi.Controllers.Users
     {
         private readonly IMediator _mediator;
 
-        // private readonly NotificationService _notification;
+        private readonly INotificationService _notification;
 
-        public BillingAndSubscriptionSystem(IMediator mediator)
+        public BillingAndSubscriptionSystem(
+            IMediator mediator,
+            INotificationService notificationSet
+        )
         {
             _mediator = mediator;
-            // _notification = notificationSet;
+            _notification = notificationSet;
         }
 
         [Authorize]
@@ -30,7 +34,7 @@ namespace BillingAndSubscriptionSystem.WebApi.Controllers.Users
         {
             var users = await _mediator.Send(new GetAllUsers.Query(), cancellationToken);
 
-            // await _notification.BroadcastNotification("User list has been retrieved successfully.");
+            await _notification.BroadcastNotification("User list has been retrieved successfully.");
 
             return Ok(new { Message = "Users retrieved successfully", Users = users });
         }

@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { RegisterComponent } from './components/auth/register/register.component';
 import { LoginComponent } from './components/auth/login/login.component';
-import { DashboardComponent } from './shared/dashboard/dashboard.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { AuthGuard } from './core/guard/auth.guard';
 import { BillingSubscriptionComponent } from './main/billing-subscription.component';
 import { BillingSubscriptionSystemRoutingModule } from './main/billing-subscription-system-routing';

@@ -2,7 +2,6 @@ import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { MenuService } from '../../services/menu.service';
 import { IErrorResponse } from '../../models/error';
 import { IMenu, ISubMenu } from '../../models/sidebar';
-import { DashboardService } from '../../services/dashboard.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -15,10 +14,7 @@ export class SidebarComponent implements OnInit {
   @Output() toggleLeftSidebar = new EventEmitter<boolean>();
   menuItems: IMenu[] = [];
 
-  constructor(
-    private readonly _menuService: MenuService,
-    private readonly _dashboardService: DashboardService
-  ) {}
+  constructor(private readonly _menuService: MenuService) {}
 
   ngOnInit(): void {
     this._menuService.getAllMenu().subscribe({
@@ -26,8 +22,7 @@ export class SidebarComponent implements OnInit {
         this.menuItems = menu.map(
           (item: IMenu): IMenu => ({
             ...item,
-            title:
-              item.title === 'User Subscription' ? 'Subscription' : item.title,
+            title: item.title,
             isDropdownOpen: false,
             subMenus: item.subMenus
               ? item.subMenus.map((sub: ISubMenu): ISubMenu => ({ ...sub }))
@@ -42,19 +37,12 @@ export class SidebarComponent implements OnInit {
     });
   }
 
-  // toggleCollapse(): void {
-  //   this.isLeftSidebarCollapsed = !this.isLeftSidebarCollapsed;
-  //   this.toggleLeftSidebar.emit(this.isLeftSidebarCollapsed);
-  // }
-
   toggleDropdown(menuItem: IMenu, event: Event): void {
     event.stopPropagation();
     menuItem.isDropdownOpen = !menuItem.isDropdownOpen;
   }
 
   handleSubmenuClick(subMenuItem: ISubMenu): void {
-    if (subMenuItem.title.includes('Get All Users')) {
-      this._dashboardService.setActiveComponent('UserComponent');
-    }
+    console.log('Submenu clicked:', subMenuItem.title);
   }
 }

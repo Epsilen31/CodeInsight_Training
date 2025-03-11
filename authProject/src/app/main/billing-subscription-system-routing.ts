@@ -5,11 +5,12 @@ import { BillingComponent } from '../components/billing/billing.component';
 import { SubscriptionComponent } from '../components/subscription/subscription.component';
 import { PaymentsComponent } from '../components/payments/payments.component';
 import { UserComponent } from '../components/user/user.component';
+
 const routes: Routes = [
   {
     path: '',
     children: [
-      { path: '', redirectTo: '', pathMatch: 'full' },
+      { path: '', redirectTo: 'billing', pathMatch: 'full' },
       {
         path: 'billing',
         component: BillingComponent,
@@ -25,12 +26,7 @@ const routes: Routes = [
         component: PaymentsComponent,
         canActivate: [AuthGuard],
       },
-
-      {
-        path: 'users',
-        component: UserComponent,
-        canActivate: [AuthGuard],
-      },
+      { path: 'users', component: UserComponent, canActivate: [AuthGuard] },
     ],
   },
 ];

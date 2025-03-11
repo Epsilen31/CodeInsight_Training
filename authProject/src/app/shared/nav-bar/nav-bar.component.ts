@@ -1,5 +1,7 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { ThemeService } from './../../services/theme.service';
+import { SessionHelperService } from '../../core/session-helper.service';
+import { IUserSession } from '../../models/UserSession ';
 
 @Component({
   selector: 'app-nav-bar',
@@ -11,10 +13,18 @@ export class NavBarComponent {
   @Output() toggleSidebar: EventEmitter<void> = new EventEmitter<void>();
   isDropdownOpen: boolean = false;
   isThemeDropdownOpen: boolean = false;
-  storedUser: string | null = sessionStorage.getItem('user');
-  user: string = this.storedUser ? JSON.parse(this.storedUser).name : 'Guest';
+  storedUser: IUserSession | null = null;
+  user: string = '';
 
-  constructor(public themeService: ThemeService) {}
+  constructor(
+    private readonly _themeService: ThemeService,
+    private readonly _sessionHelper: SessionHelperService
+  ) {
+    this.storedUser = this._sessionHelper.getItem<IUserSession>('user');
+    if (this.storedUser) {
+      this.user = this.storedUser.name;
+    }
+  }
 
   toggleUserDropdown(): void {
     this.isDropdownOpen = !this.isDropdownOpen;
@@ -25,7 +35,7 @@ export class NavBarComponent {
   }
 
   changeTheme(theme: string): void {
-    this.themeService.setTheme(theme);
+    this._themeService.setTheme(theme);
     this.isThemeDropdownOpen = false;
   }
 
@@ -36,7 +46,6 @@ export class NavBarComponent {
   }
 
   onToggleSidebar(): void {
-    console.log('Sidebar toggle clicked');
     this.toggleSidebar.emit();
   }
 }

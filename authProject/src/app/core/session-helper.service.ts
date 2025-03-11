@@ -1,43 +1,42 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { IUserSession } from './../models/UserSession ';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SessionHelperService {
-  constructor(private readonly _route: Router) {}
+  constructor(private readonly _router: Router) {}
 
-  storeUser(
-    token: string,
-    user: { name: string; email: string; role: string }
-  ): void {
-    sessionStorage.setItem('token', token);
-    sessionStorage.setItem('user', JSON.stringify(user));
+  storeItem<T>(key: string, data: T): void {
+    let value: string | null = null;
+    if (typeof data === 'string') {
+      value = data;
+    } else {
+      value = JSON.stringify(data);
+    }
+    sessionStorage.setItem(key, value);
   }
 
-  getToken(): string | null {
-    return sessionStorage.getItem('token');
+  getItem<T>(key: string): T | null {
+    const storedData: string | null = sessionStorage.getItem(key);
+    const data = storedData ? JSON.parse(storedData) : null;
+    return data;
   }
 
-  isLoggedIn(): boolean {
-    return !!this.getToken();
+  removeItem(key: string): void {
+    sessionStorage.removeItem(key);
   }
 
-  getUser(): IUserSession | null {
-    const userData: string | null = sessionStorage.getItem('user');
-    return userData ? JSON.parse(userData) : null;
-  }
-
-  getUserRole(): string | null {
-    const user: IUserSession | null = this.getUser();
-    return user ? user.role : null;
-  }
-
-  clearSession(): void {
+  clearSession(redirectUrl?: string): void {
     sessionStorage.clear();
-    this._route.navigate(['/login']).then((): void => {
-      window.location.reload();
-    });
+    if (redirectUrl) {
+      this._router.navigate([redirectUrl]).then((): void => {
+        window.location.reload();
+      });
+    }
+  }
+
+  isLoggedIn(tokenKey: string = 'token'): boolean {
+    return !!sessionStorage.getItem(tokenKey);
   }
 }

@@ -30,6 +30,27 @@
       "
     >
       <router-outlet></router-outlet>
+
+      <!-- SignalR Notifications Section -->
+      <section class="fixed bottom-4 right-4 w-80 z-50">
+        <div class="bg-gray-100 p-4 rounded shadow-md">
+          <h3 class="font-semibold text-black mb-2">Notifications</h3>
+          <ul>
+            <li
+              *ngFor="let notification of notifications"
+              class="bg-green-200 rounded p-2 mb-2 shadow-sm"
+            >
+              {{ notification }}
+            </li>
+            <li
+              *ngIf="notifications.length === 0"
+              class="text-gray-500 text-sm"
+            >
+              No new notifications.
+            </li>
+          </ul>
+        </div>
+      </section>
     </main>
   </div>
 </div>

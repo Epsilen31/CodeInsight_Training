@@ -23,8 +23,10 @@ export class AuthService {
   }
 
   storeUserSession(token: string, user: IUserSession): void {
-    this._sessionService.storeUser(token, user);
+    this._sessionService.storeItem<string>('token', token);
+    this._sessionService.storeItem<IUserSession>('user', user);
   }
+
   isLoggedIn(): boolean {
     return this._sessionService.isLoggedIn();
   }

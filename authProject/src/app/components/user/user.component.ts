@@ -20,7 +20,6 @@ export class UserComponent implements OnInit {
 
   getAllUsers(): void {
     const apiPath = 'User/GetUsers';
-
     this._httpService.get<{ users: IUser[] }>(apiPath).subscribe({
       next: (data: { users: IUser[] }): void => {
         this.users = data.users;

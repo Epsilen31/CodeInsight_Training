@@ -8,10 +8,20 @@
 >
   <!-- Sidebar Menu -->
   <ul class="mt-6 space-y-1">
+    <li
+      class="flex items-center px-6 py-3 cursor-pointer hover:bg-indigo-700 transition rounded-md gap-x-2"
+    >
+      <a>Dashboard</a>
+      <i
+        class="transition-transform duration-300"
+        [class]="'fal fa-chevron-down'"
+      ></i>
+    </li>
     <li *ngFor="let item of menuItems">
       <div
         class="flex items-center px-4 py-3 cursor-pointer hover:bg-indigo-700 transition rounded-md gap-x-2"
         (click)="toggleDropdown(item, $event)"
+        [routerLink]="item.path"
         (keydown.enter)="toggleDropdown(item, $event)"
       >
         <i [class]="item.icon"></i>
@@ -27,7 +37,7 @@
       </div>
 
       <ul
-        class="pl-6 space-y-1 mt-1 overflow-hidden transition-all duration-300"
+        class="pl-6 space-y-1 mt-1 overflow-auto transition-all duration-300"
         [ngClass]="{
           'max-h-0 opacity-0': !item.isDropdownOpen,
           'max-h-40 opacity-100': item.isDropdownOpen

@@ -6,7 +6,7 @@ import Aura from '@primeng/themes/aura';
 import { ButtonModule } from 'primeng/button';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { DashboardComponent } from './shared/dashboard/dashboard.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NavBarComponent } from './shared/nav-bar/nav-bar.component';
 import { provideHttpClient } from '@angular/common/http';
@@ -19,7 +19,7 @@ import { UserComponent } from './components/user/user.component';
 import { BillingSubscriptionComponent } from './main/billing-subscription.component';
 import { ErrorDialogService } from './services/error-dialog.service';
 import { RouterModule } from '@angular/router';
-import { LoadingComponent } from './components/shared/loading/loading.component';
+import { LoadingComponent } from './shared/loading/loading.component';
 
 @NgModule({
   declarations: [

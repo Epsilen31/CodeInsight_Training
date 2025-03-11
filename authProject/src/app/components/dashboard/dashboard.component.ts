@@ -1,6 +1,7 @@
 import { Component, Type } from '@angular/core';
 import { ErrorDialogService } from '../../services/error-dialog.service';
-import { DashboardService } from '../../services/dashboard.service';
+import { SessionHelperService } from '../../core/session-helper.service';
+import { IUserSession } from '../../models/UserSession ';
 
 @Component({
   selector: 'app-dashboard',
@@ -9,20 +10,19 @@ import { DashboardService } from '../../services/dashboard.service';
   styleUrl: './dashboard.component.scss',
 })
 export class DashboardComponent {
-  storedUser: string | null = sessionStorage.getItem('user');
-  user: string = this.storedUser ? JSON.parse(this.storedUser).name : undefined;
+  storedUser: IUserSession | null = null;
+  user: string = '';
 
   activeComponent: Type<any> | null = null;
 
   constructor(
     private readonly _errorService: ErrorDialogService,
-    private readonly _dashboardService: DashboardService
-  ) {}
-
-  ngOnInit(): void {
-    this._dashboardService.activeComponent$.subscribe((component) => {
-      this.activeComponent = component;
-    });
+    private readonly _sessionService: SessionHelperService
+  ) {
+    this.storedUser = this._sessionService.getItem<IUserSession>('user');
+    if (this.storedUser) {
+      this.user = this.storedUser.name;
+    }
   }
 
   triggerDashboardError(): void {

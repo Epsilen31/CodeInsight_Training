@@ -39,7 +39,12 @@ namespace BillingAndSubscriptionSystem.Services.Notification
             }
             catch (Exception exception)
             {
-                _logger.LogError($"Error sending notification to {userId}: {exception.Message}");
+                _logger.LogError(
+                    exception,
+                    "Error sending notification to {UserId}: {ErrorMessage}",
+                    userId,
+                    exception.Message
+                );
             }
         }
 
@@ -55,7 +60,11 @@ namespace BillingAndSubscriptionSystem.Services.Notification
             }
             catch (Exception exception)
             {
-                _logger.LogError($"Error broadcasting notification: {exception.Message}");
+                _logger.LogError(
+                    exception,
+                    "Error broadcasting notification: {ErrorMessage}",
+                    exception.Message
+                );
             }
         }
     }

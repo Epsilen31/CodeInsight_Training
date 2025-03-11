@@ -24,7 +24,7 @@
           formControlName="password"
           required
         />
-        <span class="eye-icon" (click)="togglePassword()">
+        <span class="eye-icon" (onKeypress)="togglePassword()">
           <i
             class="fas"
             [ngClass]="{

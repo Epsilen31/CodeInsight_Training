@@ -31,7 +31,7 @@ export class RegisterComponent implements OnInit {
     });
   }
 
-  getRoleId(): number {
+  private getRoleId(): number {
     return this.registerForm.get('role')?.value === 'Admin'
       ? Role.Admin
       : Role.User;
