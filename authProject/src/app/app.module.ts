@@ -20,6 +20,7 @@ import { BillingSubscriptionComponent } from './main/billing-subscription.compon
 import { ErrorDialogService } from './services/error-dialog.service';
 import { RouterModule } from '@angular/router';
 import { LoadingComponent } from './shared/loading/loading.component';
+import { ProgressBarComponent } from './components/progress-bar/progress-bar.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { LoadingComponent } from './shared/loading/loading.component';
     UserComponent,
     BillingSubscriptionComponent,
     LoadingComponent,
+    ProgressBarComponent,
   ],
   imports: [
     BrowserModule,

@@ -8,6 +8,7 @@ import { catchError, finalize, Observable, throwError } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { ErrorDialogService } from './../services/error-dialog.service';
 import { LoadingService } from './../services/loading.service';
+import { Params } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -26,17 +27,34 @@ export class HttpClientService {
     });
     return headers;
   }
-  get<T>(url: string, params?: any): Observable<T> {
+  get<T>(url: string, params?: Params): Observable<T> {
     this._loadingService.loadingOn();
-    return this._http
-      .get<T>(`${environment.baseurl}/${url}`, {
-        headers: this.getHeader(),
-        params,
-      })
-      .pipe(
-        finalize(() => this._loadingService.loadingOff()), // Stop loading after request completes
-        catchError(this.handleError.bind(this))
-      );
+    // this is till development period for checking the loading in working fine or not
+    return new Observable<T>((observer) => {
+      setTimeout((): void => {
+        this._http
+          .get<T>(`${environment.baseurl}/${url}`, {
+            headers: this.getHeader(),
+            params,
+          })
+          .pipe(
+            finalize((): void => {
+              this._loadingService.loadingOff(); //Stop Loading Spinner
+            }),
+            catchError((error) => {
+              this._loadingService.loadingOff();
+              return this.handleError(error);
+            })
+          )
+          .subscribe({
+            next: (response) => {
+              observer.next(response);
+              observer.complete();
+            },
+            error: (error: HttpErrorResponse): void => observer.error(error),
+          });
+      }, 3000);
+    });
   }
 
   post<T>(url: string, body: T): Observable<T> {

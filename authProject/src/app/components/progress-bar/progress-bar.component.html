@@ -1,0 +1,16 @@
+<div class="progress-bar-container">
+  <div
+    class="progress-bar"
+    [ngStyle]="{
+      width: progress + '%',
+      backgroundColor: '#020617',
+      color: '#ffffff',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: '5px'
+    }"
+  >
+    <span class="progress-text"> {{ progress }}% </span>
+  </div>
+</div>

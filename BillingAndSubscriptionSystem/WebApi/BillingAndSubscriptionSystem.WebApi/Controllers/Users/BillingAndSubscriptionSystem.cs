@@ -1,7 +1,6 @@
 using BillingAndSubscriptionSystem.Services.Contracts;
 using BillingAndSubscriptionSystem.Services.DTOs;
 using BillingAndSubscriptionSystem.Services.Features.Users;
-using BillingAndSubscriptionSystem.Services.Notification;
 using BillingAndSubscriptionSystem.WebApi.Authorization.AdminAttribute;
 using BillingAndSubscriptionSystem.WebApi.Authorization.Policy;
 using BillingAndSubscriptionSystem.WebApi.Constants;

@@ -18,7 +18,7 @@
     </aside>
 
     <main
-      class="flex-grow overflow-y-hidden p-6 bg-white"
+      class="flex-grow overflow-y-hidden p-6 bg-white relative"
       [ngClass]="{
         'ml-20': isLeftSidebarCollapsed,
         'ml-64': !isLeftSidebarCollapsed
@@ -29,9 +29,15 @@
         background-color: #d1d6de;
       "
     >
-      <router-outlet></router-outlet>
-
-      <!-- SignalR Notifications Section -->
+      <!-- Wrapper Div Restricts Loading Overlay -->
+      <div
+        class="content-wrapper relative"
+        style="position: relative; min-height: 100vh"
+      >
+        <app-loading></app-loading>
+        <router-outlet></router-outlet>
+      </div>
+      <app-error-dialog></app-error-dialog>
       <section class="fixed bottom-4 right-4 w-80 z-50">
         <div class="bg-gray-100 p-4 rounded shadow-md">
           <h3 class="font-semibold text-black mb-2">Notifications</h3>

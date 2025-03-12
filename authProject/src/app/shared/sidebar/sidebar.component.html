@@ -8,24 +8,23 @@
 >
   <!-- Sidebar Menu -->
   <ul class="mt-6 space-y-1">
-    <li
-      class="flex items-center px-6 py-3 cursor-pointer hover:bg-indigo-700 transition rounded-md gap-x-2"
-    >
-      <a>Dashboard</a>
-      <i
-        class="transition-transform duration-300"
-        [class]="'fal fa-chevron-down'"
-      ></i>
+    <li>
+      <a
+        class="flex items-center px-6 py-3 cursor-pointer hover:bg-indigo-700 transition rounded-md gap-x-2"
+        routerLink="/dashboard"
+        routerLinkActive="bg-indigo-800"
+      >
+        Dashboard
+      </a>
     </li>
+
     <li *ngFor="let item of menuItems">
       <div
         class="flex items-center px-4 py-3 cursor-pointer hover:bg-indigo-700 transition rounded-md gap-x-2"
         (click)="toggleDropdown(item, $event)"
         [routerLink]="item.path"
-        (keydown.enter)="toggleDropdown(item, $event)"
       >
         <i [class]="item.icon"></i>
-
         <span *ngIf="!isLeftSidebarCollapsed">{{ item.title }}</span>
 
         <i
@@ -33,7 +32,8 @@
           class="transition-transform duration-300"
           [ngClass]="item.isDropdownOpen ? 'rotate-180' : 'rotate-0'"
           [class]="'fal fa-chevron-down'"
-        ></i>
+        >
+        </i>
       </div>
 
       <ul
@@ -46,9 +46,8 @@
         <li *ngFor="let sub of item.subMenus">
           <a
             class="block px-4 py-2 text-gray-300 hover:bg-indigo-700 transition rounded-md"
-            [routerLink]="sub.path"
+            [routerLink]="'/' + sub.path"
             routerLinkActive="bg-indigo-800"
-            (click)="handleSubmenuClick(sub)"
           >
             {{ sub.title }}
           </a>
