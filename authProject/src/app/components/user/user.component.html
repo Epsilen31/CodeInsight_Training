@@ -11,13 +11,29 @@
         <p class="text-gray-600">
           <strong>Status:</strong> {{ user.isActive ? "Active" : "Inactive" }}
         </p>
+
+        <div class="mt-4 flex gap-2">
+          <button
+            (click)="viewUser(user.id)"
+            class="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600"
+          >
+            View
+          </button>
+          <button
+            (click)="updateUser(user.id)"
+            class="bg-green-500 text-white px-3 py-1 rounded-md hover:bg-green-600"
+          >
+            Edit
+          </button>
+          <button
+            (click)="deleteUser(user.id)"
+            class="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600"
+          >
+            Delete
+          </button>
+        </div>
       </div>
     </div>
   </div>
   <br />
-  <app-progress-bar
-    [progress]="0"
-    [autoIncrement]="true"
-    [intervalTime]="1000"
-  ></app-progress-bar>
 </div>

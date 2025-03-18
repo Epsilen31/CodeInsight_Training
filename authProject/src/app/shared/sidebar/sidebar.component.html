@@ -24,7 +24,7 @@
         (click)="toggleDropdown(item, $event)"
         [routerLink]="item.path"
       >
-        <i [class]="item.icon"></i>
+        <span class="pi pi-user"></span>
         <span *ngIf="!isLeftSidebarCollapsed">{{ item.title }}</span>
 
         <i

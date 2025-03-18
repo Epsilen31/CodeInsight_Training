@@ -1,5 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
-import { ThemeService } from './../../services/theme.service';
+import { Component, EventEmitter, Output, OnInit } from '@angular/core';
 import { SessionHelperService } from '../../core/session-helper.service';
 import { IUserSession } from '../../models/UserSession ';
 
@@ -9,20 +8,23 @@ import { IUserSession } from '../../models/UserSession ';
   styleUrls: ['./nav-bar.component.scss'],
   standalone: false,
 })
-export class NavBarComponent {
+export class NavBarComponent implements OnInit {
   @Output() toggleSidebar: EventEmitter<void> = new EventEmitter<void>();
+  @Output() toggleDarkMode: EventEmitter<void> = new EventEmitter<void>();
   isDropdownOpen: boolean = false;
-  isThemeDropdownOpen: boolean = false;
-  storedUser: IUserSession | null = null;
   user: string = '';
+  isDarkMode: boolean = false;
 
-  constructor(
-    private readonly _themeService: ThemeService,
-    private readonly _sessionHelper: SessionHelperService
-  ) {
-    this.storedUser = this._sessionHelper.getItem<IUserSession>('user');
-    if (this.storedUser) {
-      this.user = this.storedUser.name;
+  constructor(private readonly _sessionHelper: SessionHelperService) {
+    const storedUser: IUserSession | null =
+      this._sessionHelper.getItem<IUserSession>('user');
+    this.user = storedUser ? storedUser.name : 'Guest';
+  }
+
+  ngOnInit(): void {
+    const storedTheme: string | null = localStorage.getItem('theme');
+    if (storedTheme === 'dark') {
+      this.isDarkMode = true;
     }
   }
 
@@ -30,22 +32,17 @@ export class NavBarComponent {
     this.isDropdownOpen = !this.isDropdownOpen;
   }
 
-  toggleThemeDropdown(): void {
-    this.isThemeDropdownOpen = !this.isThemeDropdownOpen;
-  }
-
-  changeTheme(theme: string): void {
-    this._themeService.setTheme(theme);
-    this.isThemeDropdownOpen = false;
-  }
-
   logout(): void {
-    sessionStorage.removeItem('user');
-    sessionStorage.removeItem('token');
+    sessionStorage.clear();
     window.location.reload();
   }
 
   onToggleSidebar(): void {
     this.toggleSidebar.emit();
+  }
+
+  ToggleDarkMode(): void {
+    this.isDarkMode = !this.isDarkMode;
+    this.toggleDarkMode.emit();
   }
 }

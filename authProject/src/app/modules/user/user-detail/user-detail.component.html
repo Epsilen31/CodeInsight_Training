@@ -1,0 +1,23 @@
+<div class="user-detail-container">
+  <h2 class="text-2xl font-semibold mb-4">User Details</h2>
+  <div *ngIf="user; else loading">
+    <div class="detail-card">
+      <p><strong>ID:</strong> {{ user.id }}</p>
+      <p><strong>Name:</strong> {{ user.name }}</p>
+      <p><strong>Email:</strong> {{ user.email }}</p>
+      <p><strong>Phone:</strong> {{ user.phone }}</p>
+      <p><strong>Role:</strong> {{ user.role }}</p>
+    </div>
+  </div>
+
+  <ng-template #loading>
+    <p class="text-gray-600">Loading user details...</p>
+  </ng-template>
+
+  <button
+    class="mt-4 px-4 py-2 bg-indigo-600 text-white rounded"
+    (click)="goBack()"
+  >
+    Go Back
+  </button>
+</div>

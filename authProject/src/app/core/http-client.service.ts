@@ -4,7 +4,7 @@ import {
   HttpHeaders,
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, finalize, Observable, throwError } from 'rxjs';
+import { catchError, finalize, Observable, Subscriber, throwError } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { ErrorDialogService } from './../services/error-dialog.service';
 import { LoadingService } from './../services/loading.service';
@@ -30,7 +30,7 @@ export class HttpClientService {
   get<T>(url: string, params?: Params): Observable<T> {
     this._loadingService.loadingOn();
     // this is till development period for checking the loading in working fine or not
-    return new Observable<T>((observer) => {
+    return new Observable<T>((observer: Subscriber<T>): void => {
       setTimeout((): void => {
         this._http
           .get<T>(`${environment.baseurl}/${url}`, {
@@ -41,7 +41,7 @@ export class HttpClientService {
             finalize((): void => {
               this._loadingService.loadingOff(); //Stop Loading Spinner
             }),
-            catchError((error) => {
+            catchError((error: HttpErrorResponse) => {
               this._loadingService.loadingOff();
               return this.handleError(error);
             })
@@ -64,7 +64,7 @@ export class HttpClientService {
         headers: this.getHeader(),
       })
       .pipe(
-        finalize(() => this._loadingService.loadingOff()),
+        finalize((): void => this._loadingService.loadingOff()),
         catchError(this.handleError.bind(this))
       );
   }
@@ -76,7 +76,7 @@ export class HttpClientService {
         headers: this.getHeader(),
       })
       .pipe(
-        finalize(() => this._loadingService.loadingOff()),
+        finalize((): void => this._loadingService.loadingOff()),
         catchError(this.handleError.bind(this))
       );
   }
@@ -88,7 +88,7 @@ export class HttpClientService {
         headers: this.getHeader(),
       })
       .pipe(
-        finalize(() => this._loadingService.loadingOff()),
+        finalize((): void => this._loadingService.loadingOff()),
         catchError(this.handleError.bind(this))
       );
   }
@@ -101,6 +101,6 @@ export class HttpClientService {
       errorMessage = `Server Error: ${error.status} - ${error.message}`;
     }
     this._errorService.showError(errorMessage);
-    return throwError(() => new Error(errorMessage));
+    return throwError((): Error => new Error(errorMessage));
   }
 }

@@ -1,5 +1,6 @@
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { providePrimeNG } from 'primeng/config';
 import Aura from '@primeng/themes/aura';
@@ -8,32 +9,24 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NavBarComponent } from './shared/nav-bar/nav-bar.component';
 import { provideHttpClient } from '@angular/common/http';
 import { SharedModule } from './shared/shared.module';
 import { AuthModule } from './components/auth/auth.module';
-import { BillingComponent } from './components/billing/billing.component';
-import { SubscriptionComponent } from './components/subscription/subscription.component';
-import { PaymentsComponent } from './components/payments/payments.component';
-import { UserComponent } from './components/user/user.component';
 import { BillingSubscriptionComponent } from './main/billing-subscription.component';
 import { ErrorDialogService } from './services/error-dialog.service';
 import { RouterModule } from '@angular/router';
 import { LoadingComponent } from './shared/loading/loading.component';
-import { ProgressBarComponent } from './components/progress-bar/progress-bar.component';
+import { NavBarComponent } from './shared/nav-bar/nav-bar.component';
+import { UserModule } from './modules/user/user.module';
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   declarations: [
     AppComponent,
     DashboardComponent,
-    NavBarComponent,
-    BillingComponent,
-    SubscriptionComponent,
-    PaymentsComponent,
-    UserComponent,
     BillingSubscriptionComponent,
     LoadingComponent,
-    ProgressBarComponent,
+    NavBarComponent,
   ],
   imports: [
     BrowserModule,
@@ -44,12 +37,31 @@ import { ProgressBarComponent } from './components/progress-bar/progress-bar.com
     AuthModule,
     ButtonModule,
     RouterModule,
+    UserModule,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot({
+      timeOut: 5000,
+      positionClass: 'toast-top-right',
+      preventDuplicates: true,
+      progressBar: true,
+      progressAnimation: 'increasing',
+      closeButton: true,
+      maxOpened: 3,
+      enableHtml: true,
+    }),
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [
     provideHttpClient(),
     provideAnimationsAsync(),
-    providePrimeNG({ theme: { preset: Aura } }),
+    providePrimeNG({
+      theme: {
+        preset: Aura,
+        options: {
+          darkModeSelector: '.my-app-dark',
+        },
+      },
+    }),
     ErrorDialogService,
   ],
   bootstrap: [AppComponent],

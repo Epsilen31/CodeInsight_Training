@@ -28,8 +28,8 @@ namespace BillingAndSubscriptionSystem.Services.Mapster
                 .AfterMapping(
                     (source, target) =>
                     {
-                        target.Role = source.Role != null ? source.Role.Id.ToString() : null;
-                        target.Password = null; // not sending hashed passwords back to clients
+                        target.Role = source.RoleId == '1' ? "Admin" : "User";
+                        target.Password = source.Password;
                     }
                 );
         }

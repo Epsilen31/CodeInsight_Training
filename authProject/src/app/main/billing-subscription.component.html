@@ -1,11 +1,22 @@
-<div class="h-screen w-screen flex flex-col overflow-y-hidden">
+<div
+  class="h-screen w-screen flex flex-col overflow-y-hidden relative"
+  [ngClass]="{ 'dark-mode': isDarkMode }"
+>
   <header class="bg-gray-800 w-full h-16 fixed top-0 left-0 z-50">
-    <app-nav-bar (toggleSidebar)="toggleLeftSidebar()"></app-nav-bar>
+    <app-nav-bar
+      (toggleSidebar)="toggleLeftSidebar()"
+      (toggleDarkMode)="toggleDarkMode()"
+    ></app-nav-bar>
   </header>
 
-  <div class="flex flex-grow pt-16 bg-[#d1d6de]">
+  <!--  Toastr Container -->
+  <ngx-toast-container
+    class="absolute top-0 left-0 w-full z-[9999]"
+  ></ngx-toast-container>
+
+  <div class="flex flex-grow pt-16 bg-[#d1d6de] dark-mode:bg-gray-900">
     <aside
-      class="bg-[#012a5b] text-white fixed top-16 left-0 transition-all duration-300"
+      class="bg-[#012a5b] text-white fixed top-16 left-0 transition-all duration-300 dark-mode:bg-gray-800 ,"
       [ngClass]="{
         'w-20': isLeftSidebarCollapsed,
         'w-64': !isLeftSidebarCollapsed
@@ -14,49 +25,28 @@
     >
       <app-sidebar
         [isLeftSidebarCollapsed]="isLeftSidebarCollapsed"
+        [isDarkMode]="isDarkMode"
       ></app-sidebar>
     </aside>
 
     <main
-      class="flex-grow overflow-y-hidden p-6 bg-white relative"
+      class="flex-grow overflow-y-hidden p-6 bg-white relative dark-mode:bg-gray-800 dark-mode:text-white"
       [ngClass]="{
         'ml-20': isLeftSidebarCollapsed,
         'ml-64': !isLeftSidebarCollapsed
       }"
-      style="
-        height: calc(100vh - 4rem);
-        min-height: 100vh;
-        background-color: #d1d6de;
-      "
+      style="height: calc(100vh - 4rem); min-height: 100vh"
     >
-      <!-- Wrapper Div Restricts Loading Overlay -->
       <div
         class="content-wrapper relative"
         style="position: relative; min-height: 100vh"
       >
         <app-loading></app-loading>
-        <router-outlet></router-outlet>
+        <!-- pass this darkmode theme all the child -->
+        <router-outlet (activate)="onActivate($event)"></router-outlet>
       </div>
+
       <app-error-dialog></app-error-dialog>
-      <section class="fixed bottom-4 right-4 w-80 z-50">
-        <div class="bg-gray-100 p-4 rounded shadow-md">
-          <h3 class="font-semibold text-black mb-2">Notifications</h3>
-          <ul>
-            <li
-              *ngFor="let notification of notifications"
-              class="bg-green-200 rounded p-2 mb-2 shadow-sm"
-            >
-              {{ notification }}
-            </li>
-            <li
-              *ngIf="notifications.length === 0"
-              class="text-gray-500 text-sm"
-            >
-              No new notifications.
-            </li>
-          </ul>
-        </div>
-      </section>
     </main>
   </div>
 </div>

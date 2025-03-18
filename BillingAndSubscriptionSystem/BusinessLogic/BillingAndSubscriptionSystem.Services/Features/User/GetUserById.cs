@@ -22,6 +22,7 @@ namespace BillingAndSubscriptionSystem.Services.Features.Users
         public class Handler : IRequestHandler<Query, UserDto?>
         {
             private readonly IUnitOfWork _unitOfWork;
+
             private readonly IMapper _mapper;
             private readonly ILogger<Handler> _logger;
 
@@ -52,7 +53,7 @@ namespace BillingAndSubscriptionSystem.Services.Features.Users
                     //     Email = user.Email,
                     //     Phone = user.Phone,
                     //     Password = user.Password,
-                    //     Role = user.RoleId == 1 ? "Admin" : "User",
+                    //     Role = user.Role?.ToString(),
                     // };
                     var userDto = _mapper.Map<UserDto>(user);
                     return userDto;

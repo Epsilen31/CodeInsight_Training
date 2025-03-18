@@ -1,0 +1,25 @@
+.action-button {
+  border: none;
+  color: black;
+  padding: 3px 12px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  opacity: 0.7;
+}
+
+.action-button:hover {
+  opacity: 1;
+}
+
+.view {
+  background-color: #008cba;
+}
+.update {
+  background-color: #4caf50;
+}
+
+.delete {
+  background-color: #f44336;
+}

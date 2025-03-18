@@ -12,7 +12,7 @@ export class ProgressBarComponent implements OnInit, OnDestroy {
   @Input() autoIncrement: boolean = false;
   @Input() intervalTime: number = 1000;
 
-  private interval: any;
+  private interval: ReturnType<typeof setInterval> | undefined;
 
   constructor(private readonly _ngZone: NgZone) {}
 

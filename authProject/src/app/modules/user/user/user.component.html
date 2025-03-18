@@ -1,0 +1,39 @@
+<app-progress-bar
+  [progress]="0"
+  [autoIncrement]="true"
+  [intervalTime]="1000"
+></app-progress-bar>
+
+<div class="content h-screen w-screen flex flex-col">
+  <div class="flex-1 w-full relative overflow-hidden">
+    <ag-grid-angular
+      class="ag-theme-alpine w-full h-full"
+      [rowData]="users"
+      [theme]="theme"
+      [columnDefs]="columnDefs"
+      [defaultColDef]="defaultColDef"
+      (gridReady)="onGridReady($event)"
+    >
+    </ag-grid-angular>
+  </div>
+
+  <section class="fixed bottom-4 right-4 w-96 z-50">
+    <div class="bg-white p-4 rounded-lg shadow-lg border border-gray-300">
+      <h3 class="font-semibold text-black mb-2 text-lg">Notifications</h3>
+      <ul class="max-h-40 overflow-y-auto">
+        <li
+          *ngFor="let notification of notifications"
+          class="bg-green-100 border-l-4 border-green-500 text-green-800 p-3 rounded-lg shadow-md mb-2"
+        >
+          {{ notification }}
+        </li>
+        <li
+          *ngIf="notifications.length === 0"
+          class="text-gray-500 text-sm text-center"
+        >
+          No new notifications.
+        </li>
+      </ul>
+    </div>
+  </section>
+</div>

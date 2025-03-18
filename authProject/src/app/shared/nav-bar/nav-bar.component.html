@@ -3,39 +3,21 @@
     <button class="text-white hover:text-gray-300" (click)="onToggleSidebar()">
       <i class="fal fa-bars text-xl"></i>
     </button>
-    <div class="text-lg font-semibold">MyApp</div>
+    <div class="text-lg font-semibold text-white">MyApp</div>
   </div>
-
   <!-- Right Section-> Theme Selector and User Menu -->
+
   <div class="user-menu flex items-center gap-4 relative mr-10">
-    <span>{{ user }}</span>
+    <span class="text-white">{{ user }}</span>
 
-    <div class="relative">
-      <button
-        class="text-white hover:text-gray-300"
-        (click)="toggleThemeDropdown()"
-      >
-        Theme ▼
-      </button>
-      <div
-        *ngIf="isThemeDropdownOpen"
-        class="absolute right-0 mt-2 w-32 bg-white text-gray-900 rounded-md shadow-md overflow-hidden"
-      >
-        <a
-          class="block px-4 py-2 hover:bg-gray-200 cursor-pointer"
-          (click)="changeTheme('light')"
-        >
-          Light Mode
-        </a>
-        <a
-          class="block px-4 py-2 hover:bg-gray-200 cursor-pointer"
-          (click)="changeTheme('dark')"
-        >
-          Dark Mode
-        </a>
-      </div>
-    </div>
+    <button
+      (click)="ToggleDarkMode()"
+      class="p-2 rounded-md border border-gray-500 text-sm"
+    >
+      {{ isDarkMode ? " Dark Mode" : " Light Mode" }}
+    </button>
 
+    <!-- Logout Dropdown -->
     <div class="relative">
       <button
         class="text-white hover:text-gray-300 ml-2"
@@ -50,9 +32,8 @@
         <a
           class="block px-4 py-2 hover:bg-gray-200 cursor-pointer"
           (click)="logout()"
+          >Logout</a
         >
-          Logout
-        </a>
       </div>
     </div>
   </div>

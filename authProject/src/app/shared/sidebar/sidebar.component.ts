@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { MenuService } from '../../services/menu.service';
 import { IErrorResponse } from '../../models/error';
 import { IMenu, ISubMenu } from '../../models/sidebar';
@@ -10,8 +10,7 @@ import { IMenu, ISubMenu } from '../../models/sidebar';
   standalone: false,
 })
 export class SidebarComponent implements OnInit {
-  @Input() isLeftSidebarCollapsed = false;
-  @Output() toggleLeftSidebar = new EventEmitter<boolean>();
+  @Input() isLeftSidebarCollapsed: boolean = false;
   menuItems: IMenu[] = [];
 
   constructor(private readonly _menuService: MenuService) {}

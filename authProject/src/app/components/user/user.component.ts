@@ -1,32 +1,57 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClientService } from '../../core/http-client.service';
+import { UserService } from '../../services/user.service';
 import { IUser } from '../../models/user';
+import { ActivatedRoute, Router } from '@angular/router';
 import { IErrorResponse } from '../../models/error';
 
 @Component({
   selector: 'app-user',
-  standalone: false,
   templateUrl: './user.component.html',
-  styleUrl: './user.component.scss',
+  styleUrls: ['./user.component.scss'],
+  standalone: false,
 })
 export class UserComponent implements OnInit {
   users: IUser[] = [];
 
-  constructor(private readonly _httpService: HttpClientService) {}
+  constructor(
+    private readonly userService: UserService,
+    private readonly route: ActivatedRoute,
+    private readonly router: Router
+  ) {}
 
   ngOnInit(): void {
     this.getAllUsers();
   }
 
-  getAllUsers(): void {
-    const apiPath = 'User/GetUsers';
-    this._httpService.get<{ users: IUser[] }>(apiPath).subscribe({
-      next: (data: { users: IUser[] }): void => {
-        this.users = data.users;
-        console.log(this.users);
+  private getAllUsers(): void {
+    this.userService.getAllUsers().subscribe({
+      next: (users: IUser[]): void => {
+        this.users = users;
       },
       error: (error: IErrorResponse): void => {
         console.error('Error fetching users:', error);
+      },
+    });
+  }
+
+  viewUser(id: number): void {
+    this.router.navigate([`/billing-subscription/user/get-user-by-id/${id}`]);
+  }
+
+  updateUser(id: number): void {
+    this.router.navigate([`/billing-subscription/user/update-user/${id}`]);
+  }
+
+  deleteUser(id: number): void {
+    this.userService.deleteUser(id).subscribe({
+      next: (): void => {
+        this.users = this.users.filter(
+          (user: IUser): boolean => user.id !== id
+        );
+        console.log('User deleted successfully.');
+      },
+      error: (error: IErrorResponse): void => {
+        console.error('Error deleting user:', error);
       },
     });
   }
