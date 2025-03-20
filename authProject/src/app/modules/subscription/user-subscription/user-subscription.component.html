@@ -1,0 +1,12 @@
+<div class="subscription-container">
+  <h2>User Subscription</h2>
+  <label for="plan">Select Subscription Plan:</label>
+  <select id="plan" [(ngModel)]="selectedPlanType">
+    <option [value]="1">Basic Plan</option>
+    <option [value]="2">Standard Plan</option>
+    <option [value]="3">Premium Plan</option>
+  </select>
+  <button (click)="createSubscription()" [disabled]="!selectedPlanType">
+    Subscribe Now
+  </button>
+</div>

@@ -1,0 +1,52 @@
+<div class="subscription-container">
+  <h2>Update Your Subscription</h2>
+
+  <div *ngIf="!errorMessage && subscription; else loading">
+    <label for="planType"><strong>Plan:</strong></label>
+    <select
+      id="planType"
+      [(ngModel)]="subscription.planType"
+      (change)="onPlanChange()"
+    >
+      <option [ngValue]="1">Basic</option>
+      <option [ngValue]="2">Standard</option>
+      <option [ngValue]="3">Premium</option>
+    </select>
+
+    <p><strong>Start Date:</strong> {{ subscription.startDate | date }}</p>
+    <p><strong>End Date:</strong> {{ subscription.endDate | date }}</p>
+
+    <p>
+      <strong>Status:</strong>
+      <span
+        [ngClass]="{
+          'active-status': subscription.subscriptionStatus === 1,
+          'inactive-status': subscription.subscriptionStatus !== 1,
+        }"
+      >
+        {{ subscription.subscriptionStatus === 1 ? "Active" : "Inactive" }}
+      </span>
+      <span *ngIf="subscription.subscriptionStatus === 1">
+        - Plan:
+        {{
+          subscription.planType === 1
+            ? "Basic"
+            : subscription.planType === 2
+              ? "Standard"
+              : "Premium"
+        }}
+      </span>
+    </p>
+
+    <button
+      (click)="updateSubscription()"
+      [disabled]="!subscriptionId"
+      class="update-btn"
+    >
+      Update Subscription
+    </button>
+  </div>
+  <ng-template #loading>
+    <p class="text-gray-600">Loading subscription details...</p>
+  </ng-template>
+</div>

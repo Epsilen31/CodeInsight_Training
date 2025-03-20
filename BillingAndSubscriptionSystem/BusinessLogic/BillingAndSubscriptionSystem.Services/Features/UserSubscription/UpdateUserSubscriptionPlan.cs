@@ -59,7 +59,7 @@ namespace BillingAndSubscriptionSystem.Services.Features
                     existingSubscription.StartDate = request.Subscription.StartDate;
                     existingSubscription.EndDate = request.Subscription.EndDate;
                     existingSubscription.SubscriptionStatus =
-                        request.Subscription.SubscriptionStatus == 0
+                        (int)request.Subscription.SubscriptionStatus == 1
                             ? Entities.Enums.SubscriptionStatus.Active
                             : Entities.Enums.SubscriptionStatus.Inactive;
 
@@ -79,7 +79,9 @@ namespace BillingAndSubscriptionSystem.Services.Features
                     //     EndDate = existingSubscription.EndDate,
                     //     SubscriptionStatus = existingSubscription.SubscriptionStatus,
                     // };
-                    return _mapper.Map<SubscriptionDto>(existingSubscription);
+
+                    var ans = _mapper.Map<SubscriptionDto>(existingSubscription);
+                    return ans;
                 }
                 catch (Exception exception)
                 {

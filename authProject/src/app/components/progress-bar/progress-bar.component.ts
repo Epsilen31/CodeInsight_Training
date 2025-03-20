@@ -1,4 +1,12 @@
-import { Component, Input, OnDestroy, OnInit, NgZone } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+  EventEmitter,
+  NgZone,
+} from '@angular/core';
 
 @Component({
   selector: 'app-progress-bar',
@@ -11,6 +19,7 @@ export class ProgressBarComponent implements OnInit, OnDestroy {
   @Input() total: number = 100;
   @Input() autoIncrement: boolean = false;
   @Input() intervalTime: number = 1000;
+  @Output() progressComplete: EventEmitter<void> = new EventEmitter<void>();
 
   private interval: ReturnType<typeof setInterval> | undefined;
 
@@ -27,10 +36,13 @@ export class ProgressBarComponent implements OnInit, OnDestroy {
       this.interval = setInterval((): void => {
         this._ngZone.run((): void => {
           this.progress += Math.floor(Math.random() * 10) + 1;
+
           if (this.progress >= this.total) {
             this.progress = this.total;
             clearInterval(this.interval);
+            this.progressComplete.emit();
           }
+
           this.updateProgress();
         });
       }, this.intervalTime);

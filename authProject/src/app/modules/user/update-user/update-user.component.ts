@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../../../services/user.service';
-import { IUser } from '../../../models/user';
+import { IUpdateUser, IUserDetail } from '../../../models/user';
 import { IErrorResponse } from '../../../models/error';
 
 @Component({
@@ -12,7 +12,7 @@ import { IErrorResponse } from '../../../models/error';
 })
 export class UpdateUserComponent implements OnInit {
   userId!: number;
-  user!: IUser;
+  user!: IUpdateUser;
 
   constructor(
     private readonly route: ActivatedRoute,
@@ -27,8 +27,9 @@ export class UpdateUserComponent implements OnInit {
 
   getUserDetails(): void {
     this.userService.getUserById(this.userId).subscribe({
-      next: (data: any): void => {
+      next: (data: IUserDetail): void => {
         this.user = data.user;
+        console.log('update user', this.user);
       },
       error: (error: IErrorResponse): void => {
         console.error('Error fetching user:', error);
@@ -37,7 +38,8 @@ export class UpdateUserComponent implements OnInit {
   }
 
   updateUser(): void {
-    this.userService.updateUser(this.userId, this.user).subscribe({
+    const userToUpdate = { ...this.user, role: { roleName: this.user.role } };
+    this.userService.updateUser(this.userId, userToUpdate).subscribe({
       next: (): void => {
         console.log('User updated successfully.');
         this.router.navigate(['/billing-subscription/user/this.userId']);

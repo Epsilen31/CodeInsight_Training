@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../../../services/user.service';
-import { IUser } from '../../../models/user';
+import { IUpdateUser, IUserDetail } from '../../../models/user';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -12,7 +12,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class UserDetailComponent implements OnInit {
   userId!: number;
-  user?: IUser;
+  user?: IUpdateUser;
 
   constructor(
     private readonly route: ActivatedRoute,
@@ -28,11 +28,11 @@ export class UserDetailComponent implements OnInit {
 
   fetchUserDetails(): void {
     this.userService.getUserById(this.userId).subscribe({
-      next: (data: any) => {
+      next: (data: IUserDetail): void => {
         this.user = data.user;
         console.log('User details:', this.user);
       },
-      error: (error) => {
+      error: (error: Error): void => {
         console.error('Error fetching user details:', error);
         this.toastr.error('Error fetching users:', error.message);
       },

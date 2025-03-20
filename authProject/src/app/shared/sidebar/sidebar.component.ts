@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { MenuService } from '../../services/menu.service';
 import { IErrorResponse } from '../../models/error';
 import { IMenu, ISubMenu } from '../../models/sidebar';
+import { SessionHelperService } from '../../core/session-helper.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -11,9 +12,21 @@ import { IMenu, ISubMenu } from '../../models/sidebar';
 })
 export class SidebarComponent implements OnInit {
   @Input() isLeftSidebarCollapsed: boolean = false;
-  menuItems: IMenu[] = [];
 
-  constructor(private readonly _menuService: MenuService) {}
+  @Input() isDarkMode: boolean = false;
+
+  menuItems: IMenu[] = [];
+  id: number = -1;
+
+  constructor(
+    private readonly _menuService: MenuService,
+    private readonly _sessionHelper: SessionHelperService,
+  ) {
+    const storedUser: { id: number } | null = this._sessionHelper.getItem<{
+      id: number;
+    }>('user');
+    this.id = storedUser ? storedUser.id : -1;
+  }
 
   ngOnInit(): void {
     this._menuService.getAllMenu().subscribe({
@@ -26,7 +39,7 @@ export class SidebarComponent implements OnInit {
             subMenus: item.subMenus
               ? item.subMenus.map((sub: ISubMenu): ISubMenu => ({ ...sub }))
               : [],
-          })
+          }),
         );
         console.log('Menu items:', this.menuItems);
       },

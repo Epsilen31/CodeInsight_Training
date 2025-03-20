@@ -41,7 +41,23 @@ namespace BillingAndSubscriptionSystem.Services.Features
             {
                 try
                 {
+                    _logger.LogInformation(
+                        "Received subscription request for User ID: {UserId}",
+                        request.Subscription.UserId
+                    );
                     ValidateRequest(request.Subscription);
+
+                    var userExists = await _unitOfWork.UserRepository.ExistsAsync(
+                        request.Subscription.UserId
+                    );
+                    if (!userExists)
+                    {
+                        _logger.LogError(
+                            "User ID {UserId} does not exist in the database.",
+                            request.Subscription.UserId
+                        );
+                        throw new CustomException("Invalid User ID.");
+                    }
 
                     var existingSubscription =
                         await _unitOfWork.UserSubscriptionRepository.GetUserSubscriptionAsync(
@@ -51,23 +67,23 @@ namespace BillingAndSubscriptionSystem.Services.Features
 
                     if (existingSubscription != null)
                     {
-                        throw new CustomException("User already has a subscription plan.", null);
+                        throw new CustomException("User already has a subscription plan.");
                     }
 
+                    // Map DTO to Entity
                     var subscriptionEntity = MapSubscription(request.Subscription);
+
                     await _unitOfWork.UserSubscriptionRepository.CreateUserSubscriptionAsync(
                         subscriptionEntity,
                         cancellationToken
                     );
                     await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-                    // return new SubscriptionDto
-                    // {
-                    //     UserId = subscriptionEntity.UserId,
-                    //     PlanType = subscriptionEntity.PlanType,
-                    //     StartDate = subscriptionEntity.StartDate,
-                    //     EndDate = subscriptionEntity.EndDate,
-                    // };
+                    _logger.LogInformation(
+                        "Subscription successfully created for User ID: {UserId}",
+                        request.Subscription.UserId
+                    );
+
                     return _mapper.Map<SubscriptionDto>(subscriptionEntity);
                 }
                 catch (Exception exception)
@@ -84,30 +100,23 @@ namespace BillingAndSubscriptionSystem.Services.Features
 
             private void ValidateRequest(SubscriptionDto subscription)
             {
+                _logger.LogInformation(
+                    "Validating subscription request for User ID: {UserId}",
+                    subscription.UserId
+                );
+
                 if (subscription.UserId <= 0)
                 {
-                    throw new CustomException("Invalid User ID.", null);
+                    throw new CustomException("Invalid User ID.");
                 }
                 if (subscription.StartDate >= subscription.EndDate)
                 {
-                    throw new CustomException(
-                        "Subscription Start Date must be before End Date.",
-                        null
-                    );
+                    throw new CustomException("Subscription Start Date must be before End Date.");
                 }
             }
 
             private Subscription MapSubscription(SubscriptionDto subscription)
             {
-                // return new Subscription
-                // {
-                //     UserId = subscription.UserId,
-                //     PlanType = subscription.PlanType,
-                //     StartDate = subscription.StartDate,
-                //     EndDate = subscription.EndDate,
-                // }
-                // ;
-
                 return _mapper.Map<Subscription>(subscription);
             }
         }

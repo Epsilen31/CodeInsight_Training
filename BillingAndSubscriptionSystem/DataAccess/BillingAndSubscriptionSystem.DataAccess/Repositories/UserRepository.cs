@@ -55,5 +55,10 @@ namespace BillingAndSubscriptionSystem.DataAccess.Repositories
             }
             return false;
         }
+
+        public async Task<bool> ExistsAsync(int userId)
+        {
+            return await _context.Users.AnyAsync(u => u.Id == userId);
+        }
     }
 }

@@ -9,5 +9,6 @@ namespace BillingAndSubscriptionSystem.DataAccess.Contracts
         Task AddUserAsync(User user, CancellationToken cancellationToken);
         Task UpdateUserAsync(User user, CancellationToken cancellationToken);
         Task<bool> DeleteUserAsync(int id, CancellationToken cancellationToken);
+        Task<bool> ExistsAsync(int userId);
     }
 }

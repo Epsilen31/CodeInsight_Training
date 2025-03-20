@@ -43,10 +43,12 @@ export class LoginComponent implements OnInit {
 
       this._authService.login(this.loginForm.value).subscribe({
         next: (response: ILogin): void => {
+          console.log('Login successful:', response);
           const userSession: IUserSession = {
             name: response.name,
             email: response.email,
             role: response.role,
+            id: response.id,
           };
 
           this._authService.storeUserSession(response.token, userSession);

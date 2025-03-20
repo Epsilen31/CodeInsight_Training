@@ -44,7 +44,7 @@ export class RegisterComponent implements OnInit {
 
   register(): void {
     if (this.registerForm.valid) {
-      const { role, ...formData } = this.registerForm.value;
+      const { ...formData } = this.registerForm.value;
       const updatedFormData = {
         ...formData,
         roleId: this.getRoleId(),

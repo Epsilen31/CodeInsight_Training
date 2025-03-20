@@ -97,6 +97,7 @@ namespace BillingAndSubscriptionSystem.Services.Features.Authentication
                         Email = userDto.Email,
                         Name = userDto.Name,
                         Role = userDto.Role,
+                        Id = userDto.Id.ToString(),
                     };
                 }
                 catch (Exception exception)

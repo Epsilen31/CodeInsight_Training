@@ -33,6 +33,7 @@ namespace BillingAndSubscriptionSystem.WebApi.Controllers.Auth
                     Name = loginResult.Name,
                     Email = loginResult.Email,
                     Role = loginResult.Role,
+                    Id = loginResult.Id,
                 }
             );
         }

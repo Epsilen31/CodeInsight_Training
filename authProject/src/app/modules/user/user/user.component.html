@@ -1,22 +1,30 @@
-<app-progress-bar
-  [progress]="0"
-  [autoIncrement]="true"
-  [intervalTime]="1000"
-></app-progress-bar>
+<div class="content flex flex-col h-screen w-screen overflow-hidden">
+  <!-- Progress Bar -->
+  <app-progress-bar
+    *ngIf="showProgressBar"
+    [progress]="progress"
+    [autoIncrement]="true"
+    [intervalTime]="1000"
+    (progressComplete)="hideProgressBar()"
+  ></app-progress-bar>
 
-<div class="content h-screen w-screen flex flex-col">
-  <div class="flex-1 w-full relative overflow-hidden">
-    <ag-grid-angular
-      class="ag-theme-alpine w-full h-full"
-      [rowData]="users"
-      [theme]="theme"
-      [columnDefs]="columnDefs"
-      [defaultColDef]="defaultColDef"
-      (gridReady)="onGridReady($event)"
-    >
-    </ag-grid-angular>
+  <div class="grid-container w-full">
+    <div class="ag-grid-wrapper w-full h-full overflow-y-hidden">
+      <ag-grid-angular
+        class="ag-theme-alpine"
+        style="min-width: 100%; height: 100%"
+        [rowData]="users"
+        [theme]="theme"
+        [columnDefs]="columnDefs"
+        [defaultColDef]="defaultColDef"
+        [gridOptions]="gridOptions"
+        (gridReady)="onGridReady($event)"
+      >
+      </ag-grid-angular>
+    </div>
   </div>
 
+  <!-- Notifications Section -->
   <section class="fixed bottom-4 right-4 w-96 z-50">
     <div class="bg-white p-4 rounded-lg shadow-lg border border-gray-300">
       <h3 class="font-semibold text-black mb-2 text-lg">Notifications</h3>

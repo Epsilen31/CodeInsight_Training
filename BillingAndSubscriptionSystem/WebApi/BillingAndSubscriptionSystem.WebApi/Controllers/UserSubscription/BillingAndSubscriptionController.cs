@@ -28,11 +28,18 @@ namespace BillingAndSubscriptionSystem.WebApi.Controllers
             CancellationToken cancellationToken
         )
         {
-            await _mediator.Send(
+            var createdSubscription = await _mediator.Send(
                 new CreateUserSubscriptionPlan.Query(subscriptionDto),
                 cancellationToken
             );
-            return Ok(new { Message = "Subscription created successfully." });
+
+            return Ok(
+                new
+                {
+                    Message = "Subscription created successfully.",
+                    Subscription = createdSubscription,
+                }
+            );
         }
 
         [Authorize]
@@ -44,11 +51,11 @@ namespace BillingAndSubscriptionSystem.WebApi.Controllers
         )
         {
             subscriptionDto.SubscriptionId = Id;
-            await _mediator.Send(
+            var data = await _mediator.Send(
                 new UpdateUserSubscriptionPlan.Query(subscriptionDto),
                 cancellationToken
             );
-            return Ok(new { Message = "Subscription updated successfully." });
+            return Ok(new { Message = "Subscription updated successfully.", subscription = data });
         }
 
         [Authorize]

@@ -27,8 +27,9 @@ export class LoadingComponent implements OnInit, OnDestroy {
 
   @Input() detectRouteTransitions: boolean = false;
 
-  @ContentChild('loading') customLoadingIndicator: TemplateRef<any> | null =
-    null;
+  @ContentChild('loading') customLoadingIndicator: TemplateRef<{
+    message: string;
+  }> | null = null;
 
   constructor(
     private readonly _loadingService: LoadingService,

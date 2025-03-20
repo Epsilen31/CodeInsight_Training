@@ -11,7 +11,7 @@ import { UserComponent } from '../modules/user/user/user.component';
 export class BillingSubscriptionComponent implements AfterViewInit {
   isLeftSidebarCollapsed: boolean = false;
   isDarkMode: boolean = true;
-  private routerOutletComponent: any;
+  private routerOutletComponent?: UserComponent | null;
 
   @ViewChild(ToastContainerDirective, { static: true })
   toastContainer!: ToastContainerDirective;
@@ -20,7 +20,7 @@ export class BillingSubscriptionComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     this.toastr.overlayContainer = this.toastContainer;
-    const storedTheme = localStorage.getItem('theme');
+    const storedTheme: string | null = localStorage.getItem('theme');
     if (storedTheme === 'dark') {
       this.enableDarkMode();
     }
@@ -37,7 +37,9 @@ export class BillingSubscriptionComponent implements AfterViewInit {
     } else {
       this.disableDarkMode();
     }
-    this.onActivate(this.routerOutletComponent);
+    if (this.routerOutletComponent) {
+      this.onActivate(this.routerOutletComponent);
+    }
   }
 
   private enableDarkMode(): void {
@@ -50,7 +52,7 @@ export class BillingSubscriptionComponent implements AfterViewInit {
     localStorage.setItem('theme', 'light');
   }
 
-  onActivate(component: any): void {
+  onActivate(component: UserComponent): void {
     this.routerOutletComponent = component;
     if (component instanceof UserComponent) {
       component.setDarkMode(this.isDarkMode);

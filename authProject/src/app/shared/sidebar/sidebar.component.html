@@ -1,8 +1,10 @@
 <div
-  class="bg-[#012a5b] text-white fixed transition-all duration-300 top-16 left-0"
+  class="fixed transition-all duration-300 top-16 left-0"
   [ngClass]="{
     'w-20': isLeftSidebarCollapsed,
-    'w-64': !isLeftSidebarCollapsed
+    'w-64': !isLeftSidebarCollapsed,
+    'bg-gray-900 text-white': isDarkMode,
+    'bg-[#012a5b] text-white': !isDarkMode
   }"
   style="height: calc(100vh - 4rem)"
 >
@@ -10,34 +12,37 @@
   <ul class="mt-6 space-y-1">
     <li>
       <a
-        class="flex items-center px-6 py-3 cursor-pointer hover:bg-indigo-700 transition rounded-md gap-x-2"
-        routerLink="/dashboard"
+        class="flex items-center px-6 py-3 cursor-pointer transition rounded-md gap-x-2"
+        [routerLink]="'/dashboard'"
         routerLinkActive="bg-indigo-800"
+        [ngClass]="isDarkMode ? 'hover:bg-gray-700' : 'hover:bg-blue-700'"
       >
-        Dashboard
+        <i class="pi pi-home"></i>
+        <span *ngIf="!isLeftSidebarCollapsed">Dashboard</span>
       </a>
     </li>
 
     <li *ngFor="let item of menuItems">
       <div
-        class="flex items-center px-4 py-3 cursor-pointer hover:bg-indigo-700 transition rounded-md gap-x-2"
+        class="flex items-center px-4 py-3 cursor-pointer transition rounded-md gap-x-2"
         (click)="toggleDropdown(item, $event)"
         [routerLink]="item.path"
+        [ngClass]="isDarkMode ? 'hover:bg-gray-700' : 'hover:bg-blue-700'"
       >
-        <span class="pi pi-user"></span>
+        <span class="pi pi-folder"></span>
         <span *ngIf="!isLeftSidebarCollapsed">{{ item.title }}</span>
 
         <i
           *ngIf="item.subMenus.length > 0"
-          class="transition-transform duration-300"
+          class="transition-transform duration-300 ml-auto"
           [ngClass]="item.isDropdownOpen ? 'rotate-180' : 'rotate-0'"
           [class]="'fal fa-chevron-down'"
-        >
-        </i>
+        ></i>
       </div>
 
+      <!-- Submenus -->
       <ul
-        class="pl-6 space-y-1 mt-1 overflow-auto transition-all duration-300"
+        class="pl-6 space-y-1 mt-1 overflow-hidden transition-all duration-300"
         [ngClass]="{
           'max-h-0 opacity-0': !item.isDropdownOpen,
           'max-h-40 opacity-100': item.isDropdownOpen
@@ -45,9 +50,14 @@
       >
         <li *ngFor="let sub of item.subMenus">
           <a
-            class="block px-4 py-2 text-gray-300 hover:bg-indigo-700 transition rounded-md"
+            class="block px-4 py-2 transition rounded-md"
             [routerLink]="'/' + sub.path"
             routerLinkActive="bg-indigo-800"
+            [ngClass]="
+              isDarkMode
+                ? 'text-gray-300 hover:bg-gray-700'
+                : 'text-white hover:bg-blue-700'
+            "
           >
             {{ sub.title }}
           </a>

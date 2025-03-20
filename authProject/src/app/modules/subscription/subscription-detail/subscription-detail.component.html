@@ -1,0 +1,39 @@
+<div class="subscription-container">
+  <h2>Subscription Details</h2>
+
+  <div *ngIf="isLoading">
+    <p>Loading subscription details...</p>
+  </div>
+
+  <div *ngIf="!isLoading && errorMessage">
+    <p class="error-message">{{ errorMessage }}</p>
+  </div>
+
+  <div *ngIf="!isLoading && subscription">
+    <p><strong>Plan Type:</strong> {{ subscription.planType }}</p>
+    <p><strong>Start Date:</strong> {{ subscription.startDate | date }}</p>
+    <p><strong>End Date:</strong> {{ subscription.endDate | date }}</p>
+    <p>
+      <strong>Status:</strong>
+      <span
+        [ngClass]="{
+          active: subscription.subscriptionStatus === 1,
+          inactive: subscription.subscriptionStatus !== 1,
+        }"
+      >
+        {{ subscription.subscriptionStatus === 1 ? "Active" : "Inactive" }}
+      </span>
+      <span *ngIf="subscription.subscriptionStatus === 1">
+        - Plan:
+        {{
+          subscription.planType === 1
+            ? "Basic"
+            : subscription.planType === 2
+              ? "Standard"
+              : "Premium"
+        }}
+      </span>
+    </p>
+    <button (click)="goBack()">Go Back</button>
+  </div>
+</div>

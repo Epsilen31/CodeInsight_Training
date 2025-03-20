@@ -17,7 +17,7 @@ export class HttpClientService {
   constructor(
     private readonly _http: HttpClient,
     private readonly _errorService: ErrorDialogService,
-    private readonly _loadingService: LoadingService
+    private readonly _loadingService: LoadingService,
   ) {}
 
   private getHeader(): HttpHeaders {
@@ -44,7 +44,7 @@ export class HttpClientService {
             catchError((error: HttpErrorResponse) => {
               this._loadingService.loadingOff();
               return this.handleError(error);
-            })
+            }),
           )
           .subscribe({
             next: (response) => {
@@ -65,7 +65,7 @@ export class HttpClientService {
       })
       .pipe(
         finalize((): void => this._loadingService.loadingOff()),
-        catchError(this.handleError.bind(this))
+        catchError(this.handleError.bind(this)),
       );
   }
 
@@ -77,7 +77,7 @@ export class HttpClientService {
       })
       .pipe(
         finalize((): void => this._loadingService.loadingOff()),
-        catchError(this.handleError.bind(this))
+        catchError(this.handleError.bind(this)),
       );
   }
 
@@ -89,14 +89,14 @@ export class HttpClientService {
       })
       .pipe(
         finalize((): void => this._loadingService.loadingOff()),
-        catchError(this.handleError.bind(this))
+        catchError(this.handleError.bind(this)),
       );
   }
 
   private handleError(error: HttpErrorResponse): Observable<never> {
-    let errorMessage: string = 'Something went wrong!';
+    let errorMessage;
     if (error.error instanceof ErrorEvent) {
-      errorMessage = `Client Error: ${error.error.message}`;
+      errorMessage = `Client Error: ${JSON.stringify(error.error)}`;
     } else {
       errorMessage = `Server Error: ${error.status} - ${error.message}`;
     }

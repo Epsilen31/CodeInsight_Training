@@ -19,6 +19,7 @@ import { LoadingComponent } from './shared/loading/loading.component';
 import { NavBarComponent } from './shared/nav-bar/nav-bar.component';
 import { UserModule } from './modules/user/user.module';
 import { ToastrModule } from 'ngx-toastr';
+import { SubscriptionModule } from './modules/subscription/subscription.module';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import { ToastrModule } from 'ngx-toastr';
     ButtonModule,
     RouterModule,
     UserModule,
+    SubscriptionModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot({
       timeOut: 5000,

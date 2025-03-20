@@ -19,7 +19,7 @@ export class SessionHelperService {
 
   getItem<T>(key: string): T | null {
     const storedData: string | null = sessionStorage.getItem(key);
-    const data = storedData ? JSON.parse(storedData) : null;
+    const data: T = storedData ? JSON.parse(storedData) : null;
     return data;
   }
 
