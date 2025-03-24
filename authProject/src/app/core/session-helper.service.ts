@@ -2,18 +2,13 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class SessionHelperService {
   constructor(private readonly _router: Router) {}
 
   storeItem<T>(key: string, data: T): void {
-    let value: string | null = null;
-    if (typeof data === 'string') {
-      value = data;
-    } else {
-      value = JSON.stringify(data);
-    }
+    const value: string = typeof data === 'string' ? data : JSON.stringify(data);
     sessionStorage.setItem(key, value);
   }
 

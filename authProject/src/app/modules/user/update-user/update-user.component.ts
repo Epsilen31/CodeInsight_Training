@@ -3,12 +3,13 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../../../services/user.service';
 import { IUpdateUser, IUserDetail } from '../../../models/user';
 import { IErrorResponse } from '../../../models/error';
+import { ToastService } from '../../../services/toast.service';
 
 @Component({
   selector: 'app-update-user',
   standalone: false,
   templateUrl: './update-user.component.html',
-  styleUrls: ['./update-user.component.scss'],
+  styleUrls: ['./update-user.component.scss']
 })
 export class UpdateUserComponent implements OnInit {
   userId!: number;
@@ -17,7 +18,8 @@ export class UpdateUserComponent implements OnInit {
   constructor(
     private readonly route: ActivatedRoute,
     private readonly router: Router,
-    private readonly userService: UserService
+    private readonly userService: UserService,
+    private readonly _toastService: ToastService
   ) {}
 
   ngOnInit(): void {
@@ -29,11 +31,10 @@ export class UpdateUserComponent implements OnInit {
     this.userService.getUserById(this.userId).subscribe({
       next: (data: IUserDetail): void => {
         this.user = data.user;
-        console.log('update user', this.user);
       },
       error: (error: IErrorResponse): void => {
-        console.error('Error fetching user:', error);
-      },
+        this._toastService.showError(`Error fetching user: ${error.message}`);
+      }
     });
   }
 
@@ -41,12 +42,12 @@ export class UpdateUserComponent implements OnInit {
     const userToUpdate = { ...this.user, role: { roleName: this.user.role } };
     this.userService.updateUser(this.userId, userToUpdate).subscribe({
       next: (): void => {
-        console.log('User updated successfully.');
+        ('User updated successfully.');
         this.router.navigate(['/billing-subscription/user/this.userId']);
       },
       error: (error: IErrorResponse): void => {
-        console.error('Error updating user:', error);
-      },
+        this._toastService.showError(`Error fetching users: ${error.message}`);
+      }
     });
   }
 

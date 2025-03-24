@@ -9,22 +9,22 @@ const routes: Routes = [
   {
     path: 'get-subscription-by-user-id/:id',
     component: SubscriptionDetailComponent,
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard]
   },
   {
     path: 'update-user-subscription/:id',
     component: UpdateSubscriptionComponent,
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard]
   },
   {
     path: 'create-user-subscription-plan',
     component: UserSubscriptionComponent,
-    canActivate: [AuthGuard],
-  },
+    canActivate: [AuthGuard]
+  }
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule],
+  exports: [RouterModule]
 })
 export class SubscriptionRoutingModule {}

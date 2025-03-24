@@ -5,7 +5,7 @@ export const myTheme: Theme<ThemeDefaultParams> = themeQuartz
     {
       backgroundColor: '#FFE8E0',
       foregroundColor: '#361008CC',
-      browserColorScheme: 'light',
+      browserColorScheme: 'light'
     },
     'light-red'
   )
@@ -13,7 +13,7 @@ export const myTheme: Theme<ThemeDefaultParams> = themeQuartz
     {
       backgroundColor: '#1E1E2E',
       foregroundColor: '#FFFFFFCC',
-      browserColorScheme: 'dark',
+      browserColorScheme: 'dark'
     },
     'dark-red'
   );

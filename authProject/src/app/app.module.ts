@@ -20,6 +20,7 @@ import { NavBarComponent } from './shared/nav-bar/nav-bar.component';
 import { UserModule } from './modules/user/user.module';
 import { ToastrModule } from 'ngx-toastr';
 import { SubscriptionModule } from './modules/subscription/subscription.module';
+import { PaymentModule } from './modules/payment/payment.module';
 
 @NgModule({
   declarations: [
@@ -27,19 +28,20 @@ import { SubscriptionModule } from './modules/subscription/subscription.module';
     DashboardComponent,
     BillingSubscriptionComponent,
     LoadingComponent,
-    NavBarComponent,
+    NavBarComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule,
     ReactiveFormsModule,
+    FormsModule,
     SharedModule,
     AuthModule,
     ButtonModule,
     RouterModule,
     UserModule,
     SubscriptionModule,
+    PaymentModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot({
       timeOut: 5000,
@@ -49,8 +51,8 @@ import { SubscriptionModule } from './modules/subscription/subscription.module';
       progressAnimation: 'increasing',
       closeButton: true,
       maxOpened: 3,
-      enableHtml: true,
-    }),
+      enableHtml: true
+    })
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [
@@ -60,12 +62,12 @@ import { SubscriptionModule } from './modules/subscription/subscription.module';
       theme: {
         preset: Aura,
         options: {
-          darkModeSelector: '.my-app-dark',
-        },
-      },
+          darkModeSelector: '.my-app-dark'
+        }
+      }
     }),
-    ErrorDialogService,
+    ErrorDialogService
   ],
-  bootstrap: [AppComponent],
+  bootstrap: [AppComponent]
 })
 export class AppModule {}

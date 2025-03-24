@@ -11,13 +11,6 @@ import { RouterModule } from '@angular/router';
 @NgModule({
   declarations: [SidebarComponent, ErrorDialogComponent],
   exports: [SidebarComponent, ErrorDialogComponent, CommonModule],
-  imports: [
-    CommonModule,
-    Dialog,
-    ButtonModule,
-    DrawerModule,
-    ToolbarModule,
-    RouterModule,
-  ],
+  imports: [CommonModule, Dialog, ButtonModule, DrawerModule, ToolbarModule, RouterModule]
 })
 export class SharedModule {}

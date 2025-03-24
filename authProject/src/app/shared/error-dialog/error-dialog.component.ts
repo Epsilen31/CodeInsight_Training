@@ -5,7 +5,7 @@ import { ErrorDialogService } from '../../services/error-dialog.service';
   selector: 'app-error-dialog',
   templateUrl: './error-dialog.component.html',
   styleUrl: './error-dialog.component.scss',
-  standalone: false,
+  standalone: false
 })
 export class ErrorDialogComponent implements OnInit {
   visible: boolean = false;
@@ -16,7 +16,6 @@ export class ErrorDialogComponent implements OnInit {
   ngOnInit() {
     this._errorService.error$.subscribe((message: string): void => {
       if (message) {
-        console.log('[ErrorDialogComponent] Received error:', message);
         this.errorMessage = message;
         this.visible = true;
       }

@@ -1,25 +1,13 @@
-import {
-  Component,
-  ContentChild,
-  Input,
-  OnInit,
-  OnDestroy,
-  TemplateRef,
-} from '@angular/core';
+import { Component, ContentChild, Input, OnInit, OnDestroy, TemplateRef } from '@angular/core';
 import { LoadingService } from '../../services/loading.service';
 import { Subscription, tap } from 'rxjs';
-import {
-  Event,
-  RouteConfigLoadEnd,
-  RouteConfigLoadStart,
-  Router,
-} from '@angular/router';
+import { Event, RouteConfigLoadEnd, RouteConfigLoadStart, Router } from '@angular/router';
 
 @Component({
   selector: 'app-loading',
   standalone: false,
   templateUrl: './loading.component.html',
-  styleUrls: ['./loading.component.scss'],
+  styleUrls: ['./loading.component.scss']
 })
 export class LoadingComponent implements OnInit, OnDestroy {
   isLoading: boolean = false;
@@ -37,11 +25,9 @@ export class LoadingComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.loadingSubscription = this._loadingService.loading$.subscribe(
-      (state: boolean): void => {
-        this.isLoading = state;
-      }
-    );
+    this.loadingSubscription = this._loadingService.loading$.subscribe((state: boolean): void => {
+      this.isLoading = state;
+    });
 
     if (this.detectRouteTransitions) {
       this._router.events

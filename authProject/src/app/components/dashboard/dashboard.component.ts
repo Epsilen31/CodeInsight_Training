@@ -6,7 +6,7 @@ import { Component } from '@angular/core';
   selector: 'app-dashboard',
   standalone: false,
   templateUrl: './dashboard.component.html',
-  styleUrl: './dashboard.component.scss',
+  styleUrl: './dashboard.component.scss'
 })
 export class DashboardComponent {
   constructor() {}

@@ -5,12 +5,13 @@ import { AuthService } from '../../../services/auth.service';
 import { IUserSession } from '../../../models/UserSession ';
 import { IErrorResponse } from '../../../models/error';
 import { ILogin } from '../../../models/auth';
+import { ToastService } from '../../../services/toast.service';
 
 @Component({
   selector: 'app-login',
   standalone: false,
   templateUrl: './login.component.html',
-  styleUrl: './login.component.scss',
+  styleUrl: './login.component.scss'
 })
 export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
@@ -19,19 +20,19 @@ export class LoginComponent implements OnInit {
   constructor(
     private readonly _route: Router,
     private readonly _fb: FormBuilder,
-    private readonly _authService: AuthService
+    private readonly _authService: AuthService,
+    private readonly _toastService: ToastService
   ) {}
 
   ngOnInit(): void {
     this.loginForm = this._fb.group({
       email: ['', Validators.required],
-      password: ['', Validators.required],
+      password: ['', Validators.required]
     });
   }
 
   togglePassword(): void {
-    this.passwordFieldType =
-      this.passwordFieldType === 'password' ? 'text' : 'password';
+    this.passwordFieldType = this.passwordFieldType === 'password' ? 'text' : 'password';
   }
 
   isSubmitting: boolean = false;
@@ -39,16 +40,14 @@ export class LoginComponent implements OnInit {
   login(): void {
     if (this.loginForm.valid && !this.isSubmitting) {
       this.isSubmitting = true;
-      console.log('Login function triggered');
 
       this._authService.login(this.loginForm.value).subscribe({
         next: (response: ILogin): void => {
-          console.log('Login successful:', response);
           const userSession: IUserSession = {
             name: response.name,
             email: response.email,
             role: response.role,
-            id: response.id,
+            id: response.id
           };
 
           this._authService.storeUserSession(response.token, userSession);
@@ -56,12 +55,12 @@ export class LoginComponent implements OnInit {
           this._route.navigate(['/dashboard']);
         },
         error: (error: IErrorResponse): void => {
-          console.error('Login Failed:', error);
+          this._toastService.showError(`Error fetching users: ${error.message}`);
           this.isSubmitting = false;
         },
         complete: (): void => {
           this.isSubmitting = false;
-        },
+        }
       });
     }
   }

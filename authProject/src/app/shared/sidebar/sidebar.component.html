@@ -3,8 +3,8 @@
   [ngClass]="{
     'w-20': isLeftSidebarCollapsed,
     'w-64': !isLeftSidebarCollapsed,
-    'bg-gray-900 text-white': isDarkMode,
-    'bg-[#012a5b] text-white': !isDarkMode
+    'bg-[#012a5b] text-white': !isDarkMode,
+    'bg-[#242424] text-white': isDarkMode
   }"
   style="height: calc(100vh - 4rem)"
 >
@@ -54,9 +54,7 @@
             [routerLink]="'/' + sub.path"
             routerLinkActive="bg-indigo-800"
             [ngClass]="
-              isDarkMode
-                ? 'text-gray-300 hover:bg-gray-700'
-                : 'text-white hover:bg-blue-700'
+              isDarkMode ? 'text-gray-300 hover:bg-gray-700' : 'text-white hover:bg-blue-700'
             "
           >
             {{ sub.title }}

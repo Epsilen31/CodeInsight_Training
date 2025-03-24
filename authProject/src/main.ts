@@ -4,6 +4,6 @@ import { IErrorResponse } from './app/models/error';
 
 platformBrowserDynamic()
   .bootstrapModule(AppModule, {
-    ngZoneEventCoalescing: true,
+    ngZoneEventCoalescing: true
   })
   .catch((err: IErrorResponse): void => console.error(err));

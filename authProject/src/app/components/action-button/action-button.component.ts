@@ -9,11 +9,16 @@ import { ToastService } from '../../services/toast.service';
   selector: 'app-action-buttons',
   templateUrl: './action-button.component.html',
   styleUrl: './action-button.component.scss',
-  standalone: false,
+  standalone: false
 })
 export class ActionButtonComponent implements ICellRendererAngularComp {
   private params!: ICellRendererParams;
   private gridApi!: GridApi;
+
+  // constants for the url
+
+  private readonly VIEW_URL: string = '/user/get-user-by-id';
+  private readonly UPDATE_URL: string = '/user/update-user';
 
   constructor(
     private readonly _router: Router,
@@ -33,19 +38,16 @@ export class ActionButtonComponent implements ICellRendererAngularComp {
 
   onView(): void {
     const userId: number = this.params.data.id;
-    console.log('View button clicked for user:', userId);
-    this._router.navigate([`/user/get-user-by-id/${userId}`]);
+    this._router.navigate([`${this.VIEW_URL}/${userId}`]);
   }
 
   onUpdate(): void {
     const userId: number = this.params.data.id;
-    console.log('Update button clicked for user:', userId);
-    this._router.navigate([`/User/UpdateUser/${userId}`]);
+    this._router.navigate([`${this.UPDATE_URL}/${userId}`]);
   }
 
   onDelete(): void {
     const userId: number = this.params.data.id;
-    console.log('Delete button clicked for user:', userId);
 
     if (confirm('Are you sure you want to delete this user?')) {
       this.userService.deleteUser(userId).subscribe({
@@ -55,7 +57,7 @@ export class ActionButtonComponent implements ICellRendererAngularComp {
         },
         error: (error: { message: string }): void => {
           this.toastService.showError('Error deleting user: ' + error.message);
-        },
+        }
       });
     }
   }

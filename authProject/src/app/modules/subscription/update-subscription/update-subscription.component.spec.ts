@@ -9,8 +9,7 @@ describe('UpdateSubscriptionComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [UpdateSubscriptionComponent]
-    })
-    .compileComponents();
+    }).compileComponents();
 
     fixture = TestBed.createComponent(UpdateSubscriptionComponent);
     component = fixture.componentInstance;

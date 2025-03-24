@@ -10,8 +10,8 @@ import { CommonModule } from '@angular/common';
   declarations: [
     UserSubscriptionComponent,
     UpdateSubscriptionComponent,
-    SubscriptionDetailComponent,
+    SubscriptionDetailComponent
   ],
-  imports: [SubscriptionRoutingModule, FormsModule, CommonModule],
+  imports: [SubscriptionRoutingModule, FormsModule, CommonModule]
 })
 export class SubscriptionModule {}

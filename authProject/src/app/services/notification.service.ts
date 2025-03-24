@@ -3,18 +3,19 @@ import {
   HttpTransportType,
   HubConnection,
   HubConnectionBuilder,
-  HubConnectionState,
+  HubConnectionState
 } from '@microsoft/signalr';
 import { environment } from '../../environments/environment';
 import { from } from 'rxjs';
+import { ToastService } from './toast.service';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class NotificationService {
   private hubConnection!: HubConnection;
 
-  constructor() {
+  constructor(private readonly _toastService: ToastService) {
     this.startConnection();
   }
 
@@ -22,45 +23,33 @@ export class NotificationService {
     const token: string | null = sessionStorage.getItem('token');
     const url = `${environment.webSocketUrl}=${token}`;
 
-    if (
-      this.hubConnection &&
-      this.hubConnection.state === HubConnectionState.Connected
-    ) {
-      console.log('SignalR connection is already established.');
+    if (this.hubConnection && this.hubConnection.state === HubConnectionState.Connected) {
       return;
     }
 
     this.hubConnection = new HubConnectionBuilder()
       .withUrl(url, {
         skipNegotiation: true,
-        transport: HttpTransportType.WebSockets,
+        transport: HttpTransportType.WebSockets
       })
       .withAutomaticReconnect()
       .build();
 
     from(this.hubConnection.start()).subscribe({
       next: (): void => {
-        console.log('SignalR Connected:', this.hubConnection.connectionId);
-        this.listenForMessages((message: string): void => {
-          console.log('Notification received:', message);
-        });
+        this.listenForMessages((message: string): void => {});
       },
       error: (error: Error): void => {
-        console.error('SignalR Connection Error:', error);
-      },
+        this._toastService.showError(`SignalR Connection Error: ${error.message}`);
+      }
     });
 
     this.handleDisconnects();
   }
 
   public stopConnection(): void {
-    if (
-      this.hubConnection &&
-      this.hubConnection.state === HubConnectionState.Connected
-    ) {
-      this.hubConnection
-        .stop()
-        .then((): void => console.log('SignalR Disconnected'));
+    if (this.hubConnection && this.hubConnection.state === HubConnectionState.Connected) {
+      this.hubConnection.stop();
     }
   }
 
@@ -68,31 +57,22 @@ export class NotificationService {
     if (!this.hubConnection) return;
 
     this.hubConnection.on('ReceiveNotification', (message: string): void => {
-      console.log('New notification received:', message);
       callback(message);
     });
 
-    this.hubConnection.on(
-      'ReceivedMessage',
-      (user: string, message: string): void => {
-        console.log(`User: ${user}, Message: ${message}`);
-      }
-    );
+    this.hubConnection.on('ReceivedMessage', (user: string, message: string): void => {});
   }
 
   public sendMessage(user: string, message: string): void {
-    if (
-      !this.hubConnection ||
-      this.hubConnection.state !== HubConnectionState.Connected
-    ) {
-      console.error('Cannot send message -> SignalR is not connected.');
+    if (!this.hubConnection || this.hubConnection.state !== HubConnectionState.Connected) {
+      this._toastService.showError('Cannot send message -> SignalR is not connected.');
       return;
     }
 
     this.hubConnection
       .invoke('SendMessage', user, message)
       .catch((error: Error): void =>
-        console.error('Error sending message:', error)
+        this._toastService.showError(`Error sending message: ${error}`)
       );
   }
 
@@ -100,16 +80,16 @@ export class NotificationService {
     if (!this.hubConnection) return;
 
     this.hubConnection.onclose((): void => {
-      console.log('Connection lost. Attempting to reconnect');
+      ('Connection lost. Attempting to reconnect');
       setTimeout((): void => this.startConnection(), 3000);
     });
 
     this.hubConnection.onreconnected((): void => {
-      console.log('Reconnected to SignalR hub.');
+      ('Reconnected to SignalR hub.');
     });
 
     this.hubConnection.onreconnecting((): void => {
-      console.log('Reconnecting to SignalR hub');
+      ('Reconnecting to SignalR hub');
     });
   }
 }

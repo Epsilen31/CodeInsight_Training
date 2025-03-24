@@ -19,14 +19,14 @@ const routes: Routes = [
       import('./main/billing-subscription-system-routing').then(
         (m): typeof BillingSubscriptionSystemRoutingModule =>
           m.BillingSubscriptionSystemRoutingModule
-      ),
+      )
   },
 
-  { path: '**', redirectTo: 'billing-subscription/dashboard' },
+  { path: '**', redirectTo: 'billing-subscription/dashboard' }
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule],
+  exports: [RouterModule]
 })
 export class AppRoutingModule {}

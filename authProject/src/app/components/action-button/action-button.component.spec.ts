@@ -9,8 +9,7 @@ describe('ActionButtonComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ActionButtonComponent]
-    })
-    .compileComponents();
+    }).compileComponents();
 
     fixture = TestBed.createComponent(ActionButtonComponent);
     component = fixture.componentInstance;

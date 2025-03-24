@@ -4,6 +4,6 @@ import { Component } from '@angular/core';
   selector: 'app-add-user',
   standalone: false,
   templateUrl: './add-user.component.html',
-  styleUrl: './add-user.component.scss',
+  styleUrl: './add-user.component.scss'
 })
 export class AddUserComponent {}

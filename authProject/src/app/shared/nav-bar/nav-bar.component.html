@@ -1,37 +1,31 @@
 <nav class="navbar px-6 py-4 flex justify-between items-center h-16 w-full">
   <div class="flex items-center gap-8">
-    <button class="text-white hover:text-gray-300" (click)="onToggleSidebar()">
+    <button class="sidebarbtn text-white hover:text-gray-300" (click)="onToggleSidebar()">
       <i class="fal fa-bars text-xl"></i>
     </button>
     <div class="text-lg font-semibold text-white">MyApp</div>
   </div>
   <!-- Right Section-> Theme Selector and User Menu -->
 
-  <div class="user-menu flex items-center gap-4 relative mr-10">
+  <div class="user-menu p-1 rounded-md flex items-center gap-4 relative mr-10">
     <span class="text-white">{{ user }}</span>
 
     <button
       (click)="ToggleDarkMode()"
-      class="p-2 rounded-md border border-gray-500 text-sm"
+      class="themebtn p-2 rounded-md border border-gray-500 text-sm hover:background-[#444]!important"
     >
-      {{ isDarkMode ? " Dark Mode" : " Light Mode" }}
+      {{ isDarkMode ? ' Dark Mode' : ' Light Mode' }}
     </button>
 
     <!-- Logout Dropdown -->
     <div class="relative">
-      <button
-        class="text-white hover:text-gray-300 ml-2"
-        (click)="toggleUserDropdown()"
-      >
-        ▼
-      </button>
+      <button class="text-white hover:text-gray-300 ml-2" (click)="toggleUserDropdown()">▼</button>
       <div
         *ngIf="isDropdownOpen"
         class="absolute right-0 mt-2 w-32 bg-white text-gray-900 rounded-md shadow-md overflow-hidden"
+        style="background: beige"
       >
-        <a
-          class="block px-4 py-2 hover:bg-gray-200 cursor-pointer"
-          (click)="logout()"
+        <a class="block px-4 py-2 text-gray-900 hover:bg-gray-200 cursor-pointer" (click)="logout()"
           >Logout</a
         >
       </div>

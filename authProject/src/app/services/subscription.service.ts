@@ -1,41 +1,43 @@
 import { Injectable } from '@angular/core';
 import { HttpClientService } from '../core/http-client.service';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import {
-  ISubscription,
+  ICreateSubscriptionResponse,
   ISubscriptionDetail,
-  ISubscriptionRequest,
+  ISubscriptionRequest
 } from '../models/subscription';
+import { RouteKey } from './../shared/constants/routeKey';
+import { ISubscription } from './../models/subscription';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class SubscriptionService {
   constructor(private readonly _httpClientService: HttpClientService) {}
 
   getSubscriptionByUserId(userId: number): Observable<ISubscriptionDetail> {
     return this._httpClientService.get<ISubscriptionDetail>(
-      `UserSubscription/GetSubscriptionByUserId/${userId}`
+      `${RouteKey.GET_SUBSCRIPTION_BY_ID_URL}/${userId}`
     );
   }
 
-  createSubscription(
-    subscription: ISubscriptionRequest
-  ): Observable<ISubscriptionRequest> {
-    console.log('Sending API request with data:', subscription);
-    return this._httpClientService.post<ISubscriptionRequest>(
-      'UserSubscription/CreateUserSubscriptionPlan',
-      subscription
-    );
+  createSubscription(subscription: ISubscriptionRequest): Observable<ICreateSubscriptionResponse> {
+    const { subscriptionId, ...subscriptionPayload } = subscription as any;
+    return this._httpClientService
+      .post<ICreateSubscriptionResponse>(`${RouteKey.CREATE_SUBSCRIPTION_URL}`, subscriptionPayload)
+      .pipe(
+        map((response: ICreateSubscriptionResponse) => {
+          return response;
+        })
+      );
   }
 
   updateSubscription(
-    id: number,
+    userId: number,
     subscription: ISubscription
   ): Observable<ISubscriptionRequest> {
-    console.log('Updating subscription', subscription);
     return this._httpClientService.put<ISubscription>(
-      `UserSubscription/UpdateUserSubscriptionPlan/${id}`,
+      `${RouteKey.UPDATE_SUBSCRIPTION_URL}/${userId}`,
       subscription
     );
   }

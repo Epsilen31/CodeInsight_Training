@@ -18,22 +18,22 @@
       <span
         [ngClass]="{
           active: subscription.subscriptionStatus === 1,
-          inactive: subscription.subscriptionStatus !== 1,
+          inactive: subscription.subscriptionStatus !== 1
         }"
       >
-        {{ subscription.subscriptionStatus === 1 ? "Active" : "Inactive" }}
+        {{ subscription.subscriptionStatus === 1 ? 'Active' : 'Inactive' }}
       </span>
       <span *ngIf="subscription.subscriptionStatus === 1">
         - Plan:
         {{
           subscription.planType === 1
-            ? "Basic"
+            ? 'Basic'
             : subscription.planType === 2
-              ? "Standard"
-              : "Premium"
+              ? 'Standard'
+              : 'Premium'
         }}
       </span>
     </p>
-    <button (click)="goBack()">Go Back</button>
+    <button (click)="redirectToUsers()">Go Back</button>
   </div>
 </div>

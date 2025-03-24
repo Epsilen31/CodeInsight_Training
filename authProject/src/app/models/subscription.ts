@@ -17,5 +17,10 @@ export interface ISubscriptionRequest {
 
 export interface ISubscriptionDetail {
   message: string;
+  subscription: ISubscription[];
+}
+
+export interface ICreateSubscriptionResponse {
+  message: string;
   subscription: ISubscription;
 }

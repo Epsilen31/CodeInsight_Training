@@ -3,7 +3,7 @@
   justify-content: center;
   align-items: center;
   height: 100vh;
-  font-family: "Poppins", sans-serif;
+  font-family: 'Poppins', sans-serif;
 }
 
 .auth-box {
@@ -51,7 +51,7 @@
   border-color: #6a11cb;
 }
 
-.auth-box input[type="submit"] {
+.auth-box input[type='submit'] {
   color: white;
   cursor: pointer;
 }
@@ -67,7 +67,9 @@
   font-size: 16px;
   font-weight: 500;
   margin-top: 10px;
-  transition: background 0.3s ease-in-out, transform 0.2s;
+  transition:
+    background 0.3s ease-in-out,
+    transform 0.2s;
 }
 
 .auth-box p {

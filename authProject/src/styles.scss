@@ -1,4 +1,4 @@
-@use "tailwindcss";
+@use 'tailwindcss';
 
 ngx-toast-container {
   position: absolute !important;
@@ -59,8 +59,10 @@ ngx-toast-container {
 /*  Default Light Mode */
 body {
   background-color: #f5f5f512;
-  color: #333;
-  transition: background-color 0.3s, color 0.3s;
+  color: black;
+  transition:
+    background-color 0.3s,
+    color 0.3s;
 }
 
 /*  Dark Mode */
@@ -81,11 +83,6 @@ body.dark-mode .navbar {
 }
 
 /*  Sidebar */
-aside {
-  background-color: #e0e0e0;
-  color: #333;
-  transition: background-color 0.3s;
-}
 body.dark-mode aside {
   background-color: #242424;
   color: white;
@@ -97,6 +94,7 @@ main {
   color: black;
   transition: background-color 0.3s;
 }
+
 body.dark-mode main {
   background-color: #181818;
   color: white;
@@ -104,33 +102,41 @@ body.dark-mode main {
 
 /*  Buttons */
 button {
-  background-color: #0c2b6a6b;
-  color: black;
-  border: 1px solid #ccc;
+  color: white;
   transition: background-color 0.3s;
 }
 body.dark-mode button {
-  background-color: #333;
   color: white;
-  border: 1px solid #555;
-}
-body.dark-mode button:hover {
-  background-color: #444;
 }
 
 /*  Dropdown */
 .user-menu {
-  background-color: #d8dfd582;
+  background-color: #595b5782;
   color: black;
   transition: background-color 0.3s;
 }
+
+.user-menu .themebtn {
+  background-color: #17a2b8;
+}
+
+body.dark-mode .themebtn {
+  background-color: #343a40;
+}
+
 body.dark-mode .user-menu {
   background-color: #2a2a2a;
   color: white;
   border: 1px solid #555;
 }
-body.dark-mode .user-menu a {
+
+body.dark-mode .user-menu button {
   color: white;
+}
+
+body.dark-mode .user-menu a {
+  color: black !important;
+  background-color: #f5f5f5;
 }
 body.dark-mode .user-menu a:hover {
   background-color: #333;

@@ -4,12 +4,13 @@ import { Router } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
 import { Role } from '../../../libs/enums/role';
 import { IErrorResponse } from '../../../models/error';
+import { ToastService } from '../../../services/toast.service';
 
 @Component({
   selector: 'app-register',
   standalone: false,
   templateUrl: './register.component.html',
-  styleUrl: './register.component.scss',
+  styleUrl: './register.component.scss'
 })
 export class RegisterComponent implements OnInit {
   registerForm!: FormGroup;
@@ -18,7 +19,8 @@ export class RegisterComponent implements OnInit {
   constructor(
     private readonly _router: Router,
     private readonly _fb: FormBuilder,
-    private readonly _authService: AuthService
+    private readonly _authService: AuthService,
+    private readonly _toastService: ToastService
   ) {}
 
   ngOnInit(): void {
@@ -27,19 +29,16 @@ export class RegisterComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       phone: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
       password: ['', [Validators.required, Validators.minLength(6)]],
-      role: ['Admin', Validators.required],
+      role: ['Admin', Validators.required]
     });
   }
 
   private getRoleId(): number {
-    return this.registerForm.get('role')?.value === 'Admin'
-      ? Role.Admin
-      : Role.User;
+    return this.registerForm.get('role')?.value === 'Admin' ? Role.Admin : Role.User;
   }
 
   togglePassword(): void {
-    this.passwordFieldType =
-      this.passwordFieldType === 'password' ? 'text' : 'password';
+    this.passwordFieldType = this.passwordFieldType === 'password' ? 'text' : 'password';
   }
 
   register(): void {
@@ -47,18 +46,16 @@ export class RegisterComponent implements OnInit {
       const { ...formData } = this.registerForm.value;
       const updatedFormData = {
         ...formData,
-        roleId: this.getRoleId(),
+        roleId: this.getRoleId()
       };
-
-      console.log('register', updatedFormData);
 
       this._authService.register(updatedFormData).subscribe({
         next: (): void => {
           this._router.navigate(['/login']);
         },
         error: (error: IErrorResponse): void => {
-          console.error('Registration Failed:', error);
-        },
+          this._toastService.showError(`Error fetching users: ${error.message}`);
+        }
       });
     }
   }

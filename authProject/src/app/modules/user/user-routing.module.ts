@@ -13,18 +13,18 @@ const routes: Routes = [
   {
     path: 'get-user-by-id/:id',
     component: UserDetailComponent,
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard]
   },
   {
     path: 'update-user/:id',
     component: UpdateUserComponent,
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard]
   },
-  { path: 'add-user', component: AddUserComponent, canActivate: [AuthGuard] },
+  { path: 'add-user', component: AddUserComponent, canActivate: [AuthGuard] }
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule],
+  exports: [RouterModule]
 })
 export class UserRoutingModule {}

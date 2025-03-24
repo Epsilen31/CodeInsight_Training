@@ -47,14 +47,6 @@ namespace BillingAndSubscriptionSystem.Services.Features.Payments
                     );
                     await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-                    // return new PaymentDto
-                    // {
-                    //     Id = paymentEntity.Id,
-                    //     SubscriptionId = paymentEntity.SubscriptionId,
-                    //     Amount = paymentEntity.Amount,
-                    //     PaymentDate = paymentEntity.PaymentDate,
-                    //     PaymentStatus = paymentEntity.PaymentStatus,
-                    // };
                     return _mapper.Map<PaymentDto>(paymentEntity);
                 }
                 catch (Exception exception)
@@ -70,17 +62,6 @@ namespace BillingAndSubscriptionSystem.Services.Features.Payments
 
             private Payment MapPayments(PaymentDto payment)
             {
-                // return new Payment
-                // {
-                //     Id = payment.Id,
-                //     SubscriptionId = payment.SubscriptionId,
-                //     Amount = payment.Amount,
-                //     PaymentDate = payment.PaymentDate,
-                //     PaymentStatus =
-                //         payment.PaymentStatus == PaymentStatus.Paid
-                //             ? PaymentStatus.Paid
-                //             : PaymentStatus.Overdue,
-                // };
                 return _mapper.Map<Payment>(payment);
             }
         }

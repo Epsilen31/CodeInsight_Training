@@ -8,20 +8,14 @@
     (progressComplete)="hideProgressBar()"
   ></app-progress-bar>
 
-  <div class="grid-container w-full">
-    <div class="ag-grid-wrapper w-full h-full overflow-y-hidden">
-      <ag-grid-angular
-        class="ag-theme-alpine"
-        style="min-width: 100%; height: 100%"
-        [rowData]="users"
-        [theme]="theme"
-        [columnDefs]="columnDefs"
-        [defaultColDef]="defaultColDef"
-        [gridOptions]="gridOptions"
-        (gridReady)="onGridReady($event)"
-      >
-      </ag-grid-angular>
-    </div>
+  <!-- Grid Container -->
+  <div class="grid-container w-full flex-grow overflow-hidden">
+    <app-table
+      [rowData]="users"
+      [columnDefs]="columnDefs"
+      [defaultColDef]="defaultColDef"
+      [gridOptions]="gridOptions"
+    ></app-table>
   </div>
 
   <!-- Notifications Section -->
@@ -35,10 +29,7 @@
         >
           {{ notification }}
         </li>
-        <li
-          *ngIf="notifications.length === 0"
-          class="text-gray-500 text-sm text-center"
-        >
+        <li *ngIf="notifications.length === 0" class="text-gray-500 text-sm text-center">
           No new notifications.
         </li>
       </ul>

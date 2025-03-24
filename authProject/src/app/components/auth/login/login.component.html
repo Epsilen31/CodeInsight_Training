@@ -2,13 +2,7 @@
   <div class="auth-box">
     <h2>Login</h2>
     <form [formGroup]="loginForm" (ngSubmit)="login()">
-      <input
-        type="text"
-        placeholder="Email"
-        formControlName="email"
-        name="email"
-        required
-      />
+      <input type="text" placeholder="Email" formControlName="email" name="email" required />
 
       <div class="password-container">
         <input
@@ -29,9 +23,7 @@
         </span>
       </div>
 
-      <button type="submit" [disabled]="loginForm.invalid || isSubmitting">
-        Login
-      </button>
+      <button type="submit" [disabled]="loginForm.invalid || isSubmitting">Login</button>
     </form>
     <p>Don't have an account? <a routerLink="/register">Register</a></p>
   </div>

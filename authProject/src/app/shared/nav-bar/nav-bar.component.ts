@@ -6,7 +6,7 @@ import { IUserSession } from '../../models/UserSession ';
   selector: 'app-nav-bar',
   templateUrl: './nav-bar.component.html',
   styleUrls: ['./nav-bar.component.scss'],
-  standalone: false,
+  standalone: false
 })
 export class NavBarComponent implements OnInit {
   @Output() toggleSidebar: EventEmitter<void> = new EventEmitter<void>();
@@ -16,8 +16,7 @@ export class NavBarComponent implements OnInit {
   isDarkMode: boolean = false;
 
   constructor(private readonly _sessionHelper: SessionHelperService) {
-    const storedUser: IUserSession | null =
-      this._sessionHelper.getItem<IUserSession>('user');
+    const storedUser: IUserSession | null = this._sessionHelper.getItem<IUserSession>('user');
     this.user = storedUser ? storedUser.name : 'Guest';
   }
 

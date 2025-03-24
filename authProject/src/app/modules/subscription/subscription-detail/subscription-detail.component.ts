@@ -1,46 +1,37 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { SubscriptionService } from '../../../services/subscription.service';
 import { SessionHelperService } from '../../../core/session-helper.service';
 import { Router } from '@angular/router';
-import {
-  ISubscription,
-  ISubscriptionDetail,
-} from '../../../models/subscription';
+import { ISubscription, ISubscriptionDetail } from '../../../models/subscription';
 
 @Component({
   selector: 'app-subscription-detail',
   standalone: false,
   templateUrl: './subscription-detail.component.html',
-  styleUrls: ['./subscription-detail.component.scss'],
+  styleUrls: ['./subscription-detail.component.scss']
 })
-export class SubscriptionDetailComponent implements OnInit {
-  id!: number;
+export class SubscriptionDetailComponent {
+  userId!: number;
   subscription: ISubscription | null = null;
   isLoading: boolean = true;
   errorMessage: string | null = null;
 
   constructor(
-    private readonly subscriptionService: SubscriptionService,
+    private readonly _subscriptionService: SubscriptionService,
     private readonly _sessionHelper: SessionHelperService,
     private readonly router: Router
   ) {
-    const storedUser = this._sessionHelper.getItem<{ id: number }>('user');
-    this.id = storedUser ? storedUser.id : -1;
-  }
-
-  ngOnInit(): void {
+    const user = this._sessionHelper.getItem<{ id: number }>('user');
+    this.userId = user?.id ?? -1;
     this.getSubscriptionDetails();
   }
 
-  getSubscriptionDetails(): void {
+  private getSubscriptionDetails(): void {
     this.isLoading = true;
-    this.subscriptionService.getSubscriptionByUserId(this.id).subscribe({
+
+    this._subscriptionService.getSubscriptionByUserId(this.userId).subscribe({
       next: (response: ISubscriptionDetail): void => {
-        console.log('response', response);
-        this.subscription = Array.isArray(response.subscription)
-          ? response.subscription[0]
-          : null;
-        console.log('subscription', this.subscription);
+        this.subscription = response.subscription[0];
       },
       error: (): void => {
         this.errorMessage = 'Failed to fetch subscription details.';
@@ -48,11 +39,11 @@ export class SubscriptionDetailComponent implements OnInit {
       },
       complete: (): void => {
         this.isLoading = false;
-      },
+      }
     });
   }
 
-  goBack(): void {
+  redirectToUsers(): void {
     this.router.navigate(['/billing-subscription/user/get-users']);
   }
 }

@@ -8,7 +8,7 @@ import { ToastrService } from 'ngx-toastr';
   selector: 'app-user-detail',
   standalone: false,
   templateUrl: './user-detail.component.html',
-  styleUrls: ['./user-detail.component.scss'],
+  styleUrls: ['./user-detail.component.scss']
 })
 export class UserDetailComponent implements OnInit {
   userId!: number;
@@ -30,12 +30,11 @@ export class UserDetailComponent implements OnInit {
     this.userService.getUserById(this.userId).subscribe({
       next: (data: IUserDetail): void => {
         this.user = data.user;
-        console.log('User details:', this.user);
       },
       error: (error: Error): void => {
         console.error('Error fetching user details:', error);
         this.toastr.error('Error fetching users:', error.message);
-      },
+      }
     });
   }
 

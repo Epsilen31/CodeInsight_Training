@@ -1,4 +1,4 @@
-import { Component, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, ViewChild, OnInit } from '@angular/core';
 import { ToastrService, ToastContainerDirective } from 'ngx-toastr';
 import { UserComponent } from '../modules/user/user/user.component';
 
@@ -6,24 +6,31 @@ import { UserComponent } from '../modules/user/user/user.component';
   selector: 'app-billing-subscription',
   standalone: false,
   templateUrl: './billing-subscription.component.html',
-  styleUrls: ['./billing-subscription.component.scss'],
+  styleUrls: ['./billing-subscription.component.scss']
 })
-export class BillingSubscriptionComponent implements AfterViewInit {
+export class BillingSubscriptionComponent implements OnInit {
   isLeftSidebarCollapsed: boolean = false;
-  isDarkMode: boolean = true;
+  isDarkMode!: boolean;
   private routerOutletComponent?: UserComponent | null;
+  storedTheme!: string | null;
 
   @ViewChild(ToastContainerDirective, { static: true })
   toastContainer!: ToastContainerDirective;
 
-  constructor(private readonly toastr: ToastrService) {}
+  constructor(private readonly toastr: ToastrService) {
+    this.storedTheme = localStorage.getItem('theme');
 
-  ngAfterViewInit(): void {
-    this.toastr.overlayContainer = this.toastContainer;
-    const storedTheme: string | null = localStorage.getItem('theme');
-    if (storedTheme === 'dark') {
+    if (this.storedTheme === 'dark') {
+      this.isDarkMode = true;
       this.enableDarkMode();
+    } else {
+      this.isDarkMode = false;
     }
+    console.log('toggle dark mode', this.isDarkMode);
+  }
+
+  ngOnInit(): void {
+    this.toastr.overlayContainer = this.toastContainer;
   }
 
   toggleLeftSidebar(): void {

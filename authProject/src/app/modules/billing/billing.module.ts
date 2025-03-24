@@ -4,6 +4,6 @@ import { BillingRoutingModule } from './billing-routing.module';
 
 @NgModule({
   declarations: [],
-  imports: [CommonModule, BillingRoutingModule],
+  imports: [CommonModule, BillingRoutingModule]
 })
 export class BillingModule {}

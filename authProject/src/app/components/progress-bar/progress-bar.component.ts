@@ -1,18 +1,10 @@
-import {
-  Component,
-  Input,
-  OnDestroy,
-  OnInit,
-  Output,
-  EventEmitter,
-  NgZone,
-} from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, Output, EventEmitter, NgZone } from '@angular/core';
 
 @Component({
   selector: 'app-progress-bar',
   templateUrl: './progress-bar.component.html',
   styleUrl: './progress-bar.component.scss',
-  standalone: false,
+  standalone: false
 })
 export class ProgressBarComponent implements OnInit, OnDestroy {
   @Input() progress: number = 0;

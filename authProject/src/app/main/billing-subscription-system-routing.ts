@@ -11,7 +11,7 @@ const routes: Routes = [
   {
     path: 'dashboard',
     component: DashboardComponent,
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard]
   },
   {
     path: 'user',
@@ -19,7 +19,7 @@ const routes: Routes = [
       import('../modules/user/user-routing.module').then(
         (m): typeof UserRoutingModule => m.UserRoutingModule
       ),
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard]
   },
   {
     path: 'subscription',
@@ -27,7 +27,7 @@ const routes: Routes = [
       import('../modules/subscription/subscription-routing.module').then(
         (m): typeof SubscriptionRoutingModule => m.SubscriptionRoutingModule
       ),
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard]
   },
   {
     path: 'billing',
@@ -35,7 +35,7 @@ const routes: Routes = [
       import('../modules/billing/billing-routing.module').then(
         (m): typeof BillingRoutingModule => m.BillingRoutingModule
       ),
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard]
   },
   {
     path: 'payment',
@@ -43,12 +43,12 @@ const routes: Routes = [
       import('../modules/payment/payment-routing.module').then(
         (m): typeof PaymentRoutingModule => m.PaymentRoutingModule
       ),
-    canActivate: [AuthGuard],
-  },
+    canActivate: [AuthGuard]
+  }
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule],
+  exports: [RouterModule]
 })
 export class BillingSubscriptionSystemRoutingModule {}

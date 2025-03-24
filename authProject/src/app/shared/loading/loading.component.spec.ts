@@ -9,8 +9,7 @@ describe('LoadingComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [LoadingComponent]
-    })
-    .compileComponents();
+    }).compileComponents();
 
     fixture = TestBed.createComponent(LoadingComponent);
     component = fixture.componentInstance;

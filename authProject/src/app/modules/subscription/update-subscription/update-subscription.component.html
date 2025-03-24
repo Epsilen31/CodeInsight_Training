@@ -3,11 +3,7 @@
 
   <div *ngIf="!errorMessage && subscription; else loading">
     <label for="planType"><strong>Plan:</strong></label>
-    <select
-      id="planType"
-      [(ngModel)]="subscription.planType"
-      (change)="onPlanChange()"
-    >
+    <select id="planType" [(ngModel)]="subscription.planType" (change)="onSubscriptionPlanChange()">
       <option [ngValue]="1">Basic</option>
       <option [ngValue]="2">Standard</option>
       <option [ngValue]="3">Premium</option>
@@ -21,28 +17,24 @@
       <span
         [ngClass]="{
           'active-status': subscription.subscriptionStatus === 1,
-          'inactive-status': subscription.subscriptionStatus !== 1,
+          'inactive-status': subscription.subscriptionStatus !== 1
         }"
       >
-        {{ subscription.subscriptionStatus === 1 ? "Active" : "Inactive" }}
+        {{ subscription.subscriptionStatus === 1 ? 'Active' : 'Inactive' }}
       </span>
       <span *ngIf="subscription.subscriptionStatus === 1">
         - Plan:
         {{
           subscription.planType === 1
-            ? "Basic"
+            ? 'Basic'
             : subscription.planType === 2
-              ? "Standard"
-              : "Premium"
+              ? 'Standard'
+              : 'Premium'
         }}
       </span>
     </p>
 
-    <button
-      (click)="updateSubscription()"
-      [disabled]="!subscriptionId"
-      class="update-btn"
-    >
+    <button (click)="updateSubscription()" [disabled]="!subscriptionId" class="update-btn">
       Update Subscription
     </button>
   </div>

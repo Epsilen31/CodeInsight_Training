@@ -4,9 +4,10 @@ import { SessionHelperService } from '../core/session-helper.service';
 import { IUserSession } from '../models/UserSession ';
 import { ILogin, IRegisterUser } from '../models/auth';
 import { HttpClientService } from '../core/http-client.service';
+import { RouteKey } from '../shared/constants/routeKey';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class AuthService {
   constructor(
@@ -15,11 +16,11 @@ export class AuthService {
   ) {}
 
   login(data: ILogin): Observable<ILogin> {
-    return this._httpClient.post<ILogin>('Auth/login', data);
+    return this._httpClient.post<ILogin>(`${RouteKey.AUTH_LOGIN_URL}`, data);
   }
 
   register(user: IRegisterUser): Observable<IRegisterUser> {
-    return this._httpClient.post<IRegisterUser>('Auth/register', user);
+    return this._httpClient.post<IRegisterUser>(`${RouteKey.AUTH_REGISTER_URL}`, user);
   }
 
   storeUserSession(token: string, user: IUserSession): void {

@@ -1,70 +1,82 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { NavigationExtras, Router } from '@angular/router';
 import { SubscriptionService } from '../../../services/subscription.service';
 import { SessionHelperService } from '../../../core/session-helper.service';
-import { ISubscriptionRequest } from '../../../models/subscription';
+import { ICreateSubscriptionResponse, ISubscriptionRequest } from '../../../models/subscription';
+import { ToastService } from '../../../services/toast.service';
 import { IUserSession } from '../../../models/UserSession ';
 
 @Component({
   selector: 'app-user-subscription',
   standalone: false,
   templateUrl: './user-subscription.component.html',
-  styleUrl: './user-subscription.component.scss',
+  styleUrls: ['./user-subscription.component.scss']
 })
-export class UserSubscriptionComponent implements OnInit {
+export class UserSubscriptionComponent {
   userId: number;
   selectedPlanType: number | null = null;
-  subscriptionSuccess: boolean = false;
-  subscriptionError: boolean = false;
+  subscriptionId!: number;
 
   constructor(
-    private readonly subscriptionService: SubscriptionService,
-    private readonly _sessionHelper: SessionHelperService
+    private readonly _subscriptionService: SubscriptionService,
+    private readonly _sessionHelper: SessionHelperService,
+    private readonly _toastService: ToastService,
+    private readonly _router: Router
   ) {
-    const storedUser: IUserSession | null =
-      this._sessionHelper.getItem<IUserSession>('user');
+    const storedUser: IUserSession | null = this._sessionHelper.getItem<IUserSession>('user');
     this.userId = storedUser ? Number(storedUser.id) : -1;
-  }
-
-  ngOnInit(): void {
-    console.log(
-      'UserSubscriptionComponent initialized with userId:',
-      this.userId
-    );
   }
 
   createSubscription(): void {
     if (!this.selectedPlanType) {
-      console.error('No plan selected.');
+      this._toastService.showWarning('No plan selected.');
       return;
     }
 
-    console.log('User ID before sending request:', this.userId);
+    const subscriptionData: ISubscriptionRequest = this.getSubscriptionData();
 
+    this._subscriptionService.createSubscription(subscriptionData).subscribe({
+      next: (response: ICreateSubscriptionResponse): void => {
+        const subscriptionId: number = response?.subscription?.subscriptionId;
+        this.subscriptionId = subscriptionId;
+
+        const sendSubcriptionId: NavigationExtras = this.NavigateExtra();
+
+        if (subscriptionId) {
+          this._toastService.showSuccess('Subscription successful! Redirecting to payment...');
+          this._router.navigate(
+            ['/billing-subscription/payment/create-payment'],
+            sendSubcriptionId
+          );
+        } else {
+          this._toastService.showError('Subscription created but ID not received!');
+        }
+      },
+      error: (error: Error): void => {
+        this._toastService.showError(`Error: ${error.message}`);
+      }
+    });
+  }
+
+  private getSubscriptionData(): ISubscriptionRequest {
     const today: Date = new Date();
     const nextYear: Date = new Date(today);
     nextYear.setFullYear(today.getFullYear() + 1);
 
-    const subscriptionData: ISubscriptionRequest = {
-      planType: this.selectedPlanType,
+    return {
+      planType: this.selectedPlanType!,
       startDate: today.toISOString(),
       endDate: nextYear.toISOString(),
       subscriptionStatus: 1,
-      userId: this.userId,
+      userId: this.userId
     };
+  }
 
-    console.log('Creating subscription with:', subscriptionData);
-
-    this.subscriptionService.createSubscription(subscriptionData).subscribe({
-      next: (response: ISubscriptionRequest): void => {
-        console.log('Subscription created successfully:', response);
-        this.subscriptionSuccess = true;
-        this.subscriptionError = false;
-      },
-      error: (error: Error): void => {
-        console.error('Error creating subscription:', error);
-        this.subscriptionError = true;
-        this.subscriptionSuccess = false;
-      },
-    });
+  private NavigateExtra(): NavigationExtras {
+    return {
+      state: {
+        subscriptionId: this.subscriptionId
+      }
+    };
   }
 }

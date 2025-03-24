@@ -9,8 +9,7 @@ describe('BillingSubscriptionComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [BillingSubscriptionComponent]
-    })
-    .compileComponents();
+    }).compileComponents();
 
     fixture = TestBed.createComponent(BillingSubscriptionComponent);
     component = fixture.componentInstance;
