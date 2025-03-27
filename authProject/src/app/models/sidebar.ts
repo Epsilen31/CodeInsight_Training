@@ -3,6 +3,7 @@ export interface ISubMenu {
   title: string;
   path: string;
   isActive: boolean;
+  icon?: string;
 }
 
 export interface IMenu {

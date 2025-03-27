@@ -8,10 +8,11 @@ ngx-toast-container {
   z-index: 9999 !important;
 }
 
-.toast-top-right {
+.toast-top-center {
   position: fixed !important;
-  top: 20px !important;
-  right: 20px !important;
+  top: 0px !important;
+  left: 50%;
+  transform: translateX(-50%) !important;
   z-index: 99999 !important;
 }
 
@@ -82,12 +83,6 @@ body.dark-mode .navbar {
   color: white;
 }
 
-/*  Sidebar */
-body.dark-mode aside {
-  background-color: #242424;
-  color: white;
-}
-
 /*  Main Content */
 main {
   background-color: rgba(255, 255, 255, 0.332);
@@ -111,7 +106,6 @@ body.dark-mode button {
 
 /*  Dropdown */
 .user-menu {
-  background-color: #595b5782;
   color: black;
   transition: background-color 0.3s;
 }
@@ -125,9 +119,7 @@ body.dark-mode .themebtn {
 }
 
 body.dark-mode .user-menu {
-  background-color: #2a2a2a;
   color: white;
-  border: 1px solid #555;
 }
 
 body.dark-mode .user-menu button {

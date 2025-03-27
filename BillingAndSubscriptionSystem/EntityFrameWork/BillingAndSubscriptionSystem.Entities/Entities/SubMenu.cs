@@ -11,6 +11,8 @@ namespace BillingAndSubscriptionSystem.Entities.Entities
 
         public string Role { get; set; } = "Admin";
 
+        public string Icon { get; set; } = string.Empty;
+
         public Menu? Menu { get; set; }
     }
 }

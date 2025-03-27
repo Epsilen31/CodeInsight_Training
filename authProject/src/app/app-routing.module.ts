@@ -7,7 +7,7 @@ import { RegisterComponent } from './components/auth/register/register.component
 import { BillingSubscriptionSystemRoutingModule } from './main/billing-subscription-system-routing';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'billing-subscription/dashboard', pathMatch: 'full' },
+  { path: '', redirectTo: 'billing-subscription/dasbboard', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
 

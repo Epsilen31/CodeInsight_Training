@@ -34,6 +34,7 @@ namespace BillingAndSubscriptionSystem.WebApi.Controllers.Users
             var users = await _mediator.Send(new GetAllUsers.Query(), cancellationToken);
 
             await _notification.BroadcastNotification("User list has been retrieved successfully.");
+            Console.WriteLine("notification message sent successfully");
 
             return Ok(new { Message = "Users retrieved successfully", Users = users });
         }

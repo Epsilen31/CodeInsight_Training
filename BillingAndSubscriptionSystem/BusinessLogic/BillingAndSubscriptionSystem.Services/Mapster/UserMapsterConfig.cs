@@ -14,7 +14,8 @@ namespace BillingAndSubscriptionSystem.Services.Mapster
                 .AfterMapping(
                     (source, target) =>
                     {
-                        target.RoleId = int.TryParse(source.Role, out int roleId) ? roleId : 0;
+                        target.RoleId = source.RoleId;
+
                         if (!string.IsNullOrEmpty(source.Password))
                         {
                             target.Password = BCrypt.Net.BCrypt.HashPassword(source.Password);
@@ -28,7 +29,7 @@ namespace BillingAndSubscriptionSystem.Services.Mapster
                 .AfterMapping(
                     (source, target) =>
                     {
-                        target.Role = source.RoleId == '1' ? "Admin" : "User";
+                        target.Role = source.Role?.RoleName;
                         target.Password = source.Password;
                     }
                 );

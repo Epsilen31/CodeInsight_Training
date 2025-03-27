@@ -14,6 +14,7 @@ namespace BillingAndSubscriptionSystem.Context.Configurations
 
             builder.Property(subMenu => subMenu.Title).HasMaxLength(100).IsRequired();
             builder.Property(subMenu => subMenu.Path).HasMaxLength(255);
+            builder.Property(submenu => submenu.Icon).HasMaxLength(100);
 
             builder
                 .HasOne(subMenu => subMenu.Menu)

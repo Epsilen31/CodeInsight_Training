@@ -15,15 +15,13 @@ export class ActionButtonComponent implements ICellRendererAngularComp {
   private params!: ICellRendererParams;
   private gridApi!: GridApi;
 
-  // constants for the url
-
-  private readonly VIEW_URL: string = '/user/get-user-by-id';
-  private readonly UPDATE_URL: string = '/user/update-user';
+  private readonly VIEW_URL: string = '/billing-subscription/user/get-user-by-id';
+  private readonly UPDATE_URL: string = '/billing-subscription/user/update-user';
 
   constructor(
     private readonly _router: Router,
-    private readonly userService: UserService,
-    private readonly toastService: ToastService
+    private readonly _userService: UserService,
+    private readonly _toastService: ToastService
   ) {}
 
   agInit(params: ICellRendererParams): void {
@@ -50,13 +48,13 @@ export class ActionButtonComponent implements ICellRendererAngularComp {
     const userId: number = this.params.data.id;
 
     if (confirm('Are you sure you want to delete this user?')) {
-      this.userService.deleteUser(userId).subscribe({
+      this._userService.deleteUser(userId).subscribe({
         next: (): void => {
-          this.toastService.showSuccess('User deleted successfully.');
+          this._toastService.showSuccess('User deleted successfully.');
           this.gridApi.applyTransaction({ remove: [this.params.data] });
         },
         error: (error: { message: string }): void => {
-          this.toastService.showError('Error deleting user: ' + error.message);
+          this._toastService.showError('Error deleting user: ' + error.message);
         }
       });
     }

@@ -35,13 +35,10 @@ namespace BillingAndSubscriptionSystem.Services.Services
                 new Claim(ClaimTypes.Role, user.Role ?? "User"),
             };
 
-            var tokenExpiration = DateTime.UtcNow.AddHours(1);
-
             var token = new JwtSecurityToken(
                 issuer: _configuration["Jwt:Issuer"],
                 audience: _configuration["Jwt:Audience"],
                 claims: claims,
-                expires: tokenExpiration,
                 signingCredentials: signingCredentials
             );
 
@@ -63,12 +60,11 @@ namespace BillingAndSubscriptionSystem.Services.Services
             {
                 ValidateIssuer = true,
                 ValidateAudience = true,
-                ValidateLifetime = true,
+                ValidateLifetime = false, // <== Disable token expiration check
                 ValidateIssuerSigningKey = true,
                 ValidIssuer = _configuration["Jwt:Issuer"],
                 ValidAudience = _configuration["Jwt:Audience"],
                 IssuerSigningKey = key,
-                ClockSkew = TimeSpan.Zero,
             };
 
             try

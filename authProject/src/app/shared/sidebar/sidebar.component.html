@@ -1,51 +1,50 @@
 <div
-  class="fixed transition-all duration-300 top-16 left-0"
+  class="fixed top-16 left-0"
   [ngClass]="{
-    'w-20': isLeftSidebarCollapsed,
+    'w-24': isLeftSidebarCollapsed,
     'w-64': !isLeftSidebarCollapsed,
     'bg-[#012a5b] text-white': !isDarkMode,
     'bg-[#242424] text-white': isDarkMode
   }"
   style="height: calc(100vh - 4rem)"
 >
-  <!-- Sidebar Menu -->
   <ul class="mt-6 space-y-1">
     <li>
       <a
-        class="flex items-center px-6 py-3 cursor-pointer transition rounded-md gap-x-2"
+        class="flex items-center px-4 py-3 cursor-pointer transition rounded-md gap-x-4"
         [routerLink]="'/dashboard'"
         routerLinkActive="bg-indigo-800"
         [ngClass]="isDarkMode ? 'hover:bg-gray-700' : 'hover:bg-blue-700'"
+        [title]="isLeftSidebarCollapsed ? 'Dashboard' : ''"
       >
-        <i class="pi pi-home"></i>
+        <i class="fa fa-solid fa-layer-group"></i>
         <span *ngIf="!isLeftSidebarCollapsed">Dashboard</span>
       </a>
     </li>
 
     <li *ngFor="let item of menuItems">
       <div
-        class="flex items-center px-4 py-3 cursor-pointer transition rounded-md gap-x-2"
+        class="block px-4 py-3 cursor-pointer transition rounded-md gap-x-2 relative"
         (click)="toggleDropdown(item, $event)"
         [routerLink]="item.path"
         [ngClass]="isDarkMode ? 'hover:bg-gray-700' : 'hover:bg-blue-700'"
+        [title]="isLeftSidebarCollapsed ? item.title : ''"
       >
-        <span class="pi pi-folder"></span>
-        <span *ngIf="!isLeftSidebarCollapsed">{{ item.title }}</span>
-
+        <i [class]="'fa ' + (item.icon || 'fa-solid fa-spinner')"></i>
+        <span *ngIf="!isLeftSidebarCollapsed" class="ml-4 mr-4">{{ item.title }}</span>
         <i
-          *ngIf="item.subMenus.length > 0"
-          class="transition-transform duration-300 ml-auto"
+          *ngIf="item.subMenus && item.subMenus.length > 0"
+          class="transition-transform duration-300 absolute right-4 mt-[0.5rem]"
           [ngClass]="item.isDropdownOpen ? 'rotate-180' : 'rotate-0'"
           [class]="'fal fa-chevron-down'"
         ></i>
       </div>
 
-      <!-- Submenus -->
       <ul
         class="pl-6 space-y-1 mt-1 overflow-hidden transition-all duration-300"
         [ngClass]="{
           'max-h-0 opacity-0': !item.isDropdownOpen,
-          'max-h-40 opacity-100': item.isDropdownOpen
+          'max-h-40 opacity-100 overflow-y-auto': item.isDropdownOpen
         }"
       >
         <li *ngFor="let sub of item.subMenus">
@@ -56,8 +55,10 @@
             [ngClass]="
               isDarkMode ? 'text-gray-300 hover:bg-gray-700' : 'text-white hover:bg-blue-700'
             "
+            [title]="isLeftSidebarCollapsed ? sub.title : ''"
           >
-            {{ sub.title }}
+            <i [class]="'fa ' + (sub.icon || 'fa-solid fa-spinner')"></i>
+            <span *ngIf="!isLeftSidebarCollapsed" class="ml-2">{{ sub.title }}</span>
           </a>
         </li>
       </ul>

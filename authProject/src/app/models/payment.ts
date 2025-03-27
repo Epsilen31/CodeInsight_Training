@@ -16,3 +16,8 @@ export interface IOverduePayments {
   paymentDate: string;
   paymentStatus: number;
 }
+
+export interface IOverduePaymentsResponse {
+  message: string;
+  overduePayments: IOverduePayments[];
+}

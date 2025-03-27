@@ -20,5 +20,9 @@ export const RouteKey = {
 
   // PAYMENT ROUTES
   CREATE_PAYMENT_URL: 'Payments/CreatePayment',
-  FETCH_OVERDUE_PAYMENTS_URL: 'Payments/GetOverduePayments'
+  FETCH_OVERDUE_PAYMENTS_URL: 'Payments/GetOverduePayments',
+
+  // BILLING ROUTES
+  UPDATE_BILLING_URL: 'Billing/UpdateBilling',
+  GET_USERS_WITH_BILLING: 'Billing/GetUsersWithBilling'
 };

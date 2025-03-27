@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { SessionHelperService } from '../core/session-helper.service';
-import { IUserSession } from '../models/UserSession ';
 import { ILogin, IRegisterUser } from '../models/auth';
 import { HttpClientService } from '../core/http-client.service';
 import { RouteKey } from '../shared/constants/routeKey';
+import { IUserSession } from '../models/userSession ';
 
 @Injectable({
   providedIn: 'root'

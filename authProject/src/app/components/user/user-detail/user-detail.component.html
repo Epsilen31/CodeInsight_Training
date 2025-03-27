@@ -1,0 +1,65 @@
+<div
+  [ngClass]="
+    isDarkMode
+      ? 'bg-gray-800 text-gray-100 border-gray-700'
+      : 'bg-white text-gray-800 border-gray-200'
+  "
+  class="max-w-md mx-auto mt-10 p-6 rounded-lg shadow-md border"
+>
+  <h2 [ngClass]="isDarkMode ? 'text-gray-100' : 'text-gray-800'" class="text-3xl font-bold mb-6">
+    User Details
+  </h2>
+
+  <div *ngIf="user; else loading">
+    <div class="space-y-4">
+      <div class="flex" [ngClass]="isDarkMode ? 'text-gray-300' : 'text-gray-700'">
+        <span class="w-24 font-semibold"> ID: </span>
+        <span>
+          {{ user.id }}
+        </span>
+      </div>
+      <div class="flex">
+        <span class="w-24 font-semibold"> Name: </span>
+        <span>
+          {{ user.name }}
+        </span>
+      </div>
+      <div class="flex">
+        <span class="w-24 font-semibold"> Email: </span>
+        <span>
+          {{ user.email }}
+        </span>
+      </div>
+      <div class="flex">
+        <span class="w-24 font-semibold"> Phone: </span>
+        <span>
+          {{ user.phone }}
+        </span>
+      </div>
+      <div class="flex">
+        <span class="w-24 font-semibold"> Role: </span>
+        <span>
+          {{ user.role }}
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #loading>
+    <p [ngClass]="isDarkMode ? 'text-gray-400' : 'text-gray-600'" class="text-center">
+      Loading user details...
+    </p>
+  </ng-template>
+
+  <button
+    (click)="redirectToAllUser()"
+    [ngClass]="
+      isDarkMode
+        ? 'bg-indigo-500 hover:bg-indigo-600 text-gray-100'
+        : 'bg-indigo-600 hover:bg-indigo-700 text-white'
+    "
+    class="mt-6 w-full px-4 py-2 rounded transition-colors"
+  >
+    Go Back
+  </button>
+</div>

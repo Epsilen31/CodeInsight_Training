@@ -5,19 +5,17 @@
     </button>
     <div class="text-lg font-semibold text-white">MyApp</div>
   </div>
-  <!-- Right Section-> Theme Selector and User Menu -->
 
-  <div class="user-menu p-1 rounded-md flex items-center gap-4 relative mr-10">
-    <span class="text-white">{{ user }}</span>
+  <div class="user-menu p-2 rounded-md flex items-center gap-4 relative mr-10">
+    <span class="text-white font-bold">{{ user }}</span>
 
     <button
       (click)="ToggleDarkMode()"
-      class="themebtn p-2 rounded-md border border-gray-500 text-sm hover:background-[#444]!important"
+      class="themebtn font-semibold p-2 rounded-md border border-gray-500 text-sm hover:background-[#444]!important"
     >
       {{ isDarkMode ? ' Dark Mode' : ' Light Mode' }}
     </button>
 
-    <!-- Logout Dropdown -->
     <div class="relative">
       <button class="text-white hover:text-gray-300 ml-2" (click)="toggleUserDropdown()">▼</button>
       <div

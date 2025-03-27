@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
-import { IUserSession } from '../../../models/UserSession ';
+import { IUserSession } from '../../../models/userSession ';
 import { IErrorResponse } from '../../../models/error';
 import { ILogin } from '../../../models/auth';
 import { ToastService } from '../../../services/toast.service';
@@ -43,6 +43,7 @@ export class LoginComponent implements OnInit {
 
       this._authService.login(this.loginForm.value).subscribe({
         next: (response: ILogin): void => {
+          this._toastService.showSuccess('Login Successfully');
           const userSession: IUserSession = {
             name: response.name,
             email: response.email,

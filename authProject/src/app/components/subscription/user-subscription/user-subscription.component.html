@@ -1,0 +1,52 @@
+<div
+  [ngClass]="
+    isDarkMode
+      ? 'max-w-xl mx-auto mt-10 p-6 rounded-lg shadow-md border bg-gray-800 text-gray-100 border-gray-700'
+      : 'max-w-xl mx-auto mt-10 p-6 rounded-lg shadow-md border bg-white text-gray-800 border-gray-200'
+  "
+>
+  <h2
+    [ngClass]="
+      isDarkMode ? 'text-3xl font-bold mb-6 text-gray-100' : 'text-3xl font-bold mb-6 text-gray-800'
+    "
+  >
+    New Subscription Plan
+  </h2>
+
+  <label
+    for="plan"
+    [ngClass]="
+      isDarkMode
+        ? 'block mb-2 font-semibold text-gray-300'
+        : 'block mb-2 font-semibold text-gray-700'
+    "
+  >
+    Select Subscription Plan:
+  </label>
+
+  <select
+    id="plan"
+    [(ngModel)]="selectedPlanType"
+    [ngClass]="
+      isDarkMode
+        ? 'w-full p-2 bg-gray-700 text-gray-100 border border-gray-600 rounded focus:outline-none focus:ring-2 focus:ring-indigo-500 mb-4'
+        : 'w-full p-2 bg-white text-gray-800 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-indigo-500 mb-4'
+    "
+  >
+    <option [ngValue]="1">Basic Plan</option>
+    <option [ngValue]="2">Standard Plan</option>
+    <option [ngValue]="3">Premium Plan</option>
+  </select>
+
+  <button
+    (click)="createSubscription()"
+    [disabled]="!selectedPlanType"
+    [ngClass]="
+      isDarkMode
+        ? 'w-full px-4 py-2 bg-indigo-500 hover:bg-indigo-600 text-gray-100 rounded transition-colors'
+        : 'w-full px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded transition-colors'
+    "
+  >
+    Subscribe Now
+  </button>
+</div>

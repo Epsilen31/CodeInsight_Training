@@ -1,0 +1,14 @@
+<div class="ag-grid-wrapper w-full overflow-auto" style="height: 80vh">
+  <ag-grid-angular
+    class="ag-theme-alpine"
+    [rowData]="rowData"
+    [columnDefs]="columnDefs"
+    [defaultColDef]="defaultColDef"
+    [gridOptions]="gridOptions"
+    [pagination]="true"
+    [theme]="theme"
+    style="height: 100%"
+    (gridReady)="onGridReady($event)"
+  >
+  </ag-grid-angular>
+</div>

@@ -2,10 +2,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from '../core/guard/auth.guard';
 import { DashboardComponent } from '../components/dashboard/dashboard.component';
-import { UserRoutingModule } from '../modules/user/user-routing.module';
-import { SubscriptionRoutingModule } from '../modules/subscription/subscription-routing.module';
-import { BillingRoutingModule } from '../modules/billing/billing-routing.module';
-import { PaymentRoutingModule } from '../modules/payment/payment-routing.module';
 
 const routes: Routes = [
   {
@@ -15,34 +11,23 @@ const routes: Routes = [
   },
   {
     path: 'user',
-    loadChildren: () =>
-      import('../modules/user/user-routing.module').then(
-        (m): typeof UserRoutingModule => m.UserRoutingModule
-      ),
+    loadChildren: () => import('../components/user/user.module').then((m) => m.UserModule),
     canActivate: [AuthGuard]
   },
   {
     path: 'subscription',
     loadChildren: () =>
-      import('../modules/subscription/subscription-routing.module').then(
-        (m): typeof SubscriptionRoutingModule => m.SubscriptionRoutingModule
-      ),
+      import('../components/subscription/subscription.module').then((m) => m.SubscriptionModule),
     canActivate: [AuthGuard]
   },
   {
     path: 'billing',
-    loadChildren: () =>
-      import('../modules/billing/billing-routing.module').then(
-        (m): typeof BillingRoutingModule => m.BillingRoutingModule
-      ),
+    loadChildren: () => import('../components/billing/billing.module').then((m) => m.BillingModule),
     canActivate: [AuthGuard]
   },
   {
     path: 'payment',
-    loadChildren: () =>
-      import('../modules/payment/payment-routing.module').then(
-        (m): typeof PaymentRoutingModule => m.PaymentRoutingModule
-      ),
+    loadChildren: () => import('../components/payment/payment.module').then((m) => m.PaymentModule),
     canActivate: [AuthGuard]
   }
 ];

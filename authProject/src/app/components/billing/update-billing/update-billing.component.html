@@ -1,0 +1,63 @@
+<div
+  class="max-w-xl mx-auto mt-10 p-6 rounded-xl shadow-lg transition-all duration-300"
+  [ngClass]="{
+    'bg-white text-gray-800': !isDarkMode,
+    'bg-gray-900 text-white': isDarkMode
+  }"
+>
+  <h2 class="text-2xl font-bold mb-6 text-center">Update Billing</h2>
+
+  <form [formGroup]="billingForm" (ngSubmit)="onSubmit()" class="space-y-5">
+    <div>
+      <label for="paymentMethod" class="block text-sm font-medium mb-1">Payment Method</label>
+      <select
+        id="paymentMethod"
+        formControlName="PaymentMethod"
+        class="form-select w-full rounded-md px-4 py-2 focus:ring-2 focus:border-blue-500 transition"
+        [ngClass]="{
+          'bg-gray-200 border border-gray-300 text-gray-800 focus:ring-blue-500': !isDarkMode,
+          'bg-gray-800 border border-gray-700 text-white focus:ring-blue-400': isDarkMode
+        }"
+      >
+        <option [value]="1">Credit Card</option>
+        <option [value]="3">UPI</option>
+        <option [value]="5">QR</option>
+      </select>
+    </div>
+
+    <div>
+      <label for="billingAddress" class="block text-sm font-medium mb-1">Billing Address</label>
+      <input
+        id="billingAddress"
+        type="text"
+        formControlName="BillingAddress"
+        class="form-input w-full rounded-md px-4 py-2 focus:ring-2 focus:border-blue-500 transition"
+        [ngClass]="{
+          'bg-gray-200 border border-gray-300 text-gray-800 focus:ring-blue-500': !isDarkMode,
+          'bg-gray-800 border border-gray-700 text-white focus:ring-blue-400': isDarkMode
+        }"
+      />
+    </div>
+
+    <div class="mb-4">
+      <label for="userId" class="block text-sm font-medium mb-1">User ID</label>
+      <p
+        id="userId"
+        class="w-full rounded-md px-4 py-2 focus:ring-2 focus:border-blue-500 transition"
+        [ngClass]="{
+          'bg-gray-200 border border-gray-300 text-gray-800 focus:ring-blue-500': !isDarkMode,
+          'bg-gray-800 border border-gray-700 text-white focus:ring-blue-400': isDarkMode
+        }"
+      >
+        {{ userId }}
+      </p>
+    </div>
+
+    <button
+      type="submit"
+      class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md w-full transition"
+    >
+      Update Billing
+    </button>
+  </form>
+</div>

@@ -13,35 +13,24 @@
   <ngx-toast-container class="absolute top-0 left-0 w-full z-[9999]"></ngx-toast-container>
 
   <div class="flex flex-grow pt-16 bg-[#d1d6de]">
+    <!-- Sidebar -->
     <aside
-      class="bg-blue-700 text-white fixed top-16 left-0 transition-all duration-300 ,"
-      [ngClass]="{
-        'w-20': isLeftSidebarCollapsed,
-        'w-64': !isLeftSidebarCollapsed
-      }"
-      style="height: 100vh"
+      class="bg-blue-700 text-white fixed top-16 left-0 h-[calc(100vh-4rem)]"
+      [ngClass]="isLeftSidebarCollapsed ? 'w-24' : 'w-64'"
     >
-      <app-sidebar
-        *ngIf="isDarkMode !== undefined"
-        [isLeftSidebarCollapsed]="isLeftSidebarCollapsed"
-        [isDarkMode]="isDarkMode"
-      ></app-sidebar>
+      <app-sidebar [isLeftSidebarCollapsed]="isLeftSidebarCollapsed"></app-sidebar>
     </aside>
 
+    <!-- Main content -->
     <main
-      class="flex-grow overflow-y-hidden p-6 bg-white relative dark-mode:bg-gray-800 dark-mode:text-white"
-      [ngClass]="{
-        'ml-20': isLeftSidebarCollapsed,
-        'ml-64': !isLeftSidebarCollapsed
-      }"
+      class="flex-grow overflow-y-hidden p-6 bg-white relative transition-all duration-300 ease-in-out dark:bg-gray-800 dark:text-white"
+      [ngClass]="isLeftSidebarCollapsed ? 'ml-24' : 'ml-64'"
       style="height: calc(100vh - 4rem); min-height: 100vh"
     >
-      <div class="content-wrapper relative" style="position: relative; min-height: 100vh">
+      <div class="content-wrapper relative" style="min-height: 100vh">
         <app-loading></app-loading>
-        <!-- pass this darkmode theme all the child -->
-        <router-outlet (activate)="onActivate($event)"></router-outlet>
+        <router-outlet></router-outlet>
       </div>
-
       <app-error-dialog></app-error-dialog>
     </main>
   </div>

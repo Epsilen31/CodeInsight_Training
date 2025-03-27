@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Output, OnInit } from '@angular/core';
 import { SessionHelperService } from '../../core/session-helper.service';
-import { IUserSession } from '../../models/UserSession ';
+import { ThemeService } from '../../services/theme.service';
+import { IUserSession } from '../../models/userSession ';
 
 @Component({
   selector: 'app-nav-bar',
@@ -10,21 +11,22 @@ import { IUserSession } from '../../models/UserSession ';
 })
 export class NavBarComponent implements OnInit {
   @Output() toggleSidebar: EventEmitter<void> = new EventEmitter<void>();
-  @Output() toggleDarkMode: EventEmitter<void> = new EventEmitter<void>();
   isDropdownOpen: boolean = false;
   user: string = '';
-  isDarkMode: boolean = false;
+  isDarkMode!: boolean;
 
-  constructor(private readonly _sessionHelper: SessionHelperService) {
+  constructor(
+    private readonly _sessionHelper: SessionHelperService,
+    private readonly _themeService: ThemeService
+  ) {
     const storedUser: IUserSession | null = this._sessionHelper.getItem<IUserSession>('user');
     this.user = storedUser ? storedUser.name : 'Guest';
   }
 
   ngOnInit(): void {
-    const storedTheme: string | null = localStorage.getItem('theme');
-    if (storedTheme === 'dark') {
-      this.isDarkMode = true;
-    }
+    this._themeService.theme$.subscribe((isDark: boolean) => {
+      this.isDarkMode = isDark;
+    });
   }
 
   toggleUserDropdown(): void {
@@ -41,7 +43,6 @@ export class NavBarComponent implements OnInit {
   }
 
   ToggleDarkMode(): void {
-    this.isDarkMode = !this.isDarkMode;
-    this.toggleDarkMode.emit();
+    this._themeService.setTheme(!this.isDarkMode);
   }
 }

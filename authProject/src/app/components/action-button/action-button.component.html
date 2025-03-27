@@ -1,3 +1,13 @@
-<button class="action-button view" (click)="onView()">View</button>
-<button class="action-button update" (click)="onUpdate()">Update</button>
-<button class="action-button delete" (click)="onDelete()">Delete</button>
+<div class="action-buttons flex gap-2">
+  <button class="action-button view" (click)="onView()" title="View">
+    <i class="fa fa-eye"></i>
+  </button>
+
+  <button class="action-button update" (click)="onUpdate()" title="Edit">
+    <i class="fa fa-pen"></i>
+  </button>
+
+  <button class="action-button delete" (click)="onDelete()" title="Delete">
+    <i class="fa fa-trash"></i>
+  </button>
+</div>

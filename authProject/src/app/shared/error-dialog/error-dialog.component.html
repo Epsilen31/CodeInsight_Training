@@ -1,4 +1,3 @@
-<!-- eslint-disable @angular-eslint/template/elements-content -->
 <div class="card flex justify-center">
   <p-dialog
     header="Error"
@@ -9,9 +8,13 @@
     [draggable]="false"
     [resizable]="false"
   >
-    <p>{{ errorMessage || 'Default Error Message' }}</p>
+    <div class="error-message-container p-3">
+      <p class="error-text">{{ errorMessage || 'An unknown error occurred' }}</p>
+    </div>
     <p-footer>
-      <button pButton type="button" label="Close" (click)="closeDialog()"></button>
+      <button pButton type="button" label="Close" (click)="closeDialog()" class="p-button-danger">
+        Close
+      </button>
     </p-footer>
   </p-dialog>
 </div>

@@ -58,14 +58,6 @@ namespace BillingAndSubscriptionSystem.Services.Features.Users
                             null
                         );
                     }
-                    // var newUser = new User
-                    // {
-                    //     Name = request.User.Name,
-                    //     Email = request.User.Email,
-                    //     Phone = request.User.Phone,
-                    //     Password = hashedPassword,
-                    //     Role = request.User.Role ?? new Role { RoleName = "Admin" },
-                    // };
 
                     var newUser = _mapper.Map<User>(request.User);
 

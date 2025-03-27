@@ -51,6 +51,7 @@ export class RegisterComponent implements OnInit {
 
       this._authService.register(updatedFormData).subscribe({
         next: (): void => {
+          this._toastService.showSuccess('Registration Successfully');
           this._router.navigate(['/login']);
         },
         error: (error: IErrorResponse): void => {

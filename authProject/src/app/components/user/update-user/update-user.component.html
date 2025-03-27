@@ -1,0 +1,125 @@
+<div
+  [ngClass]="
+    isDarkMode
+      ? 'bg-gray-800 text-gray-100 border-gray-700'
+      : 'bg-white text-gray-800 border-gray-200'
+  "
+  class="max-w-lg mx-auto mt-10 p-8 rounded-lg shadow-md border"
+>
+  <h2 [ngClass]="isDarkMode ? 'text-gray-100' : 'text-gray-800'" class="text-3xl font-bold mb-6">
+    Update User
+  </h2>
+
+  <form *ngIf="user" (ngSubmit)="updateUser()">
+    <div class="mb-4">
+      <label
+        for="name"
+        class="block text-sm font-medium mb-1"
+        [ngClass]="isDarkMode ? 'text-gray-300' : 'text-gray-700'"
+      >
+        Name:
+      </label>
+      <input
+        id="name"
+        [(ngModel)]="user.name"
+        name="name"
+        required
+        class="block w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        [ngClass]="
+          isDarkMode
+            ? 'bg-gray-700 text-gray-100 border-gray-600'
+            : 'bg-white text-gray-800 border-gray-300'
+        "
+      />
+    </div>
+
+    <div class="mb-4">
+      <label
+        for="email"
+        class="block text-sm font-medium mb-1"
+        [ngClass]="isDarkMode ? 'text-gray-300' : 'text-gray-700'"
+      >
+        Email:
+      </label>
+      <input
+        id="email"
+        type="email"
+        [(ngModel)]="user.email"
+        name="email"
+        required
+        class="block w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        [ngClass]="
+          isDarkMode
+            ? 'bg-gray-700 text-gray-100 border-gray-600'
+            : 'bg-white text-gray-800 border-gray-300'
+        "
+      />
+    </div>
+
+    <div class="mb-4">
+      <label
+        for="phone"
+        class="block text-sm font-medium mb-1"
+        [ngClass]="isDarkMode ? 'text-gray-300' : 'text-gray-700'"
+      >
+        Phone:
+      </label>
+      <input
+        id="phone"
+        type="tel"
+        [(ngModel)]="user.phone"
+        name="phone"
+        required
+        class="block w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        [ngClass]="
+          isDarkMode
+            ? 'bg-gray-700 text-gray-100 border-gray-600'
+            : 'bg-white text-gray-800 border-gray-300'
+        "
+      />
+    </div>
+
+    <div class="mb-6">
+      <label
+        for="role"
+        class="block text-sm font-medium mb-1"
+        [ngClass]="isDarkMode ? 'text-gray-300' : 'text-gray-700'"
+      >
+        Role:
+      </label>
+      <select
+        id="role"
+        [(ngModel)]="user.role"
+        name="role"
+        required
+        class="block w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        [ngClass]="
+          isDarkMode
+            ? 'bg-gray-700 text-gray-100 border-gray-600'
+            : 'bg-white text-gray-800 border-gray-300'
+        "
+      >
+        <option value="Admin">Admin</option>
+        <option value="User">User</option>
+      </select>
+    </div>
+
+    <div class="flex justify-end">
+      <button
+        type="submit"
+        class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded transition-colors"
+      >
+        Update
+      </button>
+      <button
+        type="button"
+        (click)="cancel()"
+        class="ml-2 px-4 py-2 bg-gray-400 hover:bg-gray-500 text-white rounded transition-colors"
+      >
+        Cancel
+      </button>
+    </div>
+  </form>
+
+  <p *ngIf="!user" class="text-center text-gray-600 dark:text-gray-400">Loading user details...</p>
+</div>

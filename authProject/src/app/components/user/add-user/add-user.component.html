@@ -1,0 +1,94 @@
+<div
+  class="max-w-2xl mx-auto mt-10 p-6 rounded-xl shadow-md transition-colors duration-300"
+  [ngClass]="{
+    'bg-white text-gray-800': !isDarkMode,
+    'bg-gray-900 text-white': isDarkMode
+  }"
+>
+  <h2 class="text-3xl font-bold mb-6 text-center">Add New User</h2>
+
+  <form [formGroup]="userForm" (ngSubmit)="onSubmit()" class="space-y-5">
+    <div>
+      <label for="email" class="block text-sm font-medium mb-1">Email</label>
+      <input
+        id="email"
+        type="email"
+        placeholder="Enter your email"
+        required
+        formControlName="email"
+        class="form-input w-full px-3 py-2 rounded-md focus:ring-2 focus:border-blue-500 transition"
+        [ngClass]="{
+          'bg-gray-200 border border-gray-300 text-gray-800 focus:ring-blue-500': !isDarkMode,
+          'bg-gray-800 border border-gray-700 text-white focus:ring-blue-400': isDarkMode
+        }"
+      />
+    </div>
+
+    <div>
+      <label for="password" class="block text-sm font-medium mb-1">Password</label>
+      <input
+        id="password"
+        type="password"
+        placeholder="Enter your password"
+        formControlName="password"
+        class="form-input w-full px-3 py-2 rounded-md focus:ring-2 focus:border-blue-500 transition"
+        [ngClass]="{
+          'bg-gray-200 border border-gray-300 text-gray-800 focus:ring-blue-500': !isDarkMode,
+          'bg-gray-800 border border-gray-700 text-white focus:ring-blue-400': isDarkMode
+        }"
+      />
+    </div>
+
+    <div>
+      <label for="name" class="block text-sm font-medium mb-1">Name</label>
+      <input
+        id="name"
+        placeholder="Enter Your Name"
+        type="text"
+        formControlName="name"
+        class="form-input w-full px-3 py-2 rounded-md focus:ring-2 focus:border-blue-500 transition"
+        [ngClass]="{
+          'bg-gray-200 border border-gray-300 text-gray-800 focus:ring-blue-500': !isDarkMode,
+          'bg-gray-800 border border-gray-700 text-white focus:ring-blue-400': isDarkMode
+        }"
+      />
+    </div>
+
+    <div>
+      <label for="phone" class="block text-sm font-medium mb-1">Phone</label>
+      <input
+        id="phone"
+        type="text"
+        placeholder="Enter Your Phone Number"
+        formControlName="phone"
+        class="form-input w-full px-3 py-2 rounded-md focus:ring-2 focus:border-blue-500 transition"
+        [ngClass]="{
+          'bg-gray-200 border border-gray-300 text-gray-800 focus:ring-blue-500': !isDarkMode,
+          'bg-gray-800 border border-gray-700 text-white focus:ring-blue-400': isDarkMode
+        }"
+      />
+    </div>
+
+    <div>
+      <label for="roleId" class="block text-sm font-medium mb-1">Role</label>
+      <select
+        id="roleId"
+        formControlName="roleId"
+        class="form-select w-full px-3 py-2 rounded-md focus:ring-2 focus:border-blue-500 transition"
+        [ngClass]="{
+          'bg-gray-200 border border-gray-300 text-gray-800 focus:ring-blue-500': !isDarkMode,
+          'bg-gray-800 border border-gray-700 text-white focus:ring-blue-400': isDarkMode
+        }"
+      >
+        <option *ngFor="let role of roleOptions" [value]="role.value">{{ role.label }}</option>
+      </select>
+    </div>
+
+    <button
+      type="submit"
+      class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md w-full transition"
+    >
+      Add User
+    </button>
+  </form>
+</div>
