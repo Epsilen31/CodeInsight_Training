@@ -60,7 +60,7 @@ namespace BillingAndSubscriptionSystem.Services.Services
             {
                 ValidateIssuer = true,
                 ValidateAudience = true,
-                ValidateLifetime = false, // <== Disable token expiration check
+                ValidateLifetime = false,
                 ValidateIssuerSigningKey = true,
                 ValidIssuer = _configuration["Jwt:Issuer"],
                 ValidAudience = _configuration["Jwt:Audience"],
