@@ -4,6 +4,7 @@ import { ICellRendererAngularComp } from 'ag-grid-angular';
 import { ICellRendererParams, GridApi } from 'ag-grid-community';
 import { UserService } from '../../services/user.service';
 import { ToastService } from '../../services/toast.service';
+import { RedirectKey } from '../../shared/constants/redirectionKey';
 
 @Component({
   selector: 'app-action-buttons',
@@ -14,9 +15,6 @@ import { ToastService } from '../../services/toast.service';
 export class ActionButtonComponent implements ICellRendererAngularComp {
   private params!: ICellRendererParams;
   private gridApi!: GridApi;
-
-  private readonly VIEW_URL: string = '/billing-subscription/user/get-user-by-id';
-  private readonly UPDATE_URL: string = '/billing-subscription/user/update-user';
 
   constructor(
     private readonly _router: Router,
@@ -36,12 +34,12 @@ export class ActionButtonComponent implements ICellRendererAngularComp {
 
   onView(): void {
     const userId: number = this.params.data.id;
-    this._router.navigate([`${this.VIEW_URL}/${userId}`]);
+    this._router.navigate([`${RedirectKey.REDIRECT_TO_USER_DETAILS}/${userId}`]);
   }
 
   onUpdate(): void {
     const userId: number = this.params.data.id;
-    this._router.navigate([`${this.UPDATE_URL}/${userId}`]);
+    this._router.navigate([`${RedirectKey.REDIRECT_TO_UPDATE_USER}/${userId}`]);
   }
 
   onDelete(): void {

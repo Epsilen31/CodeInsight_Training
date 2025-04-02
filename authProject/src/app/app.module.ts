@@ -23,7 +23,7 @@ import { PaymentModule } from './components/payment/payment.module';
 import { BillingModule } from './components/billing/billing.module';
 import { ErrorDialogService } from './services/error-dialog.service';
 import { GlobalHttpInterceptor } from './core/global-http.interceptor';
-import { AgChartsModule } from 'ag-charts-angular'; // ✅ correct
+import { AgChartsModule } from 'ag-charts-angular';
 
 @NgModule({
   declarations: [

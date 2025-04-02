@@ -7,6 +7,7 @@ import { ICreateSubscriptionResponse, ISubscriptionRequest } from '../../../mode
 import { ToastService } from '../../../services/toast.service';
 import { ThemeService } from '../../../services/theme.service';
 import { IUserSession } from '../../../models/userSession ';
+import { RedirectKey } from '../../../shared/constants/redirectionKey';
 
 @Component({
   selector: 'app-user-subscription',
@@ -54,6 +55,7 @@ export class UserSubscriptionComponent implements OnInit, OnDestroy {
 
     this._subscriptionService.createSubscription(subscriptionData).subscribe({
       next: (response: ICreateSubscriptionResponse): void => {
+        this._toastService.showSuccess('Subscription created successfully.');
         const subscriptionId: number = response?.subscription?.subscriptionId;
         this.subscriptionId = subscriptionId;
 
@@ -62,10 +64,7 @@ export class UserSubscriptionComponent implements OnInit, OnDestroy {
         if (subscriptionId) {
           this._toastService.showSuccess('Subscription successful! Redirecting to payment...');
           localStorage.setItem('subscriptionId', subscriptionId.toString());
-          this._router.navigate(
-            ['/billing-subscription/payment/create-payment'],
-            sendSubcriptionId
-          );
+          this._router.navigate([`${RedirectKey.REDIRECT_TO_PAYING}`], sendSubcriptionId);
         } else {
           this._toastService.showError('Subscription created but ID not received!');
         }

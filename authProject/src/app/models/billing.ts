@@ -5,3 +5,8 @@ export interface IUserWithBilling {
   billingDate: string;
   userId: number;
 }
+
+export interface IBillingInfo {
+  message: string;
+  usersWithBilling: IUserWithBilling[];
+}

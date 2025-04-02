@@ -1,3 +1,4 @@
+using BillingAndSubscriptionSystem.DataAccess.Models;
 using BillingAndSubscriptionSystem.Entities.Entities;
 
 namespace BillingAndSubscriptionSystem.DataAccess.Contracts
@@ -17,6 +18,20 @@ namespace BillingAndSubscriptionSystem.DataAccess.Contracts
             CancellationToken cancellationToken
         );
         Task<ICollection<Subscription>> GetAllUserSubscriptionsAsync(
+            CancellationToken cancellationToken
+        );
+        Task<int> GetInactiveSubscriptionsCountAsync(CancellationToken cancellationToken);
+
+        Task<ICollection<MonthlySubscriptionData>> GetMonthlySubscriptionsAsync(
+            CancellationToken cancellationToken
+        );
+        Task<ICollection<PlanTypeCountData>> GetSubscriptionPlanCountsAsync(
+            CancellationToken cancellationToken
+        );
+
+        // Remove Subscriptions
+        Task<bool> DeleteUserSubscriptionAsync(
+            int subscriptionId,
             CancellationToken cancellationToken
         );
     }

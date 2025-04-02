@@ -1,4 +1,6 @@
-<div class="min-h-screen bg-gray-100 flex items-center justify-center p-4">
+<div
+  class="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-blue-100 to-gray-100"
+>
   <div class="bg-white rounded-lg shadow-lg p-8 w-full max-w-md">
     <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center">Login</h2>
     <form [formGroup]="loginForm" (ngSubmit)="login()">
@@ -31,12 +33,12 @@
             (click)="togglePassword()"
           >
             <i
-              class="fas"
+              class="fa fa-solid text-lg"
               [ngClass]="{
-                'fa-eye': passwordFieldType === 'text',
-                'fa-eye-slash': passwordFieldType === 'password'
+                'fa-eye': passwordFieldType === 'password',
+                'fa-eye-slash': passwordFieldType === 'text'
               }"
-              class="text-lg"
+              style="color: #333"
             ></i>
           </button>
         </div>

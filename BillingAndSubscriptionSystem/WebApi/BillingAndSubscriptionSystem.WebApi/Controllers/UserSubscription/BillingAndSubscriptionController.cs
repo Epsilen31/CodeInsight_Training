@@ -79,5 +79,28 @@ namespace BillingAndSubscriptionSystem.WebApi.Controllers
                 }
             );
         }
+
+        [Authorize]
+        [Authorize(Policy = RolePolicyRules.ADMIN_ROLE)]
+        [HttpDelete(RouteKey.DeleteUserSubscriptionPlan)]
+        public async Task<IActionResult> DeleteUserSubscriptionPlan(
+            [FromRoute] int Id,
+            CancellationToken cancellationToken
+        )
+        {
+            Console.WriteLine($"DeleteUserSubscriptionPlan , {Id}");
+            var result = await _mediator.Send(
+                new DeleteUserSubscription.Command(Id),
+                cancellationToken
+            );
+            if (result)
+            {
+                return Ok(new { Message = "Subscription deleted successfully." });
+            }
+            else
+            {
+                return NotFound(new { Message = "Subscription not found." });
+            }
+        }
     }
 }

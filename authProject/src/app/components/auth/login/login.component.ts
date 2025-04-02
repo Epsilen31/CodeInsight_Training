@@ -6,6 +6,7 @@ import { IUserSession } from '../../../models/userSession ';
 import { IErrorResponse } from '../../../models/error';
 import { ILogin } from '../../../models/auth';
 import { ToastService } from '../../../services/toast.service';
+import { RedirectKey } from '../../../shared/constants/redirectionKey';
 
 @Component({
   selector: 'app-login',
@@ -53,7 +54,7 @@ export class LoginComponent implements OnInit {
 
           this._authService.storeUserSession(response.token, userSession);
 
-          this._route.navigate(['/dashboard']);
+          this._route.navigate([`${RedirectKey.REDIRECT_TO_DASHBOARD}`]);
         },
         error: (error: IErrorResponse): void => {
           this._toastService.showError(`Error fetching users: ${error.message}`);

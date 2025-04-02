@@ -6,6 +6,7 @@ import { IUpdateUser, IUserDetail } from '../../../models/user';
 import { IErrorResponse } from '../../../models/error';
 import { ToastService } from '../../../services/toast.service';
 import { ThemeService } from '../../../services/theme.service';
+import { RedirectKey } from '../../../shared/constants/redirectionKey';
 
 @Component({
   selector: 'app-update-user',
@@ -54,11 +55,12 @@ export class UpdateUserComponent implements OnInit, OnDestroy {
   }
 
   updateUser(): void {
-    const userToUpdate = { ...this.user, role: { roleName: this.user.role } };
+    const { role, ...rest } = this.user;
+    const userToUpdate = { ...rest };
+    console.log(userToUpdate);
     this._userService.updateUser(this.userId, userToUpdate).subscribe({
       next: (): void => {
         this._toastService.showSuccess('Updated user successfully! redirecting to the user page');
-        this._router.navigate([`/billing-subscription/user/${this.userId}`]);
       },
       error: (error: IErrorResponse): void => {
         this._toastService.showError(`Error updating user: ${error.message}`);
@@ -67,6 +69,6 @@ export class UpdateUserComponent implements OnInit, OnDestroy {
   }
 
   cancel(): void {
-    this._router.navigate(['/billing-subscription/user']);
+    this._router.navigate([`${RedirectKey.REDIRECT_TO_ALL_USER_DETAILS}`]);
   }
 }

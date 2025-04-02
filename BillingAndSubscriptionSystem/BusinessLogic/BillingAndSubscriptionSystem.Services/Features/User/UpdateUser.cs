@@ -40,31 +40,25 @@ namespace BillingAndSubscriptionSystem.Services.Features.Users
                         request.User.Id,
                         cancellationToken
                     );
+
                     if (existingUser == null)
                     {
                         return null;
                     }
 
                     existingUser.Name = request.User.Name;
+
                     existingUser.Email = request.User.Email;
+
                     existingUser.Phone = request.User.Phone;
+
                     existingUser.Password = request.User.Password;
-                    existingUser.Role = request.User.Role ?? string.Empty;
 
                     await _unitOfWork.UserRepository.UpdateUserAsync(
                         existingUser,
                         cancellationToken
                     );
                     await _unitOfWork.SaveChangesAsync(cancellationToken);
-
-                    // var updatedUserDto = new UserDto
-                    // {
-                    //     Id = existingUser.Id,
-                    //     Name = existingUser.Name,
-                    //     Email = existingUser.Email,
-                    //     Phone = existingUser.Phone,
-                    //     Password = existingUser.Password,
-                    // };
 
                     var updatedUserDto = _mapper.Map<UserDto>(existingUser);
                     return updatedUserDto;

@@ -10,6 +10,7 @@ export const RouteKey = {
   GET_SUBSCRIPTION_BY_ID_URL: 'UserSubscription/GetSubscriptionByUserId',
   CREATE_SUBSCRIPTION_URL: 'UserSubscription/CreateUserSubscriptionPlan',
   UPDATE_SUBSCRIPTION_URL: 'UserSubscription/UpdateUserSubscriptionPlan',
+  DELETE_USER_SUBSCRIPTION_URL: 'UserSubscription/DeleteUserSubscriptionPlan',
 
   // USER ROUTES
   GET_USER_BY_ID_URL: 'User/GetUserById',
@@ -24,5 +25,8 @@ export const RouteKey = {
 
   // BILLING ROUTES
   UPDATE_BILLING_URL: 'Billing/UpdateBilling',
-  GET_USERS_WITH_BILLING: 'Billing/GetUsersWithBilling'
+  GET_USERS_WITH_BILLING: 'Billing/GetUsersWithBilling',
+
+  // DASHBOARD ROUTES
+  GET_ANALYTICS_INFO_URL: 'Analytics/AnalyticsState'
 };

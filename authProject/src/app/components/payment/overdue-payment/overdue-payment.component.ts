@@ -21,7 +21,7 @@ export class OverduePaymentComponent implements OnInit, OnDestroy {
   defaultColDef: ColDef = { flex: 1, sortable: true, filter: true };
 
   gridOptions: GridOptions<IOverduePayments> = {
-    defaultColDef: { flex: 1, sortable: true, filter: true },
+    defaultColDef: this.defaultColDef,
     domLayout: 'autoHeight',
     ensureDomOrder: true
   };

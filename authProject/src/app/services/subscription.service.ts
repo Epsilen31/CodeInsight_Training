@@ -41,4 +41,10 @@ export class SubscriptionService {
       subscription
     );
   }
+
+  deleteUserSubscription(subscriptionId: number): Observable<void> {
+    return this._httpClientService.delete<void>(
+      `${RouteKey.DELETE_USER_SUBSCRIPTION_URL}/${subscriptionId}`
+    );
+  }
 }

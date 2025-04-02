@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "authProject": {
+    "billingAndSubscriptionUI": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -75,10 +75,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "authProject:build:production"
+              "buildTarget": "billingAndSubscriptionUI:build:production"
             },
             "development": {
-              "buildTarget": "authProject:build:development"
+              "buildTarget": "billingAndSubscriptionUI:build:development"
             }
           },
           "defaultConfiguration": "development"

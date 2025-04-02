@@ -5,6 +5,7 @@ import { AuthService } from '../../../services/auth.service';
 import { Role } from '../../../libs/enums/role';
 import { IErrorResponse } from '../../../models/error';
 import { ToastService } from '../../../services/toast.service';
+import { RedirectKey } from '../../../shared/constants/redirectionKey';
 
 @Component({
   selector: 'app-register',
@@ -52,7 +53,7 @@ export class RegisterComponent implements OnInit {
       this._authService.register(updatedFormData).subscribe({
         next: (): void => {
           this._toastService.showSuccess('Registration Successfully');
-          this._router.navigate(['/login']);
+          this._router.navigate([`${RedirectKey.LOGIN}`]);
         },
         error: (error: IErrorResponse): void => {
           this._toastService.showError(`Error fetching users: ${error.message}`);

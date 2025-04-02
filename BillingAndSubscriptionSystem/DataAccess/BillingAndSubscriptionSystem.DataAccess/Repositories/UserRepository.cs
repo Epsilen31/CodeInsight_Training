@@ -40,7 +40,8 @@ namespace BillingAndSubscriptionSystem.DataAccess.Repositories
                     ex =>
                         ex.SetProperty(x => x.Name, user.Name)
                             .SetProperty(x => x.Email, user.Email)
-                            .SetProperty(x => x.Phone, user.Phone),
+                            .SetProperty(x => x.Phone, user.Phone)
+                            .SetProperty(x => x.Password, user.Password),
                     cancellationToken
                 );
         }
@@ -58,7 +59,24 @@ namespace BillingAndSubscriptionSystem.DataAccess.Repositories
 
         public async Task<bool> ExistsAsync(int userId)
         {
-            return await _context.Users.AnyAsync(u => u.Id == userId);
+            return await _context.Users.AnyAsync(user => user.Id == userId);
+        }
+
+        public async Task<int> GetInactiveUsersCountAsync(CancellationToken cancellationToken)
+        {
+            return await _context
+                .Users.Where(user =>
+                    user.Subscriptions == null
+                    || !user.Subscriptions.Any(subscription =>
+                        subscription.SubscriptionStatus == Entities.Enums.SubscriptionStatus.Active
+                    )
+                )
+                .CountAsync(cancellationToken);
+        }
+
+        public async Task<int> GetTotalUsersCountAsync(CancellationToken cancellationToken)
+        {
+            return await _context.Users.CountAsync(cancellationToken);
         }
     }
 }

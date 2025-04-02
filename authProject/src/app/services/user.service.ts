@@ -9,27 +9,27 @@ import { RouteKey } from '../shared/constants/routeKey';
   providedIn: 'root'
 })
 export class UserService {
-  constructor(private readonly httpClientService: HttpClientService) {}
+  constructor(private readonly _httpClientService: HttpClientService) {}
 
   getAllUsers(): Observable<IUser[]> {
-    return this.httpClientService
+    return this._httpClientService
       .get<IUserResponse>(`${RouteKey.GET_ALL_USERS_URL}`)
       .pipe(map((response: IUserResponse): IUser[] => response.users));
   }
 
   getUserById(id: number): Observable<IUserDetail> {
-    return this.httpClientService.get<IUserDetail>(`${RouteKey.GET_USER_BY_ID_URL}/${id}`);
+    return this._httpClientService.get<IUserDetail>(`${RouteKey.GET_USER_BY_ID_URL}/${id}`);
   }
 
   addUser(user: IUser): Observable<IUser> {
-    return this.httpClientService.post<IUser>(`${RouteKey.CREATE_USER_URL}`, user);
+    return this._httpClientService.post<IUser>(`${RouteKey.CREATE_USER_URL}`, user);
   }
 
   updateUser(id: number, user: IUser): Observable<IUser> {
-    return this.httpClientService.put<IUser>(`${RouteKey.UPDATE_USER_URL}/${id}`, user);
+    return this._httpClientService.put<IUser>(`${RouteKey.UPDATE_USER_URL}/${id}`, user);
   }
 
   deleteUser(id: number): Observable<void> {
-    return this.httpClientService.delete<void>(`${RouteKey.DELETE_USER_URL}/${id}`);
+    return this._httpClientService.delete<void>(`${RouteKey.DELETE_USER_URL}/${id}`);
   }
 }

@@ -6,6 +6,7 @@ import { UserService } from '../../../services/user.service';
 import { IUpdateUser, IUserDetail } from '../../../models/user';
 import { ToastrService } from 'ngx-toastr';
 import { ThemeService } from '../../../services/theme.service';
+import { RedirectKey } from '../../../shared/constants/redirectionKey';
 
 @Component({
   selector: 'app-user-detail',
@@ -48,7 +49,7 @@ export class UserDetailComponent implements OnInit, OnDestroy {
   }
 
   redirectToAllUser(): void {
-    this._router.navigate(['/billing-subscription/user/get-users']);
+    this._router.navigate([`${RedirectKey.REDIRECT_TO_USER_DETAILS}`]);
   }
 
   ngOnDestroy(): void {

@@ -20,6 +20,7 @@ namespace BillingAndSubscriptionSystem.WebApi.Constants
         public const string GetSubscriptionByUserId = "GetSubscriptionByUserId/{userId}";
         public const string CreateUserSubscriptionPlan = "CreateUserSubscriptionPlan";
         public const string UpdateUserSubscriptionPlan = "UpdateUserSubscriptionPlan/{Id}";
+        public const string DeleteUserSubscriptionPlan = "DeleteUserSubscriptionPlan/{Id}";
 
         // User Routes
         public const string UserRoute = MainRoute + "/User";
@@ -41,5 +42,9 @@ namespace BillingAndSubscriptionSystem.WebApi.Constants
         // SubMenu Routes
         public const string SubMenuRoute = MainRoute + "/SubMenu";
         public const string GetAllSubMenu = "GetAllSubMenu";
+
+        // Analytics Routes
+        public const string AnalyticsRoute = MainRoute + "/Analytics";
+        public const string GetAnalyticsState = "AnalyticsState";
     }
 }

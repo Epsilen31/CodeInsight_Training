@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { ColDef, GridOptions, GridReadyEvent, GridApi, Theme } from 'ag-grid-community';
 import { Subscription } from 'rxjs';
-import { myTheme } from '../theme-config';
+import { gridTheme } from '../theme-config';
 import { ThemeService } from '../../services/theme.service';
 
 @Component({
@@ -17,7 +17,7 @@ export class TableComponent<T> implements OnInit, OnDestroy {
   @Input() gridOptions: GridOptions = {};
 
   gridApi!: GridApi;
-  theme: Theme = myTheme;
+  theme: Theme = gridTheme;
 
   private themeSubscription: Subscription | undefined;
 
@@ -41,8 +41,8 @@ export class TableComponent<T> implements OnInit, OnDestroy {
 
   applyTheme(isDarkMode: boolean): void {
     this.theme = isDarkMode
-      ? myTheme.withParams({ browserColorScheme: 'dark' }, 'dark-red')
-      : myTheme.withParams({ browserColorScheme: 'light' }, 'light-red');
+      ? gridTheme.withParams({ browserColorScheme: 'dark' }, 'dark-red')
+      : gridTheme.withParams({ browserColorScheme: 'light' }, 'light-red');
 
     this.gridOptions = { ...this.gridOptions, theme: this.theme };
 

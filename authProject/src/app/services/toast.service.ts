@@ -5,21 +5,21 @@ import { ToastrService } from 'ngx-toastr';
   providedIn: 'root'
 })
 export class ToastService {
-  constructor(private readonly toastr: ToastrService) {}
+  constructor(private readonly _toastr: ToastrService) {}
 
   showSuccess(message: string): void {
-    this.toastr.success(message);
+    this._toastr.success(message);
   }
 
   showError(message: string): void {
-    this.toastr.error(message);
+    this._toastr.error(message);
   }
 
   showInfo(message: string): void {
-    this.toastr.info(message);
+    this._toastr.info(message);
   }
 
   showWarning(message: string): void {
-    this.toastr.warning(message);
+    this._toastr.warning(message);
   }
 }

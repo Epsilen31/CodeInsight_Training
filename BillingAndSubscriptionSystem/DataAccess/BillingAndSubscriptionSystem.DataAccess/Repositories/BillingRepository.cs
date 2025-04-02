@@ -40,5 +40,15 @@ namespace BillingAndSubscriptionSystem.DataAccess.Repositories
                 .AsNoTracking()
                 .ToListAsync(cancellationToken);
         }
+
+        // Remove billing details
+        public async Task RemoveBillingDetailsAsync(int userId, CancellationToken cancellationToken)
+        {
+            var billing = await _context.Billings.FindAsync([userId], cancellationToken);
+            if (billing != null)
+            {
+                _context.Billings.Remove(billing);
+            }
+        }
     }
 }

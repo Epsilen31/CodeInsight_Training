@@ -9,5 +9,7 @@ namespace BillingAndSubscriptionSystem.DataAccess.Contracts
             int userId,
             CancellationToken cancellationToken
         );
+
+        Task RemoveBillingDetailsAsync(int userId, CancellationToken cancellationToken);
     }
 }

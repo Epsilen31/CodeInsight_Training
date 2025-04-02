@@ -31,14 +31,14 @@ export class AllUsersComponent implements OnInit, OnDestroy {
   private notificationTimer: ReturnType<typeof setTimeout> | null = null;
   private themeSubscription?: Subscription;
 
-  columnDefs: ColDef[] = this.getColumnDefs();
   defaultColDef: ColDef = {
     sortable: true,
     filter: true,
     resizable: true,
-    flex: 1,
-    cellClass: 'text-center items-center justify-center flex mt-4'
+    flex: 1
   };
+
+  columnDefs: ColDef[] = this.getColumnDefs();
 
   gridOptions: GridOptions<IUser> = {
     defaultColDef: this.defaultColDef,

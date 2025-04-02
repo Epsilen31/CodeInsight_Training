@@ -1,6 +1,8 @@
 using BillingAndSubscriptionSystem.Context;
 using BillingAndSubscriptionSystem.DataAccess.Contracts;
+using BillingAndSubscriptionSystem.DataAccess.Models;
 using BillingAndSubscriptionSystem.Entities.Entities;
+using BillingAndSubscriptionSystem.Entities.Enums;
 using Microsoft.EntityFrameworkCore;
 
 namespace BillingAndSubscriptionSystem.DataAccess.Repositories
@@ -52,6 +54,73 @@ namespace BillingAndSubscriptionSystem.DataAccess.Repositories
         )
         {
             return await _context.Subscriptions.ToListAsync(cancellationToken);
+        }
+
+        public async Task<int> GetInactiveSubscriptionsCountAsync(
+            CancellationToken cancellationToken
+        )
+        {
+            //  checking for inactive subscriptions
+            return await _context
+                .Subscriptions.Where(subscription =>
+                    subscription.SubscriptionStatus == SubscriptionStatus.Inactive
+                )
+                .CountAsync(cancellationToken);
+        }
+
+        public async Task<ICollection<MonthlySubscriptionData>> GetMonthlySubscriptionsAsync(
+            CancellationToken cancellationToken
+        )
+        {
+            var data = await _context
+                .Subscriptions.GroupBy(subscription => new
+                {
+                    subscription.StartDate.Year,
+                    subscription.StartDate.Month,
+                })
+                .Select(group => new MonthlySubscriptionData
+                {
+                    Month = $"{group.Key.Year}-{group.Key.Month:D2}",
+                    Count = group.Count(),
+                })
+                .ToListAsync(cancellationToken);
+
+            return data;
+        }
+
+        public async Task<ICollection<PlanTypeCountData>> GetSubscriptionPlanCountsAsync(
+            CancellationToken cancellationToken
+        )
+        {
+            var data = await _context
+                .Subscriptions.GroupBy(subscription => subscription.PlanType)
+                .Select(group => new PlanTypeCountData
+                {
+                    PlanType = group.Key.ToString(),
+                    Count = group.Count(),
+                })
+                .ToListAsync(cancellationToken);
+
+            return data;
+        }
+
+        public async Task<bool> DeleteUserSubscriptionAsync(
+            int subscriptionId,
+            CancellationToken cancellationToken
+        )
+        {
+            Console.WriteLine($"Deleting user subscription repository {subscriptionId}");
+            var subscription = await _context.Subscriptions.FindAsync(
+                [subscriptionId],
+                cancellationToken
+            );
+            Console.WriteLine(subscription);
+            if (subscription != null)
+            {
+                _context.Subscriptions.Remove(subscription);
+                return true;
+            }
+            return false;
         }
     }
 }

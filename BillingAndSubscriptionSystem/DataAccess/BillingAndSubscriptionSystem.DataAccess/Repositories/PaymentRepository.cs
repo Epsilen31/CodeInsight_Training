@@ -28,5 +28,17 @@ namespace BillingAndSubscriptionSystem.DataAccess.Repositories
                 .Payments.Where(payment => payment.PaymentStatus == PaymentStatus.Overdue)
                 .ToListAsync(cancellationToken);
         }
+
+        // counting overdue payments
+        public async Task<int> GetOverduePaymentsCountAsync(CancellationToken cancellationToken)
+        {
+            return (await OverduePaymentsAsync(cancellationToken)).Count;
+        }
+
+        // counting total payments
+        public async Task<int> GetTotalPaymentsCountAsync(CancellationToken cancellationToken)
+        {
+            return await _context.Payments.CountAsync(cancellationToken);
+        }
     }
 }

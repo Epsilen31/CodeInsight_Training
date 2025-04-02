@@ -56,6 +56,7 @@ export class UpdateSubscriptionComponent implements OnInit, OnDestroy {
           this.errorMessage = 'No active subscription found.';
           return;
         }
+        this._toastService.showSuccess('subscription updated successfully');
         this.subscription = response.subscription[0];
         this.subscriptionId = this.subscription.subscriptionId;
       },

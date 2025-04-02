@@ -1,31 +1,55 @@
 <nav class="navbar px-6 py-4 flex justify-between items-center h-16 w-full">
-  <div class="flex items-center gap-8">
-    <button class="sidebarbtn text-white hover:text-gray-300" (click)="onToggleSidebar()">
-      <i class="fal fa-bars text-xl"></i>
+  <div class="flex items-center gap-10">
+    <button
+      class="sidebar-toggle-btn text-white hover:text-gray-300"
+      (click)="onToggleSidebar()"
+      aria-label="Toggle sidebar"
+    >
+      <i *ngIf="!isSidebarCollapsed" class="fal fa-times text-xl" aria-hidden="true"></i>
+      <i *ngIf="isSidebarCollapsed" class="fal fa-bars text-xl" aria-hidden="true"></i>
     </button>
     <div class="text-lg font-semibold text-white">MyApp</div>
   </div>
 
   <div class="user-menu p-2 rounded-md flex items-center gap-4 relative mr-10">
-    <span class="text-white font-bold">{{ user }}</span>
-
     <button
       (click)="ToggleDarkMode()"
-      class="themebtn font-semibold p-2 rounded-md border border-gray-500 text-sm hover:background-[#444]!important"
+      class="flex items-center gap-2 font-semibold p-2 rounded-md border border-gray-500 text-sm transition-all duration-200 transform hover:scale-105 hover:bg-gray-600 hover:border-gray-600 hover:text-white shadow-md focus:outline-none"
     >
-      {{ isDarkMode ? ' Dark Mode' : ' Light Mode' }}
+      <ng-container *ngIf="isDarkMode; else lightMode">
+        <i class="fas fa-moon"></i>
+        Dark Mode
+      </ng-container>
+      <ng-template #lightMode>
+        <i class="fas fa-sun"></i>
+        Light Mode
+      </ng-template>
     </button>
+    <span class="text-white font-bold">{{ user }}</span>
 
     <div class="relative">
-      <button class="text-white hover:text-gray-300 ml-2" (click)="toggleUserDropdown()">▼</button>
+      <button
+        (click)="toggleUserDropdown()"
+        class="h-10 w-10 rounded-full bg-blue-600 flex items-center justify-center focus:outline-none transition-colors duration-200 hover:bg-blue-700"
+        aria-label="Toggle user menu"
+      >
+        <i
+          class="fal fa-chevron-down fa-lg text-yellow-500 transition-transform duration-300"
+          [class.rotate-180]="isDropdownOpen"
+        ></i>
+      </button>
+
       <div
         *ngIf="isDropdownOpen"
-        class="absolute right-0 mt-2 w-32 bg-white text-gray-900 rounded-md shadow-md overflow-hidden"
-        style="background: beige"
+        class="absolute right-0 mt-2 w-36 bg-white border border-gray-100 rounded-lg shadow-lg py-2"
       >
-        <a class="block px-4 py-2 text-gray-900 hover:bg-gray-200 cursor-pointer" (click)="logout()"
-          >Logout</a
+        <a
+          (click)="logout()"
+          role="menuitem"
+          class="flex h-full w-36 items-center justify-center py-2 text-gray-800 hover:bg-gray-100 transition-colors duration-200 cursor-pointer"
         >
+          Logout
+        </a>
       </div>
     </div>
   </div>

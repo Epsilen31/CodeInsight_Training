@@ -10,5 +10,8 @@ namespace BillingAndSubscriptionSystem.DataAccess.Contracts
         Task UpdateUserAsync(User user, CancellationToken cancellationToken);
         Task<bool> DeleteUserAsync(int id, CancellationToken cancellationToken);
         Task<bool> ExistsAsync(int userId);
+        Task<int> GetInactiveUsersCountAsync(CancellationToken cancellationToken);
+
+        Task<int> GetTotalUsersCountAsync(CancellationToken cancellationToken);
     }
 }

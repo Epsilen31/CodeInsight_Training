@@ -11,6 +11,7 @@ import { IUserSession } from '../../models/userSession ';
 })
 export class NavBarComponent implements OnInit {
   @Output() toggleSidebar: EventEmitter<void> = new EventEmitter<void>();
+  isSidebarCollapsed = false;
   isDropdownOpen: boolean = false;
   user: string = '';
   isDarkMode!: boolean;
@@ -39,6 +40,7 @@ export class NavBarComponent implements OnInit {
   }
 
   onToggleSidebar(): void {
+    this.isSidebarCollapsed = !this.isSidebarCollapsed;
     this.toggleSidebar.emit();
   }
 
