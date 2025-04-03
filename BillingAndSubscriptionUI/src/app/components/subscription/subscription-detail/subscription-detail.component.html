@@ -1,0 +1,123 @@
+<div
+  class="max-w-xl mx-auto mt-10 p-6 border rounded-lg shadow-md"
+  [ngClass]="{
+    'bg-gray-800 text-gray-100 border-gray-700': isDarkMode,
+    'bg-white text-gray-800 border-gray-200': !isDarkMode
+  }"
+>
+  <h2
+    class="text-3xl font-bold mb-6"
+    [ngClass]="{ 'text-gray-100': isDarkMode, 'text-gray-800': !isDarkMode }"
+  >
+    Subscription Details
+  </h2>
+
+  <div *ngIf="isLoading">
+    <p
+      class="text-center"
+      [ngClass]="{ 'text-gray-400': isDarkMode, 'text-gray-600': !isDarkMode }"
+    >
+      Loading subscription details...
+    </p>
+  </div>
+
+  <div *ngIf="!isLoading && errorMessage">
+    <p class="text-center" [ngClass]="{ 'text-red-400': isDarkMode, 'text-red-600': !isDarkMode }">
+      {{ errorMessage }}
+    </p>
+  </div>
+
+  <div *ngIf="!isLoading && subscription">
+    <div class="space-y-4">
+      <p>
+        <strong [ngClass]="{ 'text-gray-300': isDarkMode, 'text-gray-700': !isDarkMode }">
+          Plan Type:
+        </strong>
+        <span [ngClass]="{ 'text-gray-100': isDarkMode, 'text-gray-900': !isDarkMode }">
+          {{ subscription.planType }}
+        </span>
+      </p>
+
+      <p>
+        <strong [ngClass]="{ 'text-gray-300': isDarkMode, 'text-gray-700': !isDarkMode }">
+          Start Date:
+        </strong>
+        <span [ngClass]="{ 'text-gray-100': isDarkMode, 'text-gray-900': !isDarkMode }">
+          {{ subscription.startDate | date }}
+        </span>
+      </p>
+
+      <p>
+        <strong [ngClass]="{ 'text-gray-300': isDarkMode, 'text-gray-700': !isDarkMode }">
+          End Date:
+        </strong>
+        <span [ngClass]="{ 'text-gray-100': isDarkMode, 'text-gray-900': !isDarkMode }">
+          {{ subscription.endDate | date }}
+        </span>
+      </p>
+
+      <p>
+        <strong [ngClass]="{ 'text-gray-300': isDarkMode, 'text-gray-700': !isDarkMode }">
+          Status:
+        </strong>
+        <span
+          class="text-[19px]"
+          [ngClass]="{
+            'text-green-400': subscription.subscriptionStatus === 1 && isDarkMode,
+            'text-green-600': subscription.subscriptionStatus === 1 && !isDarkMode,
+            'text-red-400': subscription.subscriptionStatus !== 1 && isDarkMode,
+            'text-red-600': subscription.subscriptionStatus !== 1 && !isDarkMode
+          }"
+        >
+          {{ subscription.subscriptionStatus === 1 ? 'Active' : 'Inactive' }}
+        </span>
+
+        <br /><br />
+
+        <span class="font-semibold" *ngIf="subscription.subscriptionStatus === 1">
+          Plan:
+          {{
+            subscription.planType === 1
+              ? 'Basic'
+              : subscription.planType === 2
+                ? 'Standard'
+                : 'Premium'
+          }}
+        </span>
+      </p>
+    </div>
+
+    <div class="flex flex-col">
+      <button
+        (click)="redirectToUsers()"
+        class="mt-6 w-full px-4 py-2 rounded transition-colors"
+        [ngClass]="{
+          'bg-indigo-500 hover:bg-indigo-600 text-gray-100': isDarkMode,
+          'bg-indigo-600 hover:bg-indigo-700 text-gray-900': !isDarkMode
+        }"
+      >
+        Go Back
+      </button>
+
+      <div class="flex items-center justify-center gap-4 mt-4">
+        <span
+          class="text-xl p-2 rounded-md font-semibold"
+          [ngClass]="{
+            'bg-indigo-500 hover:bg-indigo-600 text-gray-100': isDarkMode,
+            'bg-indigo-600 hover:bg-indigo-700 text-gray-100': !isDarkMode
+          }"
+        >
+          Delete User Subscription:
+        </span>
+
+        <button
+          class="bg-red-500 hover:bg-red-600 p-2 w-9 h-9 rounded-md"
+          (click)="deleteUserSubcription()"
+          title="Delete"
+        >
+          <i class="fa fa-trash text-white"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

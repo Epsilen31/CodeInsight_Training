@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClientService } from '../core/http-client.service';
-import { map, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import {
   ICreateSubscriptionResponse,
   ISubscriptionDetail,
@@ -23,13 +23,10 @@ export class SubscriptionService {
 
   createSubscription(subscription: ISubscriptionRequest): Observable<ICreateSubscriptionResponse> {
     const { subscriptionId, ...subscriptionPayload } = subscription as any;
-    return this._httpClientService
-      .post<ICreateSubscriptionResponse>(`${RouteKey.CREATE_SUBSCRIPTION_URL}`, subscriptionPayload)
-      .pipe(
-        map((response: ICreateSubscriptionResponse) => {
-          return response;
-        })
-      );
+    return this._httpClientService.post<ICreateSubscriptionResponse>(
+      `${RouteKey.CREATE_SUBSCRIPTION_URL}`,
+      subscriptionPayload
+    );
   }
 
   updateSubscription(

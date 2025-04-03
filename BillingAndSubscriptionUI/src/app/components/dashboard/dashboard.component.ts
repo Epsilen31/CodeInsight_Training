@@ -162,14 +162,21 @@ export class DashboardComponent implements OnInit, OnDestroy {
         {
           type: 'pie',
           angleKey: 'count',
-          strokes: ['#000000'],
           legendItemKey: 'plan',
           calloutLabelKey: 'plan',
           calloutLabel: {
             color: this.textColor
+          },
+          strokes: ['#000000']
+        }
+      ],
+      legend: {
+        item: {
+          label: {
+            color: this.textColor
           }
         }
-      ]
+      }
     };
   }
 

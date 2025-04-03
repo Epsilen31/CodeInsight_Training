@@ -22,5 +22,5 @@ export interface ISubscriptionDetail {
 
 export interface ICreateSubscriptionResponse {
   message: string;
-  subscription: ISubscription;
+  subscription: ISubscription[];
 }
