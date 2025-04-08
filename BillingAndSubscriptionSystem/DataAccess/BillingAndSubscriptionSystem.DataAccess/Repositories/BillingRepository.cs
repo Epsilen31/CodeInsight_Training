@@ -22,8 +22,9 @@ namespace BillingAndSubscriptionSystem.DataAccess.Repositories
             await _context
                 .Billings.Where(x => x.UserId == billingDetails.UserId)
                 .ExecuteUpdateAsync(
-                    ex =>
-                        ex.SetProperty(x => x.PaymentMethod, billingDetails.PaymentMethod)
+                    exception =>
+                        exception
+                            .SetProperty(x => x.PaymentMethod, billingDetails.PaymentMethod)
                             .SetProperty(x => x.BillingAddress, billingDetails.BillingAddress)
                             .SetProperty(x => x.UserId, billingDetails.UserId),
                     cancellationToken

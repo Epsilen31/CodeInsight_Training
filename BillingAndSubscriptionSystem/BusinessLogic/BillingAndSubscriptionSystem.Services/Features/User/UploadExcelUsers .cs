@@ -61,10 +61,14 @@ namespace BillingAndSubscriptionSystem.Services.Features.User
 
                     return $"{uploadedCount} user(s) uploaded successfully";
                 }
-                catch (Exception ex)
+                catch (Exception exception)
                 {
-                    _logger.LogError(ex, "Error uploading Excel users: {Message}", ex.Message);
-                    throw new CustomException("Error uploading Excel users.", ex);
+                    _logger.LogError(
+                        exception,
+                        "Error uploading Excel users: {Message}",
+                        exception.Message
+                    );
+                    throw new CustomException("Error uploading Excel users.", exception);
                 }
             }
 

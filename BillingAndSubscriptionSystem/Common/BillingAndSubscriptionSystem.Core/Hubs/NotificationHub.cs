@@ -54,10 +54,10 @@ namespace BillingAndSubscriptionSystem.Core.Hubs
 
                 await base.OnConnectedAsync();
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
                 _logger.LogError(
-                    ex,
+                    exception,
                     "Error during WebSocket connection {ConnectionId}",
                     Context.ConnectionId
                 );
@@ -93,9 +93,9 @@ namespace BillingAndSubscriptionSystem.Core.Hubs
 
                 await base.OnDisconnectedAsync(exception);
             }
-            catch (Exception ex)
+            catch (Exception innerException)
             {
-                _logger.LogError(ex, "Unhandled error during user disconnection.");
+                _logger.LogError(innerException, "Unhandled error during user disconnection.");
             }
         }
     }

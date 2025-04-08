@@ -37,8 +37,9 @@ namespace BillingAndSubscriptionSystem.DataAccess.Repositories
             await _context
                 .Users.Where(x => x.Id == user.Id)
                 .ExecuteUpdateAsync(
-                    ex =>
-                        ex.SetProperty(x => x.Name, user.Name)
+                    exception =>
+                        exception
+                            .SetProperty(x => x.Name, user.Name)
                             .SetProperty(x => x.Email, user.Email)
                             .SetProperty(x => x.Phone, user.Phone)
                             .SetProperty(x => x.Password, user.Password),
