@@ -22,47 +22,18 @@ namespace BillingAndSubscriptionSystem.Services.Features.Analytics
                 CancellationToken cancellationToken
             )
             {
-                int overduePaymentsCount =
-                    await _unitOfWork.PaymentRepository.GetOverduePaymentsCountAsync(
-                        cancellationToken
-                    );
-                int inactiveSubscriptionsCount =
-                    await _unitOfWork.UserSubscriptionRepository.GetInactiveSubscriptionsCountAsync(
-                        cancellationToken
-                    );
-                int inactiveUsersCount =
-                    await _unitOfWork.UserRepository.GetInactiveUsersCountAsync(cancellationToken);
-                int totalPaymentsCount =
-                    await _unitOfWork.PaymentRepository.GetTotalPaymentsCountAsync(
-                        cancellationToken
-                    );
-                int totalUsersCount = await _unitOfWork.UserRepository.GetTotalUsersCountAsync(
+                int overduePaymentsCount = await GetOverduePaymentsCount(cancellationToken);
+                int inactiveSubscriptionsCount = await GetInactiveSubscriptionsCount(
                     cancellationToken
                 );
-
-                var monthlySubscriptionData =
-                    await _unitOfWork.UserSubscriptionRepository.GetMonthlySubscriptionsAsync(
-                        cancellationToken
-                    );
-                var monthlySubscriptionsDto = monthlySubscriptionData
-                    .Select(subscription => new MonthlySubscriptionDto
-                    {
-                        Month = subscription.Month,
-                        Count = subscription.Count,
-                    })
-                    .ToList();
-
-                var planTypeCountData =
-                    await _unitOfWork.UserSubscriptionRepository.GetSubscriptionPlanCountsAsync(
-                        cancellationToken
-                    );
-                var subscriptionPlanStats = planTypeCountData
-                    .Select(subscription => new PlanTypeCountDto
-                    {
-                        PlanType = subscription.PlanType,
-                        Count = subscription.Count,
-                    })
-                    .ToList();
+                int inactiveUsersCount = await GetInactiveUsersCount(cancellationToken);
+                int totalPaymentsCount = await GetTotalPaymentsCount(cancellationToken);
+                int totalUsersCount = await GetTotalUsersCount(cancellationToken);
+                List<MonthlySubscriptionDto> monthlySubscriptionsDto =
+                    await GetMonthlySubscriptions(cancellationToken);
+                List<PlanTypeCountDto> subscriptionPlanStats = await GetSubscriptionPlanStats(
+                    cancellationToken
+                );
 
                 return new DashboardStatsDto
                 {
@@ -74,6 +45,77 @@ namespace BillingAndSubscriptionSystem.Services.Features.Analytics
                     MonthlySubscriptions = monthlySubscriptionsDto,
                     SubscriptionPlanStats = subscriptionPlanStats,
                 };
+            }
+
+            private async Task<int> GetOverduePaymentsCount(CancellationToken cancellationToken)
+            {
+                return await _unitOfWork.PaymentRepository.GetOverduePaymentsCountAsync(
+                    cancellationToken
+                );
+            }
+
+            private async Task<int> GetInactiveSubscriptionsCount(
+                CancellationToken cancellationToken
+            )
+            {
+                return await _unitOfWork.UserSubscriptionRepository.GetInactiveSubscriptionsCountAsync(
+                    cancellationToken
+                );
+            }
+
+            private async Task<int> GetInactiveUsersCount(CancellationToken cancellationToken)
+            {
+                return await _unitOfWork.UserRepository.GetInactiveUsersCountAsync(
+                    cancellationToken
+                );
+            }
+
+            private async Task<int> GetTotalPaymentsCount(CancellationToken cancellationToken)
+            {
+                return await _unitOfWork.PaymentRepository.GetTotalPaymentsCountAsync(
+                    cancellationToken
+                );
+            }
+
+            private async Task<int> GetTotalUsersCount(CancellationToken cancellationToken)
+            {
+                return await _unitOfWork.UserRepository.GetTotalUsersCountAsync(cancellationToken);
+            }
+
+            private async Task<List<MonthlySubscriptionDto>> GetMonthlySubscriptions(
+                CancellationToken cancellationToken
+            )
+            {
+                List<MonthlySubscriptionDto> monthlySubscriptionData = (
+                    await _unitOfWork.UserSubscriptionRepository.GetMonthlySubscriptionsAsync(
+                        cancellationToken
+                    )
+                )
+                    .Select(subscription => new MonthlySubscriptionDto
+                    {
+                        Month = subscription.Month,
+                        Count = subscription.Count,
+                    })
+                    .ToList();
+                return monthlySubscriptionData;
+            }
+
+            private async Task<List<PlanTypeCountDto>> GetSubscriptionPlanStats(
+                CancellationToken cancellationToken
+            )
+            {
+                List<PlanTypeCountDto> planTypeCountData = (
+                    await _unitOfWork.UserSubscriptionRepository.GetSubscriptionPlanCountsAsync(
+                        cancellationToken
+                    )
+                )
+                    .Select(planTypeCountData => new PlanTypeCountDto
+                    {
+                        PlanType = planTypeCountData.PlanType,
+                        Count = planTypeCountData.Count,
+                    })
+                    .ToList();
+                return planTypeCountData;
             }
         }
     }

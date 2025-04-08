@@ -1,3 +1,4 @@
+using System.Data;
 using BillingAndSubscriptionSystem.Core.Exceptions;
 using BillingAndSubscriptionSystem.DataAccess.Contracts;
 using BillingAndSubscriptionSystem.Services.Contracts;
@@ -44,88 +45,18 @@ namespace BillingAndSubscriptionSystem.Services.Features.User
                 {
                     var file = request.File;
 
-                    if (file == null || file.Length == 0)
-                        return "File is empty.";
+                    if (!IsValidFile(file, out _))
+                        return "Invalid file. Only Excel files (.xls or .xlsx) are allowed.";
 
-                    var allowedExtensions = new[] { ".xls", ".xlsx" };
-                    var fileExtension = Path.GetExtension(file.FileName).ToLower();
+                    if (file == null)
+                        throw new CustomException("File cannot be null.");
 
-                    if (!allowedExtensions.Contains(fileExtension))
-                        return "Only Excel files (.xls or .xlsx) are allowed.";
+                    var reader = await GetReader(file, cancellationToken);
+                    var dataTable = GetDataTable(reader);
 
-                    var uploadsFolder = Path.Combine(
-                        Directory.GetCurrentDirectory(),
-                        "UploadedFiles"
-                    );
-                    if (!Directory.Exists(uploadsFolder))
-                        Directory.CreateDirectory(uploadsFolder);
-
-                    var filePath = Path.Combine(uploadsFolder, file.FileName);
-
-                    using (var stream = new FileStream(filePath, FileMode.Create))
-                    {
-                        await file.CopyToAsync(stream, cancellationToken);
-                    }
-
-                    System.Text.Encoding.RegisterProvider(
-                        System.Text.CodePagesEncodingProvider.Instance
-                    );
-
-                    using var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
-                    using var reader = ExcelReaderFactory.CreateReader(fileStream);
-
-                    var dataset = reader.AsDataSet(
-                        new ExcelDataSetConfiguration
-                        {
-                            UseColumnDataType = true,
-                            ConfigureDataTable = (tableReader) =>
-                                new ExcelDataTableConfiguration() { UseHeaderRow = true },
-                        }
-                    );
-
-                    var dataTable = dataset.Tables[0];
-                    int uploadedCount = 0;
-
-                    for (int i = 0; i < dataTable.Rows.Count; i++)
-                    {
-                        var row = dataTable.Rows[i];
-                        var email = row[2]?.ToString();
-
-                        if (string.IsNullOrWhiteSpace(email))
-                        {
-                            _logger.LogWarning("Invalid email: {Email}", email);
-                            continue;
-                        }
-
-                        var existingUser = (
-                            await _unitOfWork.UserRepository.GetAllUsersAsync(cancellationToken)
-                        ).FirstOrDefault(user => user.Email == email);
-
-                        if (existingUser != null)
-                        {
-                            _logger.LogWarning("User already exists: {Email}", email);
-                            continue;
-                        }
-
-                        var newUserDto = new UserDto
-                        {
-                            Name = row[1]?.ToString(),
-                            Email = email,
-                            Password = row[3]?.ToString(),
-                            Phone = row[4]?.ToString(),
-                            RoleId = int.TryParse(row[5]?.ToString(), out var roleId) ? roleId : -1,
-                        };
-
-                        var newUser =
-                            _mapper.Map<BillingAndSubscriptionSystem.Entities.Entities.User>(
-                                newUserDto
-                            );
-                        await _unitOfWork.UserRepository.AddUserAsync(newUser, cancellationToken);
-                        uploadedCount++;
-                    }
+                    int uploadedCount = await UploadUsersFromExcel(dataTable, cancellationToken);
 
                     await _notificationService.SendProgressData(request.UserId);
-
                     await _unitOfWork.SaveChangesAsync(cancellationToken);
 
                     return $"{uploadedCount} user(s) uploaded successfully";
@@ -135,6 +66,102 @@ namespace BillingAndSubscriptionSystem.Services.Features.User
                     _logger.LogError(ex, "Error uploading Excel users: {Message}", ex.Message);
                     throw new CustomException("Error uploading Excel users.", ex);
                 }
+            }
+
+            private bool IsValidFile(IFormFile? file, out string fileExtension)
+            {
+                fileExtension = string.Empty;
+                if (file == null || file.Length == 0)
+                    return false;
+
+                var allowedExtensions = new[] { ".xls", ".xlsx" };
+                fileExtension = Path.GetExtension(file.FileName).ToLower();
+
+                return allowedExtensions.Contains(fileExtension);
+            }
+
+            private async Task<IExcelDataReader> GetReader(
+                IFormFile file,
+                CancellationToken cancellationToken
+            )
+            {
+                var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "UploadedFiles");
+                if (!Directory.Exists(uploadsFolder))
+                    Directory.CreateDirectory(uploadsFolder);
+
+                var filePath = Path.Combine(uploadsFolder, file.FileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await file.CopyToAsync(stream, cancellationToken);
+                }
+
+                System.Text.Encoding.RegisterProvider(
+                    System.Text.CodePagesEncodingProvider.Instance
+                );
+
+                using var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
+                return ExcelReaderFactory.CreateReader(fileStream);
+            }
+
+            private DataTable GetDataTable(IExcelDataReader reader)
+            {
+                var dataset = reader.AsDataSet(
+                    new ExcelDataSetConfiguration
+                    {
+                        UseColumnDataType = true,
+                        ConfigureDataTable = (tableReader) =>
+                            new ExcelDataTableConfiguration() { UseHeaderRow = true },
+                    }
+                );
+
+                return dataset.Tables[0];
+            }
+
+            private async Task<int> UploadUsersFromExcel(
+                DataTable dataTable,
+                CancellationToken cancellationToken
+            )
+            {
+                int uploadedCount = 0;
+                for (int index = 0; index < dataTable.Rows.Count; index++)
+                {
+                    var row = dataTable.Rows[index];
+                    var email = row[2]?.ToString();
+
+                    if (string.IsNullOrWhiteSpace(email))
+                    {
+                        _logger.LogWarning("Invalid email: {Email}", email);
+                        continue;
+                    }
+
+                    var existingUser = (
+                        await _unitOfWork.UserRepository.GetAllUsersAsync(cancellationToken)
+                    ).FirstOrDefault(user => user.Email == email);
+
+                    if (existingUser != null)
+                    {
+                        _logger.LogWarning("User already exists: {Email}", email);
+                        continue;
+                    }
+
+                    var newUserDto = new UserDto
+                    {
+                        Name = row[1]?.ToString(),
+                        Email = email,
+                        Password = row[3]?.ToString(),
+                        Phone = row[4]?.ToString(),
+                        RoleId = int.TryParse(row[5]?.ToString(), out var roleId) ? roleId : -1,
+                    };
+
+                    var newUser = _mapper.Map<BillingAndSubscriptionSystem.Entities.Entities.User>(
+                        newUserDto
+                    );
+                    await _unitOfWork.UserRepository.AddUserAsync(newUser, cancellationToken);
+                    uploadedCount++;
+                }
+
+                return uploadedCount;
             }
         }
     }
