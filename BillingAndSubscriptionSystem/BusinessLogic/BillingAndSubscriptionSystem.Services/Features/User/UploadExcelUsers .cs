@@ -51,7 +51,8 @@ namespace BillingAndSubscriptionSystem.Services.Features.User
                     if (file == null)
                         throw new CustomException("File cannot be null.");
 
-                    var reader = await GetReader(file, cancellationToken);
+                    using var reader = await GetReader(file, cancellationToken);
+
                     var dataTable = GetDataTable(reader);
 
                     int uploadedCount = await UploadUsersFromExcel(dataTable, cancellationToken);
@@ -104,7 +105,7 @@ namespace BillingAndSubscriptionSystem.Services.Features.User
                     System.Text.CodePagesEncodingProvider.Instance
                 );
 
-                using var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
+                var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
                 return ExcelReaderFactory.CreateReader(fileStream);
             }
 
