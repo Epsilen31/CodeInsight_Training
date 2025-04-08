@@ -11,9 +11,10 @@ export class HttpClientService {
 
   private getHeader(): HttpHeaders {
     const token: string | null = sessionStorage.getItem('token');
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${token}`
-    });
+    let headers = new HttpHeaders();
+    if (token) {
+      headers = headers.set('Authorization', `Bearer ${token}`);
+    }
     return headers;
   }
 
@@ -24,9 +25,15 @@ export class HttpClientService {
     });
   }
 
-  post<T>(url: string, body: T): Observable<T> {
+  post<T>(url: string, body: any): Observable<T> {
+    let headers = this.getHeader();
+
+    if (body instanceof FormData) {
+      headers = headers.delete('Content-Type');
+    }
+
     return this._http.post<T>(`${environment.baseurl}/${url}`, body, {
-      headers: this.getHeader()
+      headers
     });
   }
 

@@ -4,9 +4,9 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { UserService } from '../../../services/user.service';
 import { IUpdateUser, IUserDetail } from '../../../models/user';
-import { ToastrService } from 'ngx-toastr';
 import { ThemeService } from '../../../services/theme.service';
 import { RedirectKey } from '../../../shared/constants/redirectionKey';
+import { ToastService } from '../../../services/toast.service';
 
 @Component({
   selector: 'app-user-detail',
@@ -24,7 +24,7 @@ export class UserDetailComponent implements OnInit, OnDestroy {
     private readonly _route: ActivatedRoute,
     private readonly _router: Router,
     private readonly _userService: UserService,
-    private readonly _toastr: ToastrService,
+    private readonly _toast: ToastService,
     private readonly _themeService: ThemeService
   ) {}
 
@@ -43,7 +43,7 @@ export class UserDetailComponent implements OnInit, OnDestroy {
       },
       error: (error: Error): void => {
         console.error('Error fetching user details:', error);
-        this._toastr.error('Error fetching user details:', error.message);
+        this._toast.showError(`Error fetching user details: ${error.message}`);
       }
     });
   }

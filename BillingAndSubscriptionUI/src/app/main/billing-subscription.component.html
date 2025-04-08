@@ -1,33 +1,38 @@
 <div
-  class="h-screen w-screen flex flex-col overflow-y-hidden relative"
+  class="min-h-screen w-screen flex flex-col overflow-y-auto overflow-x-hidden relative"
   [ngClass]="{ 'dark-mode': isDarkMode }"
 >
+  <!-- Header -->
   <header class="bg-gray-800 w-full h-16 fixed top-0 left-0 z-50">
-    <app-nav-bar
-      (toggleSidebar)="toggleLeftSidebar()"
-      (toggleDarkMode)="toggleDarkMode()"
-    ></app-nav-bar>
+    <app-nav-bar (toggleSidebar)="toggleLeftSidebar()" (toggleDarkMode)="toggleDarkMode()"></app-nav-bar>
   </header>
 
-  <!--  Toastr Container -->
+  <!-- Toastr Container -->
   <ngx-toast-container class="absolute top-0 left-0 w-full z-[9999]"></ngx-toast-container>
 
-  <div class="flex flex-grow pt-16 bg-[#d1d6de]">
+  <!-- Main Body -->
+  <div class="flex flex-grow pt-16 bg-[#d1d6de] min-h-[calc(100vh-4rem)] overflow-x-hidden w-full">
     <!-- Sidebar -->
     <aside
       class="bg-[#012a5b] text-white fixed top-16 left-0 h-[calc(100vh-4rem)]"
-      [ngClass]="isLeftSidebarCollapsed ? 'w-24' : 'w-64'"
+      [ngClass]="{
+        'w-24': isLeftSidebarCollapsed,
+        'w-64': !isLeftSidebarCollapsed
+      }"
     >
       <app-sidebar [isLeftSidebarCollapsed]="isLeftSidebarCollapsed"></app-sidebar>
     </aside>
 
-    <!-- Main content -->
+    <!-- Main Content -->
     <main
-      class="flex-grow overflow-y-hidden p-6 bg-white relative transition-all duration-300 ease-in-out dark:bg-gray-800 dark:text-white"
-      [ngClass]="isLeftSidebarCollapsed ? 'ml-24' : 'ml-64'"
-      style="height: calc(100vh - 4rem); min-height: 100vh"
+      class="transition-all duration-300 ease-in-out overflow-y-auto overflow-x-hidden p-6 bg-white dark:bg-gray-800 dark:text-white"
+      [ngClass]="{
+        'ml-24 w-[calc(100%-6rem)]': isLeftSidebarCollapsed,
+        'ml-64 w-[calc(100%-16rem)]': !isLeftSidebarCollapsed
+      }"
+      style="min-height: calc(100vh - 4rem)"
     >
-      <div class="content-wrapper relative" style="min-height: 100vh">
+      <div class="content-wrapper relative min-h-full w-full max-w-full overflow-x-hidden break-words">
         <app-loading></app-loading>
         <router-outlet></router-outlet>
       </div>

@@ -57,7 +57,6 @@ export class UpdateUserComponent implements OnInit, OnDestroy {
   updateUser(): void {
     const { role, ...rest } = this.user;
     const userToUpdate = { ...rest };
-    console.log(userToUpdate);
     this._userService.updateUser(this.userId, userToUpdate).subscribe({
       next: (): void => {
         this._toastService.showSuccess('Updated user successfully! redirecting to the user page');

@@ -15,7 +15,7 @@
     <h3>Select Card Type</h3>
     <div class="card-type-list">
       <button
-        *ngFor="let type of cardTypes"
+        *appCustomNgFor="let type of cardTypes"
         class="card-type"
         [class.active]="selectedCardType === type"
         (click)="selectCardType(type)"

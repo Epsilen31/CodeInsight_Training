@@ -68,7 +68,9 @@ namespace BillingAndSubscriptionSystem.Services.Features.Authentication
                     //     Role = request.User.Role ?? new Role { RoleName = "Admin" },
                     // };
 
-                    var newUser = _mapper.Map<User>(request.User);
+                    var newUser = _mapper.Map<BillingAndSubscriptionSystem.Entities.Entities.User>(
+                        request.User
+                    );
                     newUser.Role ??= new Role { RoleName = "Admin" };
 
                     await _unitOfWork.UserRepository.AddUserAsync(newUser, cancellationToken);

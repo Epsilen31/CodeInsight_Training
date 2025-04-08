@@ -62,7 +62,6 @@ export class AddUserComponent implements OnInit, OnDestroy {
       roleId: Number(formValue.roleId)
     };
 
-    console.log('user', user); // debugging
     this._userService.addUser(user).subscribe({
       next: () => {
         this._toastService.showSuccess('User added successfully!');

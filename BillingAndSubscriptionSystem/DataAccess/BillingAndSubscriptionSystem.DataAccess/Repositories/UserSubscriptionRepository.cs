@@ -109,12 +109,10 @@ namespace BillingAndSubscriptionSystem.DataAccess.Repositories
             CancellationToken cancellationToken
         )
         {
-            Console.WriteLine($"Deleting user subscription repository {subscriptionId}");
             var subscription = await _context.Subscriptions.FindAsync(
                 [subscriptionId],
                 cancellationToken
             );
-            Console.WriteLine(subscription);
             if (subscription != null)
             {
                 _context.Subscriptions.Remove(subscription);

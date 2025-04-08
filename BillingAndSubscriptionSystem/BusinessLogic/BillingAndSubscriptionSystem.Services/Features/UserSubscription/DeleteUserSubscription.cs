@@ -1,4 +1,3 @@
-using BillingAndSubscriptionSystem.Core.Exceptions;
 using BillingAndSubscriptionSystem.DataAccess.Contracts;
 using MediatR;
 using Microsoft.Extensions.Logging;
@@ -32,7 +31,6 @@ namespace BillingAndSubscriptionSystem.Services.Features.UserSubscription
             {
                 try
                 {
-                    Console.WriteLine($"{request.SubscriptionId}");
                     var success =
                         await _unitOfWork.UserSubscriptionRepository.DeleteUserSubscriptionAsync(
                             request.SubscriptionId,

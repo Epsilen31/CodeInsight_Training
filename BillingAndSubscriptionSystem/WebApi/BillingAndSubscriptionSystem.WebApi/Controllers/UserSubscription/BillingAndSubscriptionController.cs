@@ -88,7 +88,6 @@ namespace BillingAndSubscriptionSystem.WebApi.Controllers
             CancellationToken cancellationToken
         )
         {
-            Console.WriteLine($"DeleteUserSubscriptionPlan , {Id}");
             var result = await _mediator.Send(
                 new DeleteUserSubscription.Command(Id),
                 cancellationToken

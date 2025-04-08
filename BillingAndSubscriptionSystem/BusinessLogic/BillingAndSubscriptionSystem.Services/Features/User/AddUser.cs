@@ -1,6 +1,5 @@
 using BillingAndSubscriptionSystem.Core.Exceptions;
 using BillingAndSubscriptionSystem.DataAccess.Contracts;
-using BillingAndSubscriptionSystem.Entities.Entities;
 using BillingAndSubscriptionSystem.Services.DTOs;
 using MapsterMapper;
 using MediatR;
@@ -59,7 +58,9 @@ namespace BillingAndSubscriptionSystem.Services.Features.Users
                         );
                     }
 
-                    var newUser = _mapper.Map<User>(request.User);
+                    var newUser = _mapper.Map<BillingAndSubscriptionSystem.Entities.Entities.User>(
+                        request.User
+                    );
 
                     await _unitOfWork.UserRepository.AddUserAsync(newUser, cancellationToken);
                     await _unitOfWork.SaveChangesAsync(cancellationToken);

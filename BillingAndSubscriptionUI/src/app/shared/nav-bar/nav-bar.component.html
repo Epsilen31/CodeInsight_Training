@@ -17,11 +17,11 @@
       class="flex items-center gap-2 font-semibold p-2 rounded-md border border-gray-500 text-sm transition-all duration-200 transform hover:scale-105 hover:bg-gray-600 hover:border-gray-600 hover:text-white shadow-md focus:outline-none"
     >
       <ng-container *ngIf="isDarkMode; else lightMode">
-        <i class="fas fa-moon"></i>
+        <i class="fas fa-moon" style="margin-top: 4px"></i>
         Dark Mode
       </ng-container>
       <ng-template #lightMode>
-        <i class="fas fa-sun"></i>
+        <i class="fas fa-sun" style="margin-top: 4px"></i>
         Light Mode
       </ng-template>
     </button>

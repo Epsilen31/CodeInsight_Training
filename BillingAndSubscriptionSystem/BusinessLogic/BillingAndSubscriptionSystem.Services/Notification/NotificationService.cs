@@ -63,5 +63,43 @@ namespace BillingAndSubscriptionSystem.Services.Notification
                 );
             }
         }
+
+        public async Task SendProgressData(string userId)
+        {
+            if (string.IsNullOrEmpty(userId))
+            {
+                throw new CustomException("UserId cannot be null or empty.", null);
+            }
+
+            try
+            {
+                int currentProgress = 0;
+                Random random = new Random();
+
+                while (currentProgress < 100)
+                {
+                    // Generated a random increment between 1 and 10
+                    int increment = random.Next(1, 10);
+                    currentProgress = Math.Min(currentProgress + increment, 100);
+
+                    await _notificationHubContext
+                        .Clients.Group(userId)
+                        .SendAsync("ReceiveProgress", new { Progress = currentProgress });
+
+                    // Random delay between 200ms and 1000ms
+                    int delay = random.Next(200, 1000);
+                    await Task.Delay(delay);
+                }
+            }
+            catch (Exception exception)
+            {
+                _logger.LogError(
+                    exception,
+                    "Error sending progress updates to {UserId}: {ErrorMessage}",
+                    userId,
+                    exception.Message
+                );
+            }
+        }
     }
 }

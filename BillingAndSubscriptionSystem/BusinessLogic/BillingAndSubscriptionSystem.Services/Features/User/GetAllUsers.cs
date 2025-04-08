@@ -1,6 +1,5 @@
 using BillingAndSubscriptionSystem.Core.Exceptions;
 using BillingAndSubscriptionSystem.DataAccess.Contracts;
-using BillingAndSubscriptionSystem.Entities.Entities;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
@@ -8,12 +7,17 @@ namespace BillingAndSubscriptionSystem.Services.Features.Users
 {
     public class GetAllUsers
     {
-        public class Query : IRequest<ICollection<User>>
+        public class Query
+            : IRequest<ICollection<BillingAndSubscriptionSystem.Entities.Entities.User>>
         {
             public Query() { }
         }
 
-        public class Handler : IRequestHandler<Query, ICollection<User>>
+        public class Handler
+            : IRequestHandler<
+                Query,
+                ICollection<BillingAndSubscriptionSystem.Entities.Entities.User>
+            >
         {
             private readonly IUnitOfWork _unitOfWork;
             private readonly ILogger<Handler> _logger;
@@ -24,10 +28,9 @@ namespace BillingAndSubscriptionSystem.Services.Features.Users
                 _logger = logger;
             }
 
-            public async Task<ICollection<User>> Handle(
-                Query request,
-                CancellationToken cancellationToken
-            )
+            public async Task<
+                ICollection<BillingAndSubscriptionSystem.Entities.Entities.User>
+            > Handle(Query request, CancellationToken cancellationToken)
             {
                 try
                 {
@@ -38,9 +41,9 @@ namespace BillingAndSubscriptionSystem.Services.Features.Users
                     if (users == null || users.Count == 0)
                     {
                         _logger.LogWarning("No users found in the database.");
-                        return [];
+                        return new List<BillingAndSubscriptionSystem.Entities.Entities.User>();
                     }
-                    return [.. users];
+                    return users.ToList();
                 }
                 catch (Exception exception)
                 {

@@ -1,60 +1,72 @@
 @use 'tailwindcss';
 
-ngx-toast-container {
-  position: absolute !important;
-  top: 0 !important;
-  left: 0 !important;
-  width: 100% !important;
-  z-index: 9999 !important;
+html,
+body {
+  overflow-x: hidden;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+html {
+  scroll-behavior: smooth;
 }
 
-.toast-top-center {
+::-webkit-scrollbar {
+  width: 0px;
+  height: 0px;
+  background: transparent;
+}
+
+/* Full-page centered toast */
+:root {
+  --toast-z-index: 9999;
+}
+
+.p-toast {
+  top: 81.5% !important;
+  right: 1.2% !important;
+  transform: none !important;
   position: fixed !important;
-  top: 0px !important;
-  left: 50%;
-  transform: translateX(-50%) !important;
-  z-index: 99999 !important;
+  z-index: 9999;
 }
 
-.toast-success {
-  background-color: #28a745 !important;
-  color: white !important;
-  border-radius: 8px !important;
-  padding: 12px 16px !important;
-  font-size: 16px !important;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2) !important;
+.p-toast .p-toast-message {
+  min-width: 300px;
+  max-width: 500px;
 }
 
-.toast-error {
-  background-color: #dc3545 !important;
-  color: white !important;
-  border-radius: 8px !important;
-  padding: 12px 16px !important;
-  font-size: 16px !important;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2) !important;
+.p-toast .p-toast-message-content::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 4px;
+  background-color: #28a745;
+  animation: toast-timer 3s linear forwards;
+  width: 100%;
 }
 
-.toast-info {
-  background-color: #17a2b8 !important;
-  color: white !important;
-  border-radius: 8px !important;
-  padding: 12px 16px !important;
-  font-size: 16px !important;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2) !important;
+@keyframes toast-timer {
+  0% {
+    width: 100%;
+  }
+  100% {
+    width: 0%;
+  }
 }
 
-.toast-warning {
-  background-color: #ffc107 !important;
-  color: black !important;
-  border-radius: 8px !important;
-  padding: 12px 16px !important;
-  font-size: 16px !important;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2) !important;
+@keyframes toastProgress {
+  from {
+    width: 100%;
+  }
+  to {
+    width: 0%;
+  }
 }
 
-.toast-close-button {
-  color: white !important;
-  font-size: 16px !important;
+.animate-toast-progress {
+  animation-name: toastProgress;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
 }
 
 /*  Default Light Mode */
@@ -64,6 +76,8 @@ body {
   transition:
     background-color 0.3s,
     color 0.3s;
+  height: 100%;
+  overflow-y: auto;
 }
 
 /*  Dark Mode */

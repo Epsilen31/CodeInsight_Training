@@ -4,5 +4,6 @@ namespace BillingAndSubscriptionSystem.Services.Contracts
     {
         Task SendNotification(string message, string userId);
         Task BroadcastNotification(string message);
+        Task SendProgressData(string userId);
     }
 }

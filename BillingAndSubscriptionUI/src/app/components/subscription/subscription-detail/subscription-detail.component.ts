@@ -53,7 +53,6 @@ export class SubscriptionDetailComponent implements OnInit, OnDestroy {
 
   private getSubscriptionDetails(): void {
     this.isLoading = true;
-    console.log('userid', this.userId);
     this._subscriptionService.getSubscriptionByUserId(this.userId).subscribe({
       next: (response: ISubscriptionDetail): void => {
         this.subscription = response.subscription[0];

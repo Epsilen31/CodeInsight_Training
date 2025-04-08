@@ -28,5 +28,8 @@ export const RouteKey = {
   GET_USERS_WITH_BILLING: 'Billing/GetUsersWithBilling',
 
   // DASHBOARD ROUTES
-  GET_ANALYTICS_INFO_URL: 'Analytics/AnalyticsState'
+  GET_ANALYTICS_INFO_URL: 'Analytics/AnalyticsState',
+
+  // FILE UPLOAD ROUTE
+  UPLOAD_FILE_URL: 'UploadFile/ExcelFileUpload'
 };

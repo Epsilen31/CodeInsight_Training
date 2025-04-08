@@ -46,5 +46,9 @@ namespace BillingAndSubscriptionSystem.WebApi.Constants
         // Analytics Routes
         public const string AnalyticsRoute = MainRoute + "/Analytics";
         public const string GetAnalyticsState = "AnalyticsState";
+
+        // Upload File Routes
+        public const string UploadFileRoute = MainRoute + "/UploadFile";
+        public const string UploadExcelFile = "ExcelFileUpload";
     }
 }

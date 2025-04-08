@@ -28,3 +28,7 @@ export interface IUpdateUser {
   phone: string;
   role: string;
 }
+
+export interface UploadResponse {
+  message: string;
+}

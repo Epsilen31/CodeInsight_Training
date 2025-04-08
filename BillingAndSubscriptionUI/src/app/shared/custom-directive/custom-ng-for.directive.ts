@@ -1,42 +1,35 @@
-import {
-  Directive,
-  Input,
-  OnChanges,
-  SimpleChanges,
-  TemplateRef,
-  ViewContainerRef
-} from '@angular/core';
+import { Directive, Input, OnChanges, SimpleChanges, TemplateRef, ViewContainerRef } from '@angular/core';
+
+interface CustomNgForContext<T> {
+  $implicit: T;
+  index: number;
+}
 
 @Directive({
-  selector: '[appCustomNgFor]',
+  selector: '[appCustomNgFor][appCustomNgForOf]',
   standalone: false
 })
 export class CustomNgForDirective<T> implements OnChanges {
-  @Input() appCustomForOf: T[] = [];
-  @Input() appCustomForFilter: (item: T) => boolean = () => true;
-  @Input() appCustomForSort: (a: T, b: T) => number = () => 0;
+  @Input() appCustomNgForOf: T[] = [];
 
   constructor(
     private readonly viewContainer: ViewContainerRef,
-    private readonly template: TemplateRef<any>
+    private readonly template: TemplateRef<CustomNgForContext<T>>
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['appCustomForOf']) {
+    if (changes['appCustomNgForOf']) {
       this.updateView();
     }
   }
 
   private updateView(): void {
     this.viewContainer.clear();
-    const filteredAndSortedItems = this.appCustomForOf
-      .filter(this.appCustomForFilter)
-      .sort(this.appCustomForSort);
 
-    filteredAndSortedItems.forEach((item, index) => {
+    this.appCustomNgForOf.forEach((item, index) => {
       this.viewContainer.createEmbeddedView(this.template, {
         $implicit: item,
-        index: index
+        index
       });
     });
   }

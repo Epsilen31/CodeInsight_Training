@@ -45,16 +45,14 @@ export class ActionButtonComponent implements ICellRendererAngularComp {
   onDelete(): void {
     const userId: number = this.params.data.id;
 
-    if (confirm('Are you sure you want to delete this user?')) {
-      this._userService.deleteUser(userId).subscribe({
-        next: (): void => {
-          this._toastService.showSuccess('User deleted successfully.');
-          this.gridApi.applyTransaction({ remove: [this.params.data] });
-        },
-        error: (error: { message: string }): void => {
-          this._toastService.showError('Error deleting user: ' + error.message);
-        }
-      });
-    }
+    this._userService.deleteUser(userId).subscribe({
+      next: (): void => {
+        this._toastService.showSuccess('User deleted successfully.');
+        this.gridApi.applyTransaction({ remove: [this.params.data] });
+      },
+      error: (error: { message: string }): void => {
+        this._toastService.showError('Error deleting user: ' + error.message);
+      }
+    });
   }
 }

@@ -24,8 +24,6 @@ namespace BillingAndSubscriptionSystem.WebApi.Controllers.Menu
         {
             var userRole =
                 User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value ?? "Admin";
-
-            Console.WriteLine($"userRole = {userRole}");
             var menu = await _mediator.Send(new GetSidebarMenu.Query(userRole));
 
             return Ok(new { Message = "Menu retrieved successfully.", Menu = menu });

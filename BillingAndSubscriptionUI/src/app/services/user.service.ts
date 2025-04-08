@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { IUser, IUserDetail, IUserResponse } from '../models/user';
+import { IUser, IUserDetail, IUserResponse, UploadResponse } from '../models/user';
 import { HttpClientService } from '../core/http-client.service';
 import { RouteKey } from '../shared/constants/routeKey';
 
@@ -31,5 +31,9 @@ export class UserService {
 
   deleteUser(id: number): Observable<void> {
     return this._httpClientService.delete<void>(`${RouteKey.DELETE_USER_URL}/${id}`);
+  }
+
+  uploadFile(formData: FormData): Observable<UploadResponse> {
+    return this._httpClientService.post<UploadResponse>(`${RouteKey.UPLOAD_FILE_URL}`, formData);
   }
 }

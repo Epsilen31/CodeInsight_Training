@@ -76,9 +76,6 @@ export class UserWithBillingComponent implements OnInit, OnDestroy {
   fetchUserWithBilling(): void {
     this._billingService.getUsersWithBilling(this.userId ?? -1).subscribe({
       next: (response: IBillingInfo): void => {
-        console.log('responses', response);
-        console.log('Response:', response.message);
-
         this.rowData = response.usersWithBilling;
       },
       error: (err: Error) => console.error('Error fetching billing data:', err)

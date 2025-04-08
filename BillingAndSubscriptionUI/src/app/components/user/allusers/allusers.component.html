@@ -1,6 +1,57 @@
 <div>
-  <!-- Grid Container -->
-  <div class="grid-container w-full flex-grow">
+  <!-- Dropdown Section -->
+  <div class="mb-4">
+    <div class="w-full mx-auto mb-4 flex justify-end">
+      <select
+        [(ngModel)]="selectedOption"
+        class="rounded-lg px-4 py-2 border outline-none transition"
+        [ngClass]="{
+          'bg-white border-gray-300 text-black': !isDarkMode,
+          'bg-gray-900 border-gray-700 text-white': isDarkMode
+        }"
+      >
+        <option value="">Select an action</option>
+        <option value="import">Import Users</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- File Upload Section -->
+  <div
+    *ngIf="selectedOption === 'import'"
+    class="rounded-lg p-4 mb-6 shadow-md border"
+    [ngClass]="{
+      'bg-white border-gray-200': !isDarkMode,
+      'bg-gray-800 border-gray-700': isDarkMode
+    }"
+  >
+    <div class="flex gap-3 items-center">
+      <input
+        type="file"
+        class="flex-1 rounded-lg px-3 py-2 transition focus:outline-none"
+        [ngClass]="{
+          'bg-white text-gray-800 focus:ring-2 focus:ring-blue-500': !isDarkMode,
+          'bg-gray-900  text-white focus:ring-2 focus:ring-blue-400': isDarkMode
+        }"
+        style="border: 1px solid"
+        #fileInput
+      />
+
+      <button
+        class="px-5 py-2 rounded-lg font-medium transition hover:shadow"
+        [ngClass]="{
+          'bg-blue-600 text-white hover:bg-blue-700': !isDarkMode,
+          'bg-blue-500 text-white hover:bg-blue-600': isDarkMode
+        }"
+        (click)="uploadFile()"
+      >
+        Upload
+      </button>
+    </div>
+  </div>
+
+  <!-- Grid Table -->
+  <div class="grid-container w-full flex-grow mb-6">
     <app-table
       [rowData]="users"
       [columnDefs]="columnDefs"
@@ -8,22 +59,40 @@
       [gridOptions]="gridOptions"
     ></app-table>
   </div>
-
-  <!-- Notifications Section -->
-  <section *ngIf="showNotificationSection" class="fixed bottom-4 right-4 w-96 z-50">
-    <div class="bg-white p-4 rounded-lg shadow-lg border border-gray-300">
-      <h3 class="font-semibold text-black mb-2 text-lg">Notifications</h3>
-      <ul class="max-h-40 overflow-y-auto">
-        <li
-          *ngFor="let notification of notifications"
-          class="bg-green-100 border-l-4 border-green-500 text-green-800 p-3 rounded-lg shadow-md mb-2"
-        >
-          {{ notification }}
-        </li>
-        <li *ngIf="notifications.length === 0" class="text-gray-500 text-sm text-center">
-          No new notifications.
-        </li>
-      </ul>
+  <div
+    *ngIf="showNotificationSection"
+    class="fixed bottom-6 right-6 z-50 px-4 py-3 rounded-lg shadow-lg w-80 transition-opacity duration-300 overflow-hidden"
+    [ngClass]="{
+      'bg-white border border-green-500 text-green-800': !isDarkMode,
+      'bg-gray-900 border border-green-400 text-green-100': isDarkMode
+    }"
+  >
+    <div class="font-semibold mb-1">New Notification</div>
+    <div class="text-sm mb-1">
+      {{ notifications[0] }}
     </div>
-  </section>
+
+    <div class="w-full h-1 relative overflow-hidden rounded">
+      <div
+        class="absolute top-0 left-0 h-full bg-green-500 dark:bg-green-400 animate-toast-progress"
+        style="animation-duration: 5s"
+      ></div>
+    </div>
+  </div>
+
+  <div
+    *ngIf="progressVisible"
+    class="flex items-center justify-between gap-4 mt-2 bg-white p-4 rounded-lg shadow border border-gray-200"
+    [ngClass]="{
+      'bg-white border-gray-200 text-black': !isDarkMode,
+      'bg-gray-800 border-gray-700 text-white': isDarkMode
+    }"
+  >
+    <app-progress-bar
+      [progress]="progressValue"
+      [total]="100"
+      style="width: 80%"
+    ></app-progress-bar>
+    <div class="text-sm font-medium">Importing users... please wait</div>
+  </div>
 </div>

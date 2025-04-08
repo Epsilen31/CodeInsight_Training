@@ -1,10 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-  HttpTransportType,
-  HubConnection,
-  HubConnectionBuilder,
-  HubConnectionState
-} from '@microsoft/signalr';
+import { HttpTransportType, HubConnection, HubConnectionBuilder, HubConnectionState } from '@microsoft/signalr';
 import { environment } from '../../environments/environment';
 import { from } from 'rxjs';
 import { ToastService } from './toast.service';
@@ -38,6 +33,7 @@ export class NotificationService {
     from(this.hubConnection.start()).subscribe({
       next: (): void => {
         this.listenForMessages((message: string): void => {});
+        this.listenForProgressBar((message: number): void => {});
       },
       error: (error: Error): void => {
         this._toastService.showError(`SignalR Connection Error: ${error.message}`);
@@ -63,6 +59,17 @@ export class NotificationService {
     this.hubConnection.on('ReceivedMessage', (user: string, message: string): void => {});
   }
 
+  // method for listen progress bar notification
+  public listenForProgressBar(callback: (message: number) => void): void {
+    if (!this.hubConnection) return;
+    this.hubConnection.off('ReceiveProgressBar');
+    // get progress bar notification
+    this.hubConnection.on('ReceiveProgress', (data: { progress: number }): void => {
+      const progress = typeof data === 'number' ? data : (data.progress ?? data.progress ?? 0);
+      callback(progress);
+    });
+  }
+
   public sendMessage(user: string, message: string): void {
     if (!this.hubConnection || this.hubConnection.state !== HubConnectionState.Connected) {
       this._toastService.showError('Cannot send message -> SignalR is not connected.');
@@ -71,9 +78,7 @@ export class NotificationService {
 
     this.hubConnection
       .invoke('SendMessage', user, message)
-      .catch((error: Error): void =>
-        this._toastService.showError(`Error sending message: ${error}`)
-      );
+      .catch((error: Error): void => this._toastService.showError(`Error Getting Progress message: ${error}`));
   }
 
   private handleDisconnects(): void {

@@ -8,7 +8,6 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { providePrimeNG } from 'primeng/config';
 import Aura from '@primeng/themes/aura';
 import { ButtonModule } from 'primeng/button';
-import { ToastrModule } from 'ngx-toastr';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
@@ -24,6 +23,8 @@ import { BillingModule } from './components/billing/billing.module';
 import { ErrorDialogService } from './services/error-dialog.service';
 import { GlobalHttpInterceptor } from './core/global-http.interceptor';
 import { AgChartsModule } from 'ag-charts-angular';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
 
 @NgModule({
   declarations: [
@@ -48,16 +49,7 @@ import { AgChartsModule } from 'ag-charts-angular';
     RouterModule,
     ButtonModule,
     AgChartsModule,
-    ToastrModule.forRoot({
-      timeOut: 5000,
-      positionClass: 'toast-top-center',
-      preventDuplicates: true,
-      progressBar: true,
-      progressAnimation: 'increasing',
-      closeButton: true,
-      maxOpened: 3,
-      enableHtml: true
-    })
+    ToastModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [
@@ -76,7 +68,8 @@ import { AgChartsModule } from 'ag-charts-angular';
           darkModeSelector: '.my-app-dark'
         }
       }
-    })
+    }),
+    MessageService
   ],
   bootstrap: [AppComponent]
 })
