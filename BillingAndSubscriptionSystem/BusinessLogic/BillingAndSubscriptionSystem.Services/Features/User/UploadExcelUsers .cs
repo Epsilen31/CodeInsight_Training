@@ -4,7 +4,7 @@ using BillingAndSubscriptionSystem.DataAccess.Contracts;
 using BillingAndSubscriptionSystem.Services.Contracts;
 using BillingAndSubscriptionSystem.Services.DTOs;
 using ExcelDataReader;
-using MapsterMapper;
+using Mapster;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
@@ -23,19 +23,16 @@ namespace BillingAndSubscriptionSystem.Services.Features.User
         {
             private readonly IUnitOfWork _unitOfWork;
             private readonly ILogger<Handler> _logger;
-            private readonly IMapper _mapper;
             private readonly INotificationService _notificationService;
 
             public Handler(
                 IUnitOfWork unitOfWork,
                 ILogger<Handler> logger,
-                IMapper mapper,
                 INotificationService notificationService
             )
             {
                 _unitOfWork = unitOfWork;
                 _logger = logger;
-                _mapper = mapper;
                 _notificationService = notificationService;
             }
 
@@ -159,10 +156,9 @@ namespace BillingAndSubscriptionSystem.Services.Features.User
                         RoleId = int.TryParse(row[5]?.ToString(), out var roleId) ? roleId : -1,
                     };
 
-                    var newUser = _mapper.Map<BillingAndSubscriptionSystem.Entities.Entities.User>(
-                        newUserDto
-                    );
-                    await _unitOfWork.UserRepository.AddUserAsync(newUser, cancellationToken);
+                    var userEntity =
+                        newUserDto.Adapt<BillingAndSubscriptionSystem.Entities.Entities.User>();
+                    await _unitOfWork.UserRepository.AddUserAsync(userEntity, cancellationToken);
                     uploadedCount++;
                 }
 
